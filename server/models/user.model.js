@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 const userSchema = mongoose.Schema(
   {
@@ -21,7 +22,7 @@ const userSchema = mongoose.Schema(
       required: [true,"mobile is Required"],
       unique: [true,"already in database"],
     },
-    dob: {
+    DOB: {
       type: Date, // Assuming the date of birth is a Date type
       required: false,
       default: null
@@ -34,6 +35,14 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    last_login:{
+      type: Date,
+      default: Date.now,
+    },
+    isVerified:{
+      type: Boolean,
+      default: false,
+    },
     isAdmin: {
       type: String,
       default: "Inactive",
@@ -41,7 +50,11 @@ const userSchema = mongoose.Schema(
     isSupreme: {
       type: Boolean,
       default: false,
-    }
+    },
+    resetPasswordToken:String,
+    resetPasswordExpiresAt:Date,
+    verificationToken:String,
+    verificationTokenExpiresAt:Date,
   },
   {
     timestamps: true,
