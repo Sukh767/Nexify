@@ -4,8 +4,8 @@ import { loginUser, registerUser } from "../controllers/user/user.controllers.js
 
 const router = express.Router();
 
-router.get('/register',registerUser)
-router.get('/login',loginUser)
+router.post('/register',registerUser)
+router.post('/login',loginUser)
 router.get('/list',userList)
 
 
