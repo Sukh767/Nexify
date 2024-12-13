@@ -44,8 +44,8 @@ const userSchema = mongoose.Schema(
       default: false,
     },
     isAdmin: {
-      type: String,
-      default: "Inactive",
+      type: Boolean,
+      default: false,
     },
     isSupreme: {
       type: Boolean,
