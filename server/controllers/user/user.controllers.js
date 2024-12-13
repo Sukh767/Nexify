@@ -1,5 +1,5 @@
 
-import {sendVerificationEmail} from "../../mailtrap/emails.js";
+import {sendVerificationEmail, sendWelcomeEmail} from "../../mailtrap/emails.js";
 import User from "../../models/user.model.js";
 import generateTokenAndSetCookie from "../../utils/generateTokenAndSetCookie.js";
 
@@ -55,6 +55,35 @@ const registerUser = async (req, res) => {
     }
 };
 
+const verifyEmail = async(req,res)=>{
+    const { code } = req.body;
+    console.log(code)
+    try {
+        const user = await User.findOne({
+            verificationToken: code,
+            verificationTokenExpiresAt: { $gt: Date.now() },
+        })
+        console.log(user)
+
+        if(!user){
+            return res.status(400).json({message: "Invalid or expired verification code"})
+        }
+
+        user.isVerified = true;
+        user.verificationToken = undefined;
+        user.verificationTokenExpiresAt = undefined;
+
+        await user.save();
+        await sendWelcomeEmail(user.email, user.firlst_name);
+
+        return res.status(200).json({success: true, message: "Email verified successfully", user: {...user._doc, password: undefined}})
+
+    } catch (error) {
+        res.status(500).json({message: "Internal Server Error"})
+        console.error("Error verifying email:", error)
+    }
+}
+
 //Login user
 const loginUser = async (req,res)=>{
     const {email, password} = req.body;
@@ -77,11 +106,22 @@ const loginUser = async (req,res)=>{
 
     const loggedInUser = await User.findById(user._id).select('-password')
 
+    loggedInUser.last_login = Date.now();
+    await loggedInUser.save();
+
+    generateTokenAndSetCookie(res, loggedInUser._id);
+
     if(!loggedInUser){
         return res.status(400).json({message: "Something went wrong, please try again"})
     }
 
-    return res.status(200).json({message: "Login successful", user: loggedInUser})
+    return res.status(200).json({message: "Login successful", user: {...loggedInUser._doc, password: undefined}})
 }
 
-export {registerUser,loginUser}
+const logoutUser = async (req,res)=>{
+    res.clearCookie('token');
+    return res.status(200).json({message: "Logout successful"})
+}
+
+
+export {registerUser,loginUser, verifyEmail, logoutUser}
