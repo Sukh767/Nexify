@@ -3,7 +3,6 @@ import {sendPasswordResetEmail, sendResetSuccesfulEmail, sendVerificationEmail, 
 import User from "../../models/user.model.js";
 import generateTokenAndSetCookie from "../../utils/generateTokenAndSetCookie.js";
 import crypto from "crypto";
-import bcrypt from "bcrypt";
 
 // Register user
 const registerUser = async (req, res) => {
@@ -56,6 +55,7 @@ const registerUser = async (req, res) => {
     }
 };
 
+//Verify email
 const verifyEmail = async(req,res)=>{
     const { code } = req.body;
     console.log(code)
@@ -102,7 +102,7 @@ const loginUser = async (req,res)=>{
     const isPasswordCorrect = await user.isPasswordCorrect(password)
 
     if(!isPasswordCorrect){
-        return res.status(400).json({message: "Invalid credentials"})
+        return res.status(400).json({message: "Password is incorrect, please try again"})
     }
 
     const loggedInUser = await User.findById(user._id).select('-password')
@@ -119,13 +119,13 @@ const loginUser = async (req,res)=>{
     return res.status(200).json({message: "Login successful", user: {...loggedInUser._doc, password: undefined}})
 }
 
+//Logout user
 const logoutUser = async (req,res)=>{
     res.clearCookie('token');
     return res.status(200).json({message: "Logout successful"})
 }
 
 //forgot password
-
 const forgotPassword = async (req,res)=>{
     const {email} = req.body;
 
@@ -163,6 +163,7 @@ const forgotPassword = async (req,res)=>{
 
 }
 
+//reset password
 const resetPassword = async (req,res)=>{
     const {token} = req.params;
     const {password} = req.body;
@@ -192,4 +193,70 @@ const resetPassword = async (req,res)=>{
         
     }
 }
-export {registerUser,loginUser, verifyEmail, logoutUser, forgotPassword, resetPassword}
+
+// Delete user
+const deleteUser = async (req, res) => {
+    const { id } = req.params; 
+
+    try {
+        // Find the user
+        const user = await User.findById(id); 
+        console.log(id);
+
+        // Check if the user exists
+        if (!user) {
+            return res.status(400).json({ success: false, message: "User does not exist" });
+        }
+
+        // Delete the user
+        await User.findByIdAndDelete(id);
+
+        res.status(200).json({ success: true, message: "User deleted successfully" });
+    } catch (error) {
+        console.error("Error deleting user:", error);
+        res.status(500).json({ success: false, message: "Internal Server Error" });
+    }
+};
+
+//Update user details
+const updateUserDetails = async (req, res) => {
+    const { id } = req.params;
+    const { first_name, last_name, DOB, mobile, password } = req.body;
+
+    try {
+        const user = await User.findById(id);
+
+        if (!user) {
+            return res.status(400).json({ message: "User does not exist" });
+        }
+
+        // Update user fields
+        user.first_name = first_name;
+        user.last_name = last_name;
+
+        // Parse the DOB field into a Date object
+        if (DOB) {
+            const parsedDOB = new Date(DOB);
+            if (isNaN(parsedDOB)) {
+                return res.status(400).json({ message: "Invalid date format for DOB" });
+            }
+            user.DOB = parsedDOB;
+        }
+
+        user.mobile = mobile;
+        user.password = password;
+
+        // Save the updated user
+        await user.save();
+
+        return res
+            .status(200)
+            .json({ message: "User details updated successfully", user: { ...user._doc, password: undefined } });
+    } catch (error) {
+        console.error("Error updating user details:", error);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+};
+
+
+export {registerUser,loginUser, verifyEmail, logoutUser, forgotPassword, resetPassword, deleteUser, updateUserDetails}
