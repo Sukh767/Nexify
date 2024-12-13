@@ -27,6 +27,7 @@ export const updateUserStatus = async (req, res) => {
 export const updateUserRole = async(req,res) => {
     //const { id } = req.params;
     const { id } = req.body;
+    const { isAdmin } = req.body;
 
     try {
         const user = await User.findById(id);
@@ -35,7 +36,7 @@ export const updateUserRole = async(req,res) => {
             return res.status(400).json({ message: "User does not exist" });
         }
 
-        user.isAdmin = true;
+        user.isAdmin = isAdmin;
 
         await user.save();
 

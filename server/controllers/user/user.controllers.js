@@ -3,7 +3,6 @@ import {sendPasswordResetEmail, sendResetSuccesfulEmail, sendVerificationEmail, 
 import User from "../../models/user.model.js";
 import generateTokenAndSetCookie from "../../utils/generateTokenAndSetCookie.js";
 import crypto from "crypto";
-import bcrypt from "bcrypt";
 
 // Register user
 const registerUser = async (req, res) => {
