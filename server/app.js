@@ -13,9 +13,11 @@ app.use(bodyParser.json());
 
 // Importing routes
 import userRouter from './routes/user.routes.js';
+import productCategoryRouter from './routes/Product/productCategory.route.js';
 
 //TODO: Add your routes here
 app.use('/api/account/user', userRouter);
+app.use('/api/products/category', productCategoryRouter);
 
 
 
