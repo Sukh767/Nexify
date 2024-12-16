@@ -304,7 +304,7 @@ const updateCategoryById = async (req, res) => {
 const getAllFrontendCategoryList = async (req, res) => {
   try {
     // Fetch all active categories
-    const categories = await Category.find({ status: " Active" });
+    const categories = await Category.find({ status: "Active" });
     //console.log("categories", categories);
 
     if (!categories.length) {
@@ -322,6 +322,8 @@ const getAllFrontendCategoryList = async (req, res) => {
         subcategories: [],
       });
     });
+
+    //console.log("categoriesMap", categoriesMap);
 
     // Iterate through categories and link them
     categories.forEach((cat) => {

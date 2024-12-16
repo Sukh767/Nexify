@@ -50,7 +50,7 @@ export const verifyjwt = async (req, res, next) => {
 
 
 export const authRole = async (req, res, next) => {
-  console.log(req.user)
+  //console.log(req.user)
   if (req.user && req.user.isAdmin) {
     console.log(req.user.isAdmin)
       next()
