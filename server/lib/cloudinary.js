@@ -36,8 +36,9 @@ export const uploadOnCloudinary = async (path, retries = 3) => {
 
 export const deleteFromCloudinary = async (publicId) => {
   try {
-    console.log('these is deleteFromCloudinary', publicId)
-    const result = await cloudinary.delete_resources(publicId, options).then(callback);
+    const result = await cloudinary.api.delete_resources([publicId], {
+      resource_type: "image",
+    });
     console.log(`Deleted ${publicId} from Cloudinary`);
     return result;
   } catch (error) {
@@ -45,3 +46,5 @@ export const deleteFromCloudinary = async (publicId) => {
     throw error;
   }
 };
+
+export default cloudinary;

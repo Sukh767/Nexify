@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { uploadOnCloudinary } from "../../lib/cloudinary.js";
-import Product from "../../models/Product/product.models.js";
+import Product from "../../models/Product/product.model.js";
 import slugify from "slugify";
 import Category from "../../models/Product/productCategory.model.js";
 // Create a new product
@@ -11,7 +11,7 @@ const createProduct = async (req, res) => {
     brand,
     sizes,
     colors,
-    parent_category,
+    parentCategory,
     child_category,
     short_description,
     description,
@@ -38,7 +38,7 @@ const createProduct = async (req, res) => {
     if (
       !productName ||
       !productUrl ||
-      !parent_category ||
+      !parentCategory ||
       !short_description ||
       !description ||
       !meta_title ||
@@ -50,7 +50,7 @@ const createProduct = async (req, res) => {
       return res.status(400).json({
         success: false,
         message:
-          "Missing required fields: productName, productUrl, parent_category, short_description, description, meta_title, meta_description, meta_keywords, mrp_price, and selling_price.",
+          "Missing required fields: productName, productUrl, parentCategory, short_description, description, meta_title, meta_description, meta_keywords, mrp_price, and selling_price.",
       });
     }
 
@@ -138,7 +138,7 @@ const createProduct = async (req, res) => {
       brand,
       sizes,
       colors,
-      parent_category,
+      parentCategory,
       child_category,
       short_description,
       description,
@@ -160,11 +160,15 @@ const createProduct = async (req, res) => {
       stock,
     });
 
+    const productId = product._id;
+
     res.status(201).json({
       success: true,
       message: "Product created successfully.",
       data: product,
+      Id: productId,
     });
+
   } catch (error) {
     console.error("Error in createProduct:", error);
     res.status(500).json({
@@ -217,7 +221,7 @@ const getProductById = async (req, res) => {
       console.log("Product:", product);
   
       // Fetch parent and child categories
-      const parentcategory = await fetchchildcategory(product.parent_category);
+      const parentcategory = await fetchchildcategory(product.parentCategory);
       const childcategory = await fetchchildcategory(product.child_category);
   
       // Construct the response
@@ -300,7 +304,7 @@ const updateProduct = async (req, res) => {
     brand,
     sizes,
     colors,
-    parent_category,
+    parentCategory,
     short_description,
     description,
     meta_title,
@@ -337,7 +341,7 @@ const updateProduct = async (req, res) => {
       brand,
       sizes,
       colors,
-      parent_category,
+      parentCategory,
       short_description,
       description,
       meta_title,

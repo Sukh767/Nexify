@@ -15,7 +15,7 @@ const createCategory = async (req, res) => {
       meta_description,
       meta_title,
       meta_keywords,
-      parent_category,
+      parentCategory,
       status,
     } = req.body;
 
@@ -90,7 +90,7 @@ const createCategory = async (req, res) => {
       metaDescription: meta_description,
       status,
       metaKeywords: meta_keywords,
-      parentCategory: parent_category ? parent_category : [],
+      parentCategory: parentCategory ? parentCategory : [],
       banner: [banner], // Wrap in an array
     });
 
