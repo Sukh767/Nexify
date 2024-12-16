@@ -32,6 +32,7 @@ var categorySchema = mongoose.Schema(
       required: [true, "meta Keywords is required"],
     },
     parentCategory: {
+      //type: mongoose.Schema.Types.ObjectId,
       type: Array,
       default: [],
     },
