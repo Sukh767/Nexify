@@ -38,7 +38,7 @@ const productSchema = mongoose.Schema(
         colorCode: { type: String, default: null }, // Optional hex code
       },
     ],
-    parent_category: {
+    parentCategory: {
       //type: mongoose.Schema.Types.ObjectId,
       //ref: "Category",
       type: Array,
