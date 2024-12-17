@@ -171,8 +171,8 @@ const productSchema = mongoose.Schema(
         },
       ],
     dynamicAttributes: {
-      type: Schema.Types.Mixed, // e.g., { Material: "Cotton", Warranty: "1 Year" }
-      default: {},
+      type: Array, // e.g., { Material: "Cotton", Warranty: "1 Year" }
+      default: [],
     },
   },
   { timestamps: true }

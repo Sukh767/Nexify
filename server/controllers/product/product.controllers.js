@@ -4,6 +4,7 @@ import Product from "../../models/Product/product.model.js";
 import slugify from "slugify";
 import Category from "../../models/Product/productCategory.model.js";
 // Create a new product
+//TODO: if something gone wrong delete the uploaded images from Cloudinary
 const createProduct = async (req, res) => {
   const {
     productName,
@@ -202,7 +203,6 @@ const getAllProducts = async (req, res) => {
     });
   }
 };
-
 
 // Get a single product by ID
 const getProductById = async (req, res) => {
@@ -530,6 +530,7 @@ if(weight){
     res.status(500).json({
       status: "error",
       message: "Internal server error.",
+      error: error.message,
     });
   }
 }
