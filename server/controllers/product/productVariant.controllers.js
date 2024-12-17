@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { deleteFromCloudinary, uploadOnCloudinary } from "../../lib/cloudinary.js";
 import ProductVariant from "../../models/Product/productVariant.model.js";
 
@@ -318,9 +319,15 @@ const getVariantProductById = async (req, res) => {
       });
     }
 
+    let parentcategory = await fetchchildcategory(variant.parentCategory);
+    let childcategory = await fetchchildcategory(variant.child_category);
+
     res.status(200).json({
       status: "successful",
       data: variant,
+      parentcategory,
+      childcategory,
+      slug:variant.product_url.replace(/-/g, ' ')
     });
   } catch (error) {
     console.log("Error in getVariantProductById:", error);
@@ -331,6 +338,21 @@ const getVariantProductById = async (req, res) => {
         details: error.message,
       },
     });
+  }
+};
+
+const fetchchildcategory = async (categoryarray) => {
+  if (categoryarray[0]) {
+    try {
+      const categoryIds = categoryarray[0].split(",");
+      const objectIdArray = categoryIds.map(
+        (id) => new mongoose.Types.ObjectId(id)
+      );
+      const categories = await category.find({ _id: { $in: objectIdArray } });
+      return categories;
+    } catch (error) {}
+  } else {
+    return [];
   }
 };
 

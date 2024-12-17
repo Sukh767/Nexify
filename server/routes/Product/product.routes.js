@@ -11,12 +11,23 @@ import {
 import { authRole, verifyjwt } from "../../middlewares/auth.middlewares.js";
 import { upload } from "../../middlewares/multer.middlewares.js";
 import cleanAndParseBody from "../../middlewares/cleanAndParseBody.middlewares.js";
+import { searchItem } from "../../controllers/product/searchProduct.controllers.js";
+import frontendSingleProduct from "../../controllers/product/frontendSingleProduct.controllers.js";
 
 const router = express.Router();
 
-//TODO: Add the routes for the product controllers
+// Product Routes
 
+// Public Routes
+router.get("/search", searchItem); // Search by query: ?keyword=someValue
+router.get("/category-list/:id", frontendProductListByCategory); //TODO: Fix this route getting blank response
+router.get("/details/:id", verifyjwt, frontendSingleProduct);
+
+// Authenticated Routes
 router.get("/", verifyjwt, getAllProducts);
+router.get("/:id", verifyjwt, getProductById);
+
+// Admin Routes
 router.post(
   "/",
   upload.fields([{ name: "images", maxCount: 5 }]),
@@ -26,9 +37,12 @@ router.post(
   createProduct
 );
 router.delete("/:id", verifyjwt, authRole, deleteProduct);
-router.patch("/:id", verifyjwt, authRole, cleanAndParseBody, updateProduct); //TODO: fix issues `updateProduct` function
-router.get("/search", getSearchedProducts);
-router.get("/:id", verifyjwt, getProductById);
-router.get("/category-list/:id", frontendProductListByCategory);
+router.patch(
+  "/:id",
+  verifyjwt,
+  authRole,
+  cleanAndParseBody,
+  updateProduct
+);
 
 export default router;
