@@ -7,6 +7,11 @@ const orderSchema = new Schema(
       required: true,
       ref: "User",
     },
+    orderId: {
+      type: String,
+      required: true,
+      unique: true,
+    },
     orderNo: {
       type: String,
       required: true,
@@ -14,7 +19,7 @@ const orderSchema = new Schema(
     },
     items: [
       {
-        product: {
+        productId: {
           type: mongoose.Schema.Types.ObjectId,
           required: true,
           ref: "Product",
@@ -22,10 +27,7 @@ const orderSchema = new Schema(
         variant: {
           type: mongoose.Schema.Types.ObjectId,
           ref: "ProductVariant",
-        },
-        name: {
-          type: String,
-          required: true,
+          required: false,
         },
         quantity: {
           type: Number,
@@ -36,11 +38,11 @@ const orderSchema = new Schema(
           type: Number,
           required: true,
         },
-        discount: {
-          type: Number,
-          required: false,
-          default: 0.0, // Discount applied to this item
-        },
+        // discount: {
+        //   type: Number,
+        //   required: false,
+        //   default: 0.0, // Discount applied to this item
+        // },
         total: {
           type: Number,
           required: true,
@@ -81,16 +83,16 @@ const orderSchema = new Schema(
     },
     couponName: {
       type: String,
-      default:null
+      default: null,
     },
     couponAmount: {
       type: Number,
-     default:0
+      default: 0,
     },
     paymentMethod: {
       type: String,
       required: true,
-      enum: ["Cash", "Card", "Online", "UPI", "Wallet"],
+      enum: ["Cash", "Card", "PayPal", "UPI", "Wallet", "Stripe"],
       default: "Cash",
     },
     paymentStatus: {
@@ -100,9 +102,9 @@ const orderSchema = new Schema(
       default: "Pending",
     },
     paymentResult: {
-      id: { type: String }, 
-      status: { type: String }, 
-      update_time: { type: Date }, 
+      id: { type: String },
+      status: { type: String },
+      update_time: { type: Date },
       email_address: { type: String },
     },
     /*stripeSessionId: {
@@ -150,3 +152,4 @@ const orderSchema = new Schema(
 );
 
 export const Order = mongoose.model("Order", orderSchema);
+export default Order;
