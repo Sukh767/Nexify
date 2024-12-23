@@ -8,6 +8,10 @@ import SalesPage from "./pages/SalesPage";
 import OrdersPage from "./pages/OrdersPage";
 import AnalyticsPage from "./pages/AnalyticsPage";
 import SettingsPage from "./pages/Settingspage";
+import Login from "./components/Authentication/Login";
+import SignUp from "./components/Authentication/SignUp";
+import ResetPassword from "./components/Authentication/ResetPassword";
+import ForgotPassword from "./components/Authentication/ForgotPassword";
 
 function App() {
 	return (
@@ -27,6 +31,10 @@ function App() {
 				<Route path='/orders' element={<OrdersPage />} />
 				<Route path='/analytics' element={<AnalyticsPage />} />
 				<Route path='/settings' element={<SettingsPage />} />
+				<Route path='/auth/login' element={<Login/>}/>
+				<Route path='/auth/signup' element={<SignUp/>}/>
+				<Route path='/auth/reset-password' element={<ResetPassword/>}/>
+				<Route path='/auth/forgot-password' element={<ForgotPassword/>}/>
 			</Routes>
 		</div>
 	);
