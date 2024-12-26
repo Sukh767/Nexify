@@ -1,18 +1,46 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { ArrowLeft, Eye, EyeOff } from 'lucide-react';
+import { Link, useNavigate } from "react-router-dom";
+import { ArrowLeft, Eye, EyeOff } from "lucide-react";
+import { useDispatch } from "react-redux";
+import { setCredentials } from "../../features/auth/authSlice";
+import { useLoginMutation } from "../../features/user/userApiSlice";
+import toast from "react-hot-toast";
 
 const Login = () => {
+  const navigate = useNavigate();
   const [user, setUser] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
 
+  const [login, { loading }] = useLoginMutation();
+  const dispatch = useDispatch();
   const handleInputChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(user); // Handle login logic here
+    try {
+      const data = await login({
+        email: user.email,
+        password: user.password,
+      }).unwrap();
+      console.log("Login Response:", data);
+      console.log("accessToken:", data.user.accessToken);
+      // Update Redux state with credentials
+      dispatch(
+        setCredentials({
+          userInfo: data.user,
+          accessToken: data.user.accessToken,
+        })
+      );
+      toast.success("Login successful");
+      user.email = "";
+      user.password = "";
+      navigate("/");
+    } catch (err) {
+      console.error("Login Error:", err);
+      toast.error(err.data?.message || "Login failed");
+    }
   };
 
   return (
@@ -20,7 +48,7 @@ const Login = () => {
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <img
-          src="https://images.pexels.com/photos/18069211/pexels-photo-18069211/free-photo-of-an-artist-s-illustration-of-artificial-intelligence-ai-this-image-represents-how-ai-powered-tools-can-support-us-and-save-time-it-was-created-by-martina-stiftinger-as-part-of-the-visua.png?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+          src="https://img2.wallspic.com/crops/2/3/9/7/7/177932/177932-apple_m3-apples-apple_macbook_pro-all_in_one-solid_state_drive-2560x1440.jpg"
           alt="Background"
           className="w-full h-full object-cover"
         />
@@ -49,7 +77,10 @@ const Login = () => {
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Email Field */}
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-200 mb-1">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-200 mb-1"
+            >
               Email
             </label>
             <input
@@ -66,7 +97,10 @@ const Login = () => {
 
           {/* Password Field */}
           <div className="relative">
-            <label htmlFor="password" className="block text-sm font-medium text-gray-200 mb-1">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-200 mb-1"
+            >
               Password
             </label>
             <input
@@ -128,4 +162,3 @@ const Login = () => {
 };
 
 export default Login;
-
