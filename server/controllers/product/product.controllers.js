@@ -36,25 +36,29 @@ const createProduct = async (req, res) => {
 
   try {
     // Validate required fields
-    if (
-      !productName ||
-      !productUrl ||
-      !parentCategory ||
-      !short_description ||
-      !description ||
-      !meta_title ||
-      !meta_description ||
-      !meta_keywords ||
-      !mrp_price ||
-      !selling_price
-    ) {
+    const requiredFields = [
+      "productName",
+      "productUrl",
+      "parentCategory",
+      "short_description",
+      "description",
+      "meta_title",
+      "meta_description",
+      "meta_keywords",
+      "mrp_price",
+      "selling_price",
+    ];
+  
+    const missingFields = requiredFields.filter((field) => !req.body[field]);
+  
+    if (missingFields.length > 0) {
       return res.status(400).json({
         success: false,
-        message:
-          "Missing required fields: productName, productUrl, parentCategory, short_description, description, meta_title, meta_description, meta_keywords, mrp_price, and selling_price.",
+        message: `Missing required fields: ${missingFields.join(", ")}.`,
+        missingFields,
       });
     }
-
+  
     // Validate sizes array (if provided)
     if (sizes) {
       if (!Array.isArray(sizes)) {
@@ -78,7 +82,7 @@ const createProduct = async (req, res) => {
         });
       }
     }
-
+  
     // Validate colors array (if provided)
     if (colors) {
       if (!Array.isArray(colors)) {
@@ -99,7 +103,7 @@ const createProduct = async (req, res) => {
         });
       }
     }
-
+  
     // Handle image uploads
     if (!req.files || !req.files.images || req.files.images.length === 0) {
       return res.status(400).json({
@@ -107,10 +111,10 @@ const createProduct = async (req, res) => {
         message: "At least one image is required.",
       });
     }
-
+  
     const imageLocalPaths = req.files.images;
     const uploadedImages = [];
-
+  
     // Upload images to Cloudinary
     for (const imagePath of imageLocalPaths) {
       const result = await uploadOnCloudinary(imagePath.path);
@@ -123,14 +127,14 @@ const createProduct = async (req, res) => {
         console.error("Failed to upload an image:", imagePath);
       }
     }
-
+  
     if (uploadedImages.length === 0) {
       return res.status(500).json({
         success: false,
         message: "Failed to upload images to Cloudinary.",
       });
     }
-
+  
     // Create a new product instance
     const product = await Product.create({
       productName,
@@ -160,16 +164,16 @@ const createProduct = async (req, res) => {
       price_history,
       stock,
     });
-
+  
     const productId = product._id;
-
+  
     res.status(201).json({
       success: true,
       message: "Product created successfully.",
       data: product,
       Id: productId,
     });
-
+  
   } catch (error) {
     console.error("Error in createProduct:", error);
     res.status(500).json({
@@ -177,6 +181,7 @@ const createProduct = async (req, res) => {
       message: "Internal server error.",
     });
   }
+  
 };
 
 // Fetch all products

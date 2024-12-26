@@ -1,191 +1,126 @@
 import React, { useState } from "react";
+import { Layout, Menu } from "antd";
 import {
-  BarChart2,
-  Menu,
-  Settings,
-  ShoppingBag,
-  ShoppingCart,
-  Users,
-  Key,
-  LockKeyholeOpen,
-  UserPlus,
-  RectangleEllipsis,
-  FileLock,
-  IndianRupee,
-  ChevronDown,
-  ShieldAlert,
-} from "lucide-react";
-import { AnimatePresence, motion } from "framer-motion";
+  BarChartOutlined,
+  ShoppingOutlined,
+  UserOutlined,
+  ShoppingCartOutlined,
+  SafetyCertificateOutlined,
+  DollarOutlined,
+  SettingOutlined,
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
+} from "@ant-design/icons";
 import { Link } from "react-router-dom";
+
+const { Sider } = Layout;
 
 const SIDEBAR_ITEMS = [
   {
-    name: "Dashboard",
-    icon: BarChart2,
-    color: "#6366f1",
-    href: "/",
-    children: [{ name: "Overview", href: "/" }],
+    key: "dashboard",
+    icon: <BarChartOutlined style={{ color: "#6366f1" }} />,
+    label: "Dashboard",
+    children: [{ key: "overview", label: "Overview", path: "/" }],
   },
   {
-    name: "Products",
-    icon: ShoppingBag,
-    color: "#8B5CF6",
-    href: "/products",
+    key: "products",
+    icon: <ShoppingOutlined style={{ color: "#8B5CF6" }} />,
+    label: "Products",
     children: [
-      { name: "All Products", href: "/products" },
-      { name: "Add Product", href: "/products/add" },
-      { name: "Categories", href: "/products/categories" },
-      { name: "Brands", href: "/products/brands" },
+      { key: "all-products", label: "All Products", path: "/products" },
+      { key: "add-product", label: "Add Product", path: "/products/add" },
+      { key: "categories", label: "Categories", path: "/products/categories" },
+      { key: "brands", label: "Brands", path: "/products/brands" },
     ],
   },
   {
-    name: "Users",
-    icon: Users,
-    color: "#EC4899",
-    href: "/users",
+    key: "users",
+    icon: <UserOutlined style={{ color: "#EC4899" }} />,
+    label: "Users",
     children: [
-      { name: "All Users", href: "/users" },
-      { name: "Add User", href: "/users/add" },
-      { name: "Roles", href: "/users/roles" },
+      { key: "all-users", label: "All Users", path: "/users" },
+      { key: "add-user", label: "Add User", path: "/users/add" },
+      { key: "roles", label: "Roles", path: "/users/roles" },
+      { key: "profile", label: "Profile", path: "/users/account" },
     ],
   },
   {
-    name: "Orders",
-    icon: ShoppingCart,
-    color: "#F59E0B",
-    href: "/orders",
+    key: "orders",
+    icon: <ShoppingCartOutlined style={{ color: "#F59E0B" }} />,
+    label: "Orders",
     children: [
-      { name: "All Orders", href: "/orders" },
-      { name: "Pending Orders", href: "/orders/pending" },
-      { name: "Completed Orders", href: "/orders/completed" },
+      { key: "all-orders", label: "All Orders", path: "/orders" },
+      { key: "pending-orders", label: "Pending Orders", path: "/orders/pending" },
+      { key: "completed-orders", label: "Completed Orders", path: "/orders/completed" },
     ],
   },
   {
-    name: "Authentication",
-    icon: ShieldAlert,
-    color: "#EF4444",
-    href: "/auth",
+    key: "authentication",
+    icon: <SafetyCertificateOutlined style={{ color: "#EF4444" }} />,
+    label: "Authentication",
     children: [
-      { name: "Login", href: "/auth/login", icon: LockKeyholeOpen },
-      { name: "Signup", href: "/auth/signup", icon: UserPlus },
-      {
-        name: "Forgot Password",
-        href: "/auth/forgot-password",
-        icon: RectangleEllipsis,
-      },
-      { name: "Reset Password", href: "/auth/reset-password", icon: FileLock },
+      { key: "login", label: "Login", path: "/auth/login" },
+      { key: "signup", label: "Signup", path: "/auth/signup" },
+      { key: "forgot-password", label: "Forgot Password", path: "/auth/forgot-password" },
+      { key: "reset-password", label: "Reset Password", path: "/auth/reset-password" },
     ],
   },
   {
-    name: "Sales",
-    icon: IndianRupee,
-    color: "#10B981",
-    href: "/",
-    children: [{ name: "Sales view", href: "/sales" }],
+    key: "sales",
+    icon: <DollarOutlined style={{ color: "#10B981" }} />,
+    label: "Sales",
+    children: [{ key: "sales-view", label: "Sales view", path: "/sales" }],
   },
   {
-    name: "Settings",
-    icon: Settings,
-    color: "#6EE7B8",
-    href: "/settings",
-    children: [{ name: "Settings", href: "/settings" }],
+    key: "settings",
+    icon: <SettingOutlined style={{ color: "#6EE7B8" }} />,
+    label: "Settings",
+    children: [{ key: "settings-view", label: "Settings", path: "/settings" }],
   },
 ];
 
-const Sidebar = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [activeDropdown, setActiveDropdown] = useState(null);
+const Sidebar = ({ onToggle }) => {
+  const [collapsed, setCollapsed] = useState(false);
 
-  const toggleDropdown = (index) => {
-    setActiveDropdown(activeDropdown === index ? null : index);
+  const toggleCollapsed = () => {
+    setCollapsed(!collapsed);
+    if (onToggle) onToggle(!collapsed);
   };
 
   return (
-    <motion.div
-      className={`relative z-10 transition-all duration-300 ease-in-out flex-shrink-0 ${
-        isSidebarOpen ? "w-64" : "w-20"
-      }`}
-      animate={{ width: isSidebarOpen ? 256 : 80 }}
+    <Sider
+      collapsible
+      collapsed={collapsed}
+      onCollapse={toggleCollapsed}
+      width={256}
+      collapsedWidth={80}
+      className="min-h-screen bg-gray-800 bg-opacity-50 backdrop-blur-md border-r border-gray-700"
+      theme="dark"
     >
-      <div className="h-full bg-gray-800 bg-opacity-50 backdrop-blur-md p-4 flex flex-col border-r border-gray-700">
-        {/* Sidebar Toggle Button */}
-        <motion.button
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          className="p-2 rounded-full hover:bg-gray-700 transition-colors max-w-fit"
-        >
-          <Menu size={24} />
-        </motion.button>
-
-        {/* Navigation Items */}
-        <nav className="mt-8 flex-grow">
-          {SIDEBAR_ITEMS.map((item, index) => (
-            <div key={item.href}>
-              <motion.div
-                className="flex items-center justify-between p-4 text-sm font-medium rounded-lg hover:bg-gray-700 transition-colors mb-2 cursor-pointer"
-                onClick={() => toggleDropdown(index)}
-              >
-                <div className="flex items-center">
-                  <item.icon
-                    size={20}
-                    style={{ color: item.color, minWidth: "20px" }}
-                  />
-                  <AnimatePresence>
-                    {isSidebarOpen && (
-                      <motion.span
-                        className="ml-4 whitespace-nowrap"
-                        initial={{ opacity: 0, width: 0 }}
-                        animate={{ opacity: 1, width: "auto" }}
-                        exit={{ opacity: 0, width: 0 }}
-                        transition={{ duration: 0.2, delay: 0.3 }}
-                      >
-                        {item.name}
-                      </motion.span>
-                    )}
-                  </AnimatePresence>
-                </div>
-                {item.children && (
-                  <ChevronDown
-                    size={16}
-                    className={`transition-transform ${
-                      activeDropdown === index ? "rotate-180" : "rotate-0"
-                    }`}
-                  />
-                )}
-              </motion.div>
-
-              {/* Dropdown for Children */}
-              {item.children && activeDropdown === index && (
-                <AnimatePresence>
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="pl-6 border-l-2 border-gray-600"
-                  >
-                    {item.children.map((child) => (
-                      <Link
-                        key={child.href}
-                        to={child.href}
-                        className="block p-2 text-sm text-gray-300 rounded-lg hover:bg-gray-700 transition-colors hover:text-orange-500"
-                      >
-                        {child.icon && (
-                          <child.icon size={16} className="mr-2" />
-                        )}
-                        {child.name}
-                      </Link>
-                    ))}
-                  </motion.div>
-                </AnimatePresence>
-              )}
-            </div>
-          ))}
-        </nav>
+      <div className="p-4 flex justify-end">
+        {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
+          className: "text-white text-xl cursor-pointer",
+          onClick: toggleCollapsed,
+        })}
       </div>
-    </motion.div>
+      <Menu
+        mode="inline"
+        theme="dark"
+        inlineCollapsed={collapsed}
+        className="bg-transparent"
+        items={SIDEBAR_ITEMS.map((item) => ({
+          key: item.key,
+          icon: item.icon,
+          label: item.label,
+          children: item.children.map((child) => ({
+            key: child.key,
+            label: <Link to={child.path}>{child.label}</Link>,
+          })),
+        }))}
+      />
+    </Sider>
   );
 };
 
 export default Sidebar;
+
