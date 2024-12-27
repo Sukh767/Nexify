@@ -9,7 +9,9 @@ export const productApiSlice = authApi.injectEndpoints({
             credentials: "include",
         }),
         getProduct: builder.query({
-            query: (id) => `/products/${id}`,
+            query: (id) => `${PRODUCT_URL}/${id}`,
+            method: "GET",
+            credentials: "include",
         }),
         createProduct: builder.mutation({
             query: (product) => ({
@@ -20,14 +22,14 @@ export const productApiSlice = authApi.injectEndpoints({
         }),
         updateProduct: builder.mutation({
             query: ({ id, product }) => ({
-                url: `/products/${id}`,
+                url: `${PRODUCT_URL}/${id}`,
                 method: "PUT",
                 body: product,
             }),
         }),
         deleteProduct: builder.mutation({
             query: (id) => ({
-                url: `/products/${id}`,
+                url: `${PRODUCT_URL}/${id}`,
                 method: "DELETE",
             }),
         }),

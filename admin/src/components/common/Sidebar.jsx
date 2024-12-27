@@ -10,8 +10,14 @@ import {
   SettingOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
+  LogoutOutlined,
 } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-hot-toast";
+import { useLogoutMutation } from "../../features/user/userApiSlice";
+import { clearCredentials } from "../../features/auth/authSlice";
+import { persistor } from "../../app/store";
 
 const { Sider } = Layout;
 
@@ -60,7 +66,6 @@ const SIDEBAR_ITEMS = [
     label: "Authentication",
     children: [
       { key: "login", label: "Login", path: "/auth/login" },
-      { key: "signup", label: "Signup", path: "/auth/signup" },
       { key: "forgot-password", label: "Forgot Password", path: "/auth/forgot-password" },
       { key: "reset-password", label: "Reset Password", path: "/auth/reset-password" },
     ],
@@ -81,10 +86,31 @@ const SIDEBAR_ITEMS = [
 
 const Sidebar = ({ onToggle }) => {
   const [collapsed, setCollapsed] = useState(false);
+  const navigate = useNavigate();
+  const {userInfo, isAuthenticated} = useSelector((state) => state.auth);
+  //console.log(userInfo);
+  const [ logout ] = useLogoutMutation();
+  const dispatch = useDispatch();
 
   const toggleCollapsed = () => {
     setCollapsed(!collapsed);
     if (onToggle) onToggle(!collapsed);
+  };
+
+  const handleLogout = async () => {
+    try {
+      const response = await logout().unwrap();
+      if (response.success) {
+        dispatch(clearCredentials());
+        await persistor.purge(); // Clear persisted state
+        toast.success(response.message);
+        navigate("/auth/login");
+        //window.location.href = "/auth/login";
+      }
+    } catch (error) {
+      console.error("Logout failed:", error);
+      toast.error("Failed to log out.");
+    }
   };
 
   return (
@@ -118,9 +144,32 @@ const Sidebar = ({ onToggle }) => {
           })),
         }))}
       />
+      {/* User Profile and Logout */}
+      {isAuthenticated && (
+      <div className="absolute bottom-0 w-full p-4 flex flex-col items-center mb-20">
+        <img
+          src="https://st3.depositphotos.com/15648834/17930/v/450/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"
+          alt="User Profile"
+          className="w-10 h-10 rounded-full mb-2"
+        />
+        {!collapsed && (
+          <div className="text-gray-300 text-sm font-semibold mb-2">
+            {userInfo?.first_name}{" "}{userInfo?.last_name}
+          </div>
+        )}
+        <button
+          onClick={handleLogout}
+          className={`flex items-center justify-center gap-2 w-full py-2 bg-red-500 text-gray-50 text-lg rounded-md hover:bg-red-700 hover:text-white transition-colors duration-200 ${
+            collapsed ? 'px-2' : 'px-4'
+          }`}
+        >
+          <LogoutOutlined />
+          {!collapsed && <span>Logout</span>}
+        </button>
+      </div>
+      )}
     </Sider>
   );
 };
 
 export default Sidebar;
-

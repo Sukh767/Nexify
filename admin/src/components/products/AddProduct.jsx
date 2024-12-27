@@ -1,103 +1,120 @@
-import React, { useState } from 'react';
-import { Plus, Minus, Upload, X } from 'lucide-react';
-import { useCreateProductMutation } from '../../features/products/productsApiSlice';
+import React, { useState } from "react";
+import { Plus, Minus, Upload, X } from "lucide-react";
+import { useCreateProductMutation } from "../../features/products/productsApiSlice";
+import toast from "react-hot-toast";
 
 const AddProduct = () => {
   const [createProduct, { isLoading }] = useCreateProductMutation();
   const [product, setProduct] = useState({
-    productName: '',
-    productUrl: '',
-    brand: '',
-    sizes: [{ size: '', stock: 0 }],
-    colors: [{ colorName: '', colorCode: '' }],
-    parentCategory: '',
-    child_category: '',
-    short_description: '',
-    description: '',
-    meta_title: '',
-    meta_description: '',
-    meta_keywords: '',
+    productName: "",
+    productUrl: "",
+    brand: "",
+    sizes: [{ size: "", stock: 0 }],
+    colors: [{ colorName: "", colorCode: "" }],
+    parentCategory: "",
+    child_category: "",
+    short_description: "",
+    description: "",
+    meta_title: "",
+    meta_description: "",
+    meta_keywords: "",
     featuredProduct: false,
     isTrending: false,
     isNewArrival: false,
-    tags: '',
-    status: 'Active',
-    weight: '',
-    weight_unit: 'kg',
-    dimensions: '',
-    mrp_price: '',
-    selling_price: '',
-    discount: '',
-    stock: '',
+    tags: "",
+    status: "Active",
+    weight: "",
+    weight_unit: "kg",
+    dimensions: "",
+    mrp_price: "",
+    selling_price: "",
+    discount: "",
+    stock: "",
   });
   const [images, setImages] = useState([]);
   const [errors, setErrors] = useState({});
-  const [successMessage, setSuccessMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState("");
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setProduct(prev => ({
+    setProduct((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
   const handleSizeChange = (index, field, value) => {
     const newSizes = [...product.sizes];
-    newSizes[index] = { ...newSizes[index], [field]: field === 'stock' ? parseInt(value) : value };
-    setProduct(prev => ({ ...prev, sizes: newSizes }));
+    newSizes[index] = {
+      ...newSizes[index],
+      [field]: field === "stock" ? parseInt(value) : value,
+    };
+    setProduct((prev) => ({ ...prev, sizes: newSizes }));
   };
 
   const handleColorChange = (index, field, value) => {
     const newColors = [...product.colors];
     newColors[index] = { ...newColors[index], [field]: value };
-    setProduct(prev => ({ ...prev, colors: newColors }));
+    setProduct((prev) => ({ ...prev, colors: newColors }));
   };
 
   const addSize = () => {
-    setProduct(prev => ({ ...prev, sizes: [...prev.sizes, { size: '', stock: 0 }] }));
+    setProduct((prev) => ({
+      ...prev,
+      sizes: [...prev.sizes, { size: "", stock: 0 }],
+    }));
   };
 
   const removeSize = (index) => {
-    setProduct(prev => ({
+    setProduct((prev) => ({
       ...prev,
-      sizes: prev.sizes.filter((_, i) => i !== index)
+      sizes: prev.sizes.filter((_, i) => i !== index),
     }));
   };
 
   const addColor = () => {
-    setProduct(prev => ({ ...prev, colors: [...prev.colors, { colorName: '', colorCode: '' }] }));
+    setProduct((prev) => ({
+      ...prev,
+      colors: [...prev.colors, { colorName: "", colorCode: "" }],
+    }));
   };
 
   const removeColor = (index) => {
-    setProduct(prev => ({
+    setProduct((prev) => ({
       ...prev,
-      colors: prev.colors.filter((_, i) => i !== index)
+      colors: prev.colors.filter((_, i) => i !== index),
     }));
   };
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
-    setImages(prev => [...prev, ...files].slice(0, 5));
+    setImages((prev) => [...prev, ...files].slice(0, 5));
   };
 
   const removeImage = (index) => {
-    setImages(prev => prev.filter((_, i) => i !== index));
+    setImages((prev) => prev.filter((_, i) => i !== index));
   };
 
   const validateForm = () => {
     const newErrors = {};
-    if (!product.productName) newErrors.productName = 'Product name is required';
-    if (!product.productUrl) newErrors.productUrl = 'Product URL is required';
-    if (!product.parentCategory) newErrors.parentCategory = 'Parent category is required';
-    if (!product.short_description) newErrors.short_description = 'Short description is required';
-    if (!product.description) newErrors.description = 'Description is required';
-    if (!product.meta_title) newErrors.meta_title = 'Meta title is required';
-    if (!product.meta_description) newErrors.meta_description = 'Meta description is required';
-    if (!product.meta_keywords) newErrors.meta_keywords = 'Meta keywords are required';
-    if (!product.mrp_price) newErrors.mrp_price = 'MRP price is required';
-    if (!product.selling_price) newErrors.selling_price = 'Selling price is required';
-    if (images.length === 0) newErrors.images = 'At least one image is required';
+    if (!product.productName)
+      newErrors.productName = "Product name is required";
+    if (!product.productUrl) newErrors.productUrl = "Product URL is required";
+    if (!product.parentCategory)
+      newErrors.parentCategory = "Parent category is required";
+    if (!product.short_description)
+      newErrors.short_description = "Short description is required";
+    if (!product.description) newErrors.description = "Description is required";
+    if (!product.meta_title) newErrors.meta_title = "Meta title is required";
+    if (!product.meta_description)
+      newErrors.meta_description = "Meta description is required";
+    if (!product.meta_keywords)
+      newErrors.meta_keywords = "Meta keywords are required";
+    if (!product.mrp_price) newErrors.mrp_price = "MRP price is required";
+    if (!product.selling_price)
+      newErrors.selling_price = "Selling price is required";
+    if (images.length === 0)
+      newErrors.images = "At least one image is required";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -108,8 +125,8 @@ const AddProduct = () => {
     if (!validateForm()) return;
 
     const formData = new FormData();
-    Object.keys(product).forEach(key => {
-      if (key === 'sizes' || key === 'colors') {
+    Object.keys(product).forEach((key) => {
+      if (key === "sizes" || key === "colors") {
         formData.append(key, JSON.stringify(product[key]));
       } else {
         formData.append(key, product[key]);
@@ -122,14 +139,60 @@ const AddProduct = () => {
 
     try {
       const response = await createProduct(formData).unwrap();
-      setSuccessMessage('Product created successfully!');
+      setSuccessMessage("Product created successfully!");
       // Reset form or redirect
+      console.log("Product created:", response);
+      if (response.success) {
+        toast.success("Product created successfully");
+      }
+      if (response.success) {
+        setProduct({
+          productName: "",
+          productUrl: "",
+          brand: "",
+          sizes: [{ size: "", stock: 0 }],
+          colors: [{ colorName: "", colorCode: "" }],
+          parentCategory: "",
+          child_category: "",
+          short_description: "",
+          description: "",
+          meta_title: "",
+          meta_description: "",
+          meta_keywords: "",
+          featuredProduct: false,
+          isTrending: false,
+          isNewArrival: false,
+          tags: "",
+          status: "Active",
+          weight: "",
+          weight_unit: "kg",
+          dimensions: "",
+          mrp_price: "",
+          selling_price: "",
+          discount: "",
+          stock: "",
+        });
+        setImages([]);
+        setErrors({});
+      }
     } catch (err) {
-      setErrors({ submit: err.data?.message || 'Failed to create product' });
+      console.log("Create Product Error:", err);
+      toast.error(err.data?.message || "Failed to create product");
+      setErrors({ submit: err.data?.message || "Failed to create product" });
     }
   };
 
+
   return (
+    <>
+    {isLoading ? (
+      <div className="flex justify-center items-center h-screen">
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-[#ff6347]"></div>
+      </div>
+    </div>
+    ): 
+    
     <div className="max-w-4xl mx-auto p-6 bg-gray-900 rounded-lg shadow-md">
       <h2 className="text-2xl font-bold mb-6">Add New Product</h2>
       <form onSubmit={handleSubmit} className="space-y-6">
@@ -143,7 +206,9 @@ const AddProduct = () => {
               onChange={handleChange}
               className="w-full bg-gray-800 p-2 border rounded"
             />
-            {errors.productName && <p className="text-red-500 text-sm mt-1">{errors.productName}</p>}
+            {errors.productName && (
+              <p className="text-red-500 text-sm mt-1">{errors.productName}</p>
+            )}
           </div>
           <div>
             <label className="block mb-2 font-medium">Product URL</label>
@@ -154,7 +219,9 @@ const AddProduct = () => {
               onChange={handleChange}
               className="w-full bg-gray-800 p-2 border rounded"
             />
-            {errors.productUrl && <p className="text-red-500 text-sm mt-1">{errors.productUrl}</p>}
+            {errors.productUrl && (
+              <p className="text-red-500 text-sm mt-1">{errors.productUrl}</p>
+            )}
           </div>
           <div>
             <label className="block mb-2 font-medium">Brand</label>
@@ -175,7 +242,11 @@ const AddProduct = () => {
               onChange={handleChange}
               className="w-full bg-gray-800 p-2 border rounded"
             />
-            {errors.parentCategory && <p className="text-red-500 text-sm mt-1">{errors.parentCategory}</p>}
+            {errors.parentCategory && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.parentCategory}
+              </p>
+            )}
           </div>
           <div>
             <label className="block mb-2 font-medium">Child Category</label>
@@ -196,7 +267,11 @@ const AddProduct = () => {
               className="w-full bg-gray-800 p-2 border rounded"
               rows="3"
             ></textarea>
-            {errors.short_description && <p className="text-red-500 text-sm mt-1">{errors.short_description}</p>}
+            {errors.short_description && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.short_description}
+              </p>
+            )}
           </div>
           <div className="md:col-span-2">
             <label className="block mb-2 font-medium">Description</label>
@@ -207,7 +282,9 @@ const AddProduct = () => {
               className="w-full bg-gray-800 p-2 border rounded"
               rows="5"
             ></textarea>
-            {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description}</p>}
+            {errors.description && (
+              <p className="text-red-500 text-sm mt-1">{errors.description}</p>
+            )}
           </div>
           <div>
             <label className="block mb-2 font-medium">Meta Title</label>
@@ -218,7 +295,9 @@ const AddProduct = () => {
               onChange={handleChange}
               className="w-full bg-gray-800 p-2 border rounded"
             />
-            {errors.meta_title && <p className="text-red-500 text-sm mt-1">{errors.meta_title}</p>}
+            {errors.meta_title && (
+              <p className="text-red-500 text-sm mt-1">{errors.meta_title}</p>
+            )}
           </div>
           <div>
             <label className="block mb-2 font-medium">Meta Description</label>
@@ -229,7 +308,11 @@ const AddProduct = () => {
               className="w-full bg-gray-800 p-2 border rounded"
               rows="3"
             ></textarea>
-            {errors.meta_description && <p className="text-red-500 text-sm mt-1">{errors.meta_description}</p>}
+            {errors.meta_description && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.meta_description}
+              </p>
+            )}
           </div>
           <div>
             <label className="block mb-2 font-medium">Meta Keywords</label>
@@ -240,7 +323,11 @@ const AddProduct = () => {
               onChange={handleChange}
               className="w-full bg-gray-800 p-2 border rounded"
             />
-            {errors.meta_keywords && <p className="text-red-500 text-sm mt-1">{errors.meta_keywords}</p>}
+            {errors.meta_keywords && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.meta_keywords}
+              </p>
+            )}
           </div>
           <div>
             <label className="block mb-2 font-medium">Tags</label>
@@ -261,7 +348,9 @@ const AddProduct = () => {
               onChange={handleChange}
               className="w-full bg-gray-800 p-2 border rounded"
             />
-            {errors.mrp_price && <p className="text-red-500 text-sm mt-1">{errors.mrp_price}</p>}
+            {errors.mrp_price && (
+              <p className="text-red-500 text-sm mt-1">{errors.mrp_price}</p>
+            )}
           </div>
           <div>
             <label className="block mb-2 font-medium">Selling Price</label>
@@ -272,7 +361,11 @@ const AddProduct = () => {
               onChange={handleChange}
               className="w-full bg-gray-800 p-2 border rounded"
             />
-            {errors.selling_price && <p className="text-red-500 text-sm mt-1">{errors.selling_price}</p>}
+            {errors.selling_price && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.selling_price}
+              </p>
+            )}
           </div>
           <div>
             <label className="block mb-2 font-medium">Discount</label>
@@ -303,23 +396,35 @@ const AddProduct = () => {
               <input
                 type="text"
                 value={size.size}
-                onChange={(e) => handleSizeChange(index, 'size', e.target.value)}
+                onChange={(e) =>
+                  handleSizeChange(index, "size", e.target.value)
+                }
                 placeholder="Size"
                 className="p-2 border rounded bg-gray-800"
               />
               <input
                 type="number"
                 value={size.stock}
-                onChange={(e) => handleSizeChange(index, 'stock', e.target.value)}
+                onChange={(e) =>
+                  handleSizeChange(index, "stock", e.target.value)
+                }
                 placeholder="Stock"
                 className="p-2 border rounded bg-gray-800"
               />
-              <button type="button" onClick={() => removeSize(index)} className="text-red-500">
+              <button
+                type="button"
+                onClick={() => removeSize(index)}
+                className="text-red-500"
+              >
                 <Minus size={20} />
               </button>
             </div>
           ))}
-          <button type="button" onClick={addSize} className="text-blue-500 flex items-center">
+          <button
+            type="button"
+            onClick={addSize}
+            className="text-blue-500 flex items-center"
+          >
             <Plus size={20} /> Add Size
           </button>
         </div>
@@ -331,22 +436,34 @@ const AddProduct = () => {
               <input
                 type="text"
                 value={color.colorName}
-                onChange={(e) => handleColorChange(index, 'colorName', e.target.value)}
+                onChange={(e) =>
+                  handleColorChange(index, "colorName", e.target.value)
+                }
                 placeholder="Color Name"
                 className="p-2 border rounded bg-gray-800"
               />
               <input
                 type="color"
                 value={color.colorCode}
-                onChange={(e) => handleColorChange(index, 'colorCode', e.target.value)}
+                onChange={(e) =>
+                  handleColorChange(index, "colorCode", e.target.value)
+                }
                 className="p-2 border rounded h-10 w-10"
               />
-              <button type="button" onClick={() => removeColor(index)} className="text-red-500">
+              <button
+                type="button"
+                onClick={() => removeColor(index)}
+                className="text-red-500"
+              >
                 <Minus size={20} />
               </button>
             </div>
           ))}
-          <button type="button" onClick={addColor} className="text-blue-500 flex items-center">
+          <button
+            type="button"
+            onClick={addColor}
+            className="text-blue-500 flex items-center"
+          >
             <Plus size={20} /> Add Color
           </button>
         </div>
@@ -356,8 +473,16 @@ const AddProduct = () => {
           <div className="flex flex-wrap gap-4 mb-2">
             {images.map((image, index) => (
               <div key={index} className="relative">
-                <img src={URL.createObjectURL(image)} alt={`Product ${index + 1}`} className="w-24 h-24 object-cover rounded" />
-                <button type="button" onClick={() => removeImage(index)} className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1">
+                <img
+                  src={URL.createObjectURL(image)}
+                  alt={`Product ${index + 1}`}
+                  className="w-24 h-24 object-cover rounded"
+                />
+                <button
+                  type="button"
+                  onClick={() => removeImage(index)}
+                  className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1"
+                >
                   <X size={16} />
                 </button>
               </div>
@@ -366,9 +491,17 @@ const AddProduct = () => {
           <label className="cursor-pointer bg-blue-500 text-white py-2 px-4 rounded inline-flex items-center">
             <Upload size={20} className="mr-2" />
             Upload Images
-            <input type="file" onChange={handleImageChange} multiple accept="image/*" className="hidden" />
+            <input
+              type="file"
+              onChange={handleImageChange}
+              multiple
+              accept="image/*"
+              className="hidden"
+            />
           </label>
-          {errors.images && <p className="text-red-500 text-sm mt-1">{errors.images}</p>}
+          {errors.images && (
+            <p className="text-red-500 text-sm mt-1">{errors.images}</p>
+          )}
         </div>
 
         <div className="flex items-center space-x-4">
@@ -417,20 +550,26 @@ const AddProduct = () => {
           </select>
         </div>
 
-        {errors.submit && <p className="text-red-500 text-sm mt-1">{errors.submit}</p>}
-        {successMessage && <p className="text-green-500 text-sm mt-1">{successMessage}</p>}
+        {errors.submit && (
+          <p className="text-red-500 text-sm mt-1">{errors.submit}</p>
+        )}
+        {successMessage && (
+          <p className="text-green-500 text-sm mt-1">{successMessage}</p>
+        )}
 
         <button
           type="submit"
           className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition duration-300"
           disabled={isLoading}
         >
-          {isLoading ? 'Creating...' : 'Create Product'}
+          {isLoading ? "Creating..." : "Create Product"}
         </button>
       </form>
     </div>
+    }
+
+    </>
   );
 };
 
 export default AddProduct;
-

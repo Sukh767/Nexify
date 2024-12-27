@@ -22,7 +22,8 @@ export const userApiSlice = authApi.injectEndpoints({
         url: `${USER_URL}/logout`,
         method: "POST",
       }),
-    }),
+      invalidatesTags: ["User"], // Invalidate relevant cache
+    }),    
     refreshToken: builder.query({
       query: () => `${USER_URL}/refresh-token`,
     }),

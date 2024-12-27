@@ -37,8 +37,9 @@ router.post(
   createProduct
 );
 router.delete("/:id", verifyjwt, authRole, deleteProduct);
-router.patch(
+router.put(
   "/:id",
+  upload.fields([{ name: "images", maxCount: 5 }]),
   verifyjwt,
   authRole,
   cleanAndParseBody,

@@ -25,7 +25,7 @@ const Login = () => {
         password: user.password,
       }).unwrap();
       console.log("Login Response:", data);
-      console.log("accessToken:", data.user.accessToken);
+      //console.log("accessToken:", data.user.accessToken);
       // Update Redux state with credentials
       dispatch(
         setCredentials({
@@ -63,7 +63,7 @@ const Login = () => {
           className="text-sm font-medium flex items-center space-x-2 text-white mb-8 hover:text-gray-200 transition-colors"
         >
           <ArrowLeft className="w-5 h-5" />
-          <span>Back to dashboard</span>
+          <span>Back</span>
         </Link>
 
         <h1 className="text-3xl font-bold text-white mb-2">Log In</h1>
@@ -134,7 +134,7 @@ const Login = () => {
           </button>
         </form>
 
-        <p className="mt-6 text-sm text-gray-300 text-center">
+        {/* <p className="mt-6 text-sm text-gray-300 text-center">
           Don't have an account?{" "}
           <Link
             to="/auth/signup"
@@ -142,7 +142,7 @@ const Login = () => {
           >
             Sign Up
           </Link>
-        </p>
+        </p> */}
 
         {/* Footer */}
         {/* <p className="mt-8 text-sm text-gray-300 text-center">
