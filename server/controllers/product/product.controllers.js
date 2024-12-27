@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { uploadOnCloudinary } from "../../lib/cloudinary.js";
+import { deleteFromCloudinary, uploadOnCloudinary } from "../../lib/cloudinary.js";
 import Product from "../../models/Product/product.model.js";
 import slugify from "slugify";
 import Category from "../../models/Product/productCategory.model.js";
@@ -285,7 +285,13 @@ const deleteProduct = async (req, res) => {
       });
     }
 
-    //TODO: Delete images from Cloudinary
+    if (product.images?.length) {
+      for (const image of product.images) {
+        const res = await deleteFromCloudinary(image.public_id);
+        //console.log("Delete Image Response:", res);
+      }
+    }
+    
 
     res.status(200).json({
       success: true,
@@ -303,6 +309,7 @@ const deleteProduct = async (req, res) => {
 // Update a product by ID
 const updateProduct = async (req, res) => {
   const { id } = req.params;
+
   const {
     productName,
     productUrl,
@@ -330,8 +337,6 @@ const updateProduct = async (req, res) => {
     discount,
   } = req.body;
 
-  console.log("Request Body:", req.body);
-
   try {
     const product = await Product.findById(id);
     if (!product) {
@@ -344,8 +349,8 @@ const updateProduct = async (req, res) => {
       productName,
       productUrl,
       brand,
-      sizes,
-      colors,
+      sizes: Array.isArray(sizes) ? sizes : JSON.parse(sizes || "[]"),
+      colors: Array.isArray(colors) ? colors : JSON.parse(colors || "[]"),
       parentCategory,
       short_description,
       description,
@@ -353,9 +358,9 @@ const updateProduct = async (req, res) => {
       meta_description,
       meta_keywords,
       price_history,
-      mrp_price,
-      selling_price,
-      stock,
+      mrp_price: isNaN(mrp_price) ? undefined : parseFloat(mrp_price),
+      selling_price: isNaN(selling_price) ? undefined : parseFloat(selling_price),
+      stock: isNaN(stock) ? undefined : parseInt(stock, 10),
       weight,
       weight_unit,
       dimensions,
@@ -367,31 +372,31 @@ const updateProduct = async (req, res) => {
       discount,
     };
 
-    if (sizes) {
-      if (!Array.isArray(sizes)) sizes = JSON.parse(sizes);
-      data.sizes = sizes;
-    }
+    // Remove undefined or invalid fields from the data
+    Object.keys(data).forEach((key) => {
+      if (data[key] === undefined || data[key] === null) {
+        delete data[key];
+      }
+    });
 
-    if (colors) {
-      if (!Array.isArray(colors)) colors = JSON.parse(colors);
-      data.colors = colors;
-    }
-
-    //Object.assign(data, otherFields);
-
-    console.log("Update Data:", data);
-
+    // Handle images
     if (req.files?.images?.length) {
       const uploadedImages = [];
       for (const file of req.files.images) {
         const result = await uploadOnCloudinary(file.path);
-        if (result)
+        if (result) {
           uploadedImages.push({
             public_id: result.public_id,
             url: result.secure_url,
           });
+        }
       }
-      if (uploadedImages.length) data.images = uploadedImages;
+      if (uploadedImages.length) {
+        data.images = uploadedImages; // Replace with new images
+      }
+    } else {
+      // Retain existing images if no new images are uploaded
+      data.images = product.images;
     }
 
     const updatedProduct = await Product.findByIdAndUpdate(
@@ -399,6 +404,7 @@ const updateProduct = async (req, res) => {
       { $set: data },
       { new: true }
     );
+
     if (!updatedProduct) {
       return res
         .status(400)
@@ -411,10 +417,11 @@ const updateProduct = async (req, res) => {
       data: updatedProduct,
     });
   } catch (error) {
-    console.error("Error:", error);
+    console.error("Error in updateProduct:", error);
     res.status(500).json({ success: false, message: "Internal server error." });
   }
 };
+
 
 //Get the searched products
 const getSearchedProducts = async (req, res) => {

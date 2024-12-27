@@ -157,7 +157,7 @@ const loginUser = async (req, res) => {
 //Logout user
 const logoutUser = async (req, res) => {
   res.clearCookie("refreshToken");
-  return res.status(200).json({ message: "Logout successful" });
+  return res.status(200).json({ success:true ,message: "Logout successful" });
 };
 
 //Refresh token

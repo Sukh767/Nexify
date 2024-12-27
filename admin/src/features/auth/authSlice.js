@@ -16,11 +16,7 @@ const authSlice = createSlice({
       state.accessToken = accessToken;
       state.isAuthenticated = true;
     },
-    clearCredentials: (state) => {
-      state.userInfo = null;
-      state.accessToken = null;
-      state.isAuthenticated = false;
-    },
+    clearCredentials: () => initialState, 
   },
 });
 
