@@ -18,6 +18,7 @@ import Header from "./components/common/Header";
 import UpdateProduct from "./components/products/UpdateProduct";
 import LandingPage from "./pages/LandingPage";
 import { useSelector } from "react-redux";
+import UpdateUser from "./components/users/UpdateUser";
 
 function App() {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
@@ -82,6 +83,7 @@ function App() {
                 <Route path="/products/add" element={<PrivateRoute element={AddProduct} />} />
                 <Route path="/products/:id" element={<PrivateRoute element={UpdateProduct} />} />
                 <Route path="/users" element={<PrivateRoute element={UsersPage} />} />
+                <Route path="/users/edit/:id" element={<PrivateRoute element={UpdateUser} />} />
                 <Route path="/users/account" element={<PrivateRoute element={Profile} />} />
                 <Route path="/sales" element={<PrivateRoute element={SalesPage} />} />
                 <Route path="/orders" element={<PrivateRoute element={OrdersPage} />} />

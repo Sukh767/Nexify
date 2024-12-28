@@ -87,9 +87,8 @@ const SIDEBAR_ITEMS = [
 const Sidebar = ({ onToggle }) => {
   const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate();
-  const {userInfo, isAuthenticated} = useSelector((state) => state.auth);
-  //console.log(userInfo);
-  const [ logout ] = useLogoutMutation();
+  const { userInfo, isAuthenticated } = useSelector((state) => state.auth);
+  const [logout] = useLogoutMutation();
   const dispatch = useDispatch();
 
   const toggleCollapsed = () => {
@@ -105,7 +104,6 @@ const Sidebar = ({ onToggle }) => {
         await persistor.purge(); // Clear persisted state
         toast.success(response.message);
         navigate("/auth/login");
-        //window.location.href = "/auth/login";
       }
     } catch (error) {
       console.error("Logout failed:", error);
@@ -120,8 +118,14 @@ const Sidebar = ({ onToggle }) => {
       onCollapse={toggleCollapsed}
       width={256}
       collapsedWidth={80}
-      className="min-h-screen bg-gray-800 bg-opacity-50 backdrop-blur-md border-r border-gray-700"
+      className="min-h-screen bg-gray-800 bg-opacity-50 backdrop-blur-md border-r border-gray-700 transition-all duration-300 ease-in-out"
       theme="dark"
+      breakpoint="lg"
+      onBreakpoint={(broken) => {
+        if (broken) {
+          setCollapsed(true);
+        }
+      }}
     >
       <div className="p-4 flex justify-end">
         {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
@@ -146,27 +150,27 @@ const Sidebar = ({ onToggle }) => {
       />
       {/* User Profile and Logout */}
       {isAuthenticated && (
-      <div className="absolute bottom-0 w-full p-4 flex flex-col items-center mb-20">
-        <img
-          src="https://st3.depositphotos.com/15648834/17930/v/450/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"
-          alt="User Profile"
-          className="w-10 h-10 rounded-full mb-2"
-        />
-        {!collapsed && (
-          <div className="text-gray-300 text-sm font-semibold mb-2">
-            {userInfo?.first_name}{" "}{userInfo?.last_name}
-          </div>
-        )}
-        <button
-          onClick={handleLogout}
-          className={`flex items-center justify-center gap-2 w-full py-2 bg-red-500 text-gray-50 text-lg rounded-md hover:bg-red-700 hover:text-white transition-colors duration-200 ${
-            collapsed ? 'px-2' : 'px-4'
-          }`}
-        >
-          <LogoutOutlined />
-          {!collapsed && <span>Logout</span>}
-        </button>
-      </div>
+        <div className="absolute bottom-10 w-full p-4 flex flex-col items-center mb-4">
+          <img
+            src="https://st3.depositphotos.com/15648834/17930/v/450/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"
+            alt="User Profile"
+            className="w-10 h-10 rounded-full mb-2"
+          />
+          {!collapsed && (
+            <div className="text-gray-300 text-sm font-semibold mb-2 truncate max-w-full">
+              {userInfo?.first_name} {userInfo?.last_name}
+            </div>
+          )}
+          <button
+            onClick={handleLogout}
+            className={`w-full bg-gray-700 hover:bg-red-600 text-white font-bold py-2 px-4 transition-colors duration-300 ease-in-out flex items-center justify-center ${
+              collapsed ? "text-xl" : "text-base"
+            }`}
+          >
+            <LogoutOutlined className={collapsed ? "mr-0" : "mr-2"} />
+            {!collapsed && <span>Logout</span>}
+          </button>
+        </div>
       )}
     </Sider>
   );

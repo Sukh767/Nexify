@@ -93,3 +93,74 @@ export const PASSWORD_RESET_REQUEST_TEMPLATE = `
 </body>
 </html>
 `;
+
+export const WELCOME_EMAIL_TEMPLATE = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to NEXIFY</title>
+</head>
+<body class="bg-gray-100">
+    <div class="max-w-lg mx-auto p-6">
+        <table class="w-full bg-white rounded-lg shadow-lg overflow-hidden">
+            <tr>
+                <td class="p-8">
+                    <div class="text-center">
+                        <img 
+                            src="https://res.cloudinary.com/dbotqrsil/image/upload/v1735308869/fashion_store_1_jcfvvc.png" 
+                            alt="NEXIFY Logo" 
+                            class="h-16 mx-auto mb-4"
+                        >
+                        <h1 class="text-2xl font-bold text-gray-900 mb-8">Welcome to NEXIFY</h1>
+                    </div>
+                    <p class="text-gray-700 mb-4">
+                        Dear Valued Customer,
+                    </p>
+                    <p class="text-gray-700 mb-4">
+                        We're thrilled to welcome you to NEXIFY, your new favorite destination for online shopping! 
+                        Thank you for joining our community of savvy shoppers.
+                    </p>
+                    <p class="text-gray-700 mb-4">
+                        At NEXIFY, we're committed to providing you with:
+                    </p>
+                    <ul class="list-disc list-inside text-gray-700 mb-4">
+                        <li>A wide range of high-quality products</li>
+                        <li>Competitive prices and regular deals</li>
+                        <li>Excellent customer service</li>
+                        <li>Fast and reliable shipping</li>
+                    </ul>
+                    <p class="text-gray-700 mb-8">
+                        We can't wait for you to start exploring our store and finding amazing products!
+                    </p>
+                    <div class="text-center">
+                        <a 
+                            href="https://www.nexify.com/shop" 
+                            class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg inline-block text-lg transition-all"
+                        >
+                            Start Shopping Now
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="bg-gray-100 p-6 text-center">
+                    <p class="text-gray-600 mb-4">Follow us on social media:</p>
+                    <div class="mb-4">
+                        <a href="#" class="text-blue-600 hover:underline mx-2">Facebook</a>
+                        <a href="#" class="text-blue-600 hover:underline mx-2">Twitter</a>
+                        <a href="#" class="text-blue-600 hover:underline mx-2">Instagram</a>
+                    </div>
+                    <p class="text-gray-600 text-sm">
+                        © 2023 NEXIFY. All rights reserved.
+                    </p>
+                    <p class="text-gray-600 text-sm">
+                        You're receiving this email because you signed up for NEXIFY. 
+                        <a href="#" class="text-blue-600 hover:underline">Unsubscribe</a>
+                    </p>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>`

@@ -1,19 +1,47 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Eye, EyeOff } from 'lucide-react';
+import toast from "react-hot-toast";
+import { useSetNewPasswordMutation } from "../../features/user/userApiSlice";
 
 const ResetPassword = () => {
-  const [passwords, setPasswords] = useState({ oldPassword: "", password: "", confirmPassword: "" });
+  const [passwords, setPasswords] = useState({ oldPassword: "", newPassword: "", confirmPassword: "" });
   const [showPassword, setShowPassword] = useState({ oldPassword: false, password: false, confirmPassword: false });
+
+  const [setNewPassword, isLoading, error] = useSetNewPasswordMutation();
 
   const handleInputChange = (e) => {
     setPasswords({ ...passwords, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(passwords); // Handle reset password logic here
+  
+    // Validate input
+    if (!passwords.oldPassword || !passwords.newPassword || !passwords.confirmPassword) {
+      toast.error("All fields are required.");
+      return;
+    }
+  
+    if (passwords.newPassword !== passwords.confirmPassword) {
+      toast.error("Passwords do not match.");
+      return;
+    }
+  
+    try {
+      const response = await setNewPassword({
+        oldPassword: passwords.oldPassword,
+        newPassword: passwords.newPassword,
+      }).unwrap();
+  
+      console.log(response);
+      toast.success(response.message || "Password reset successfully.");
+    } catch (error) {
+      console.error(error);
+      toast.error(error.data?.message || "Failed to reset password.");
+    }
   };
+  
 
   const togglePasswordVisibility = (field) => {
     setShowPassword({ ...showPassword, [field]: !showPassword[field] });
@@ -32,7 +60,7 @@ const ResetPassword = () => {
       </div>
 
       {/* Reset Password Form */}
-      <div className="w-full max-w-md z-10 p-8 bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-2xl shadow-xl">
+      <div className="w-full max-w-md z-10 p-8 bg-white bg-opacity-10 backdrop-filter backdrop-blur-md shadow-xl">
         {/* Back Button */}
         <Link
           to="/login"
@@ -62,7 +90,7 @@ const ResetPassword = () => {
               onChange={handleInputChange}
               placeholder="Enter old password"
               required
-              className="w-full px-3 py-2 text-white bg-white bg-opacity-20 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent placeholder-gray-400"
+              className="w-full px-3 py-2 text-white bg-white bg-opacity-20 border border-gray-300 rounded-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent placeholder-gray-400"
             />
             <button
               type="button"
@@ -83,14 +111,14 @@ const ResetPassword = () => {
               New Password
             </label>
             <input
-              id="password"
-              name="password"
+              id="newPassword"
+              name="newPassword"
               type={showPassword.password ? "text" : "password"}
-              value={passwords.password}
+              value={passwords.newPassword}
               onChange={handleInputChange}
               placeholder="Enter new password"
               required
-              className="w-full px-3 py-2 text-white bg-white bg-opacity-20 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent placeholder-gray-400"
+              className="w-full px-3 py-2 text-white bg-white bg-opacity-20 border border-gray-300 rounded-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent placeholder-gray-400"
             />
             <button
               type="button"
@@ -118,7 +146,7 @@ const ResetPassword = () => {
               onChange={handleInputChange}
               placeholder="Confirm new password"
               required
-              className="w-full px-3 py-2 text-white bg-white bg-opacity-20 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent placeholder-gray-400"
+              className="w-full px-3 py-2 text-white bg-white bg-opacity-20 border border-gray-300 rounded-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent placeholder-gray-400"
             />
             <button
               type="button"
@@ -135,13 +163,13 @@ const ResetPassword = () => {
 
           <button
             type="submit"
-            className="w-full py-2 px-4 bg-indigo-600 text-white text-sm font-semibold rounded-lg hover:bg-indigo-700 transition-colors"
+            className="w-full py-2 px-4 bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-700 transition-colors"
           >
             Reset Password
           </button>
         </form>
 
-        <p className="mt-6 text-sm text-gray-300 text-center">
+        {/* <p className="mt-6 text-sm text-gray-300 text-center">
           Remember your password?{" "}
           <Link
             to="/auth/login"
@@ -149,7 +177,7 @@ const ResetPassword = () => {
           >
             Log In
           </Link>
-        </p>
+        </p> */}
 
         {/* Footer */}
         {/* <p className="mt-8 text-sm text-gray-300 text-center">

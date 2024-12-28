@@ -1,6 +1,6 @@
 import {
   sendPasswordResetEmail,
-  sendResetSuccesfulEmail,
+  sendResetSuccesfullEmail,
   sendVerificationEmail,
   sendWelcomeEmail,
 } from "../../mailtrap/emails.js";
@@ -106,6 +106,61 @@ const verifyEmail = async (req, res) => {
   }
 };
 
+//Login Admin
+const loginAdmin = async (req, res) => {
+  const { email, password } = req.body;
+
+  if ([email, password].includes("")) {
+    return res.status(400).json({ message: "All fields are required" });
+  }
+
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    return res
+      .status(400)
+      .json({ message: "User does not exist, please register" });
+  }
+
+  if (!user.isAdmin) {
+    return res
+      .status(400)
+      .json({ success:false, message: "You are not authorized to login as an admin" });
+  }
+
+  const isPasswordCorrect = await user.isPasswordCorrect(password);
+
+  if (!isPasswordCorrect) {
+    return res
+      .status(400)
+      .json({ message: "Password is incorrect, please try again" });
+  }
+
+  const loggedInUser = await User.findById(user._id).select("-password");
+
+  if (!loggedInUser) {
+    return res
+      .status(400)
+      .json({ message: "Something went wrong, please try again" });
+  }
+
+  loggedInUser.last_login = Date.now();
+  await loggedInUser.save();
+
+  const { accessToken, refreshToken } = generateTokensAndSetCookies(
+    res,
+    loggedInUser._id
+  );
+
+  return res
+    .status(200)
+    .json({
+      success:true,
+      message: "Login successful",
+      user: { ...loggedInUser._doc, password: undefined, accessToken },
+    });
+};
+
 //Login user
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
@@ -149,6 +204,7 @@ const loginUser = async (req, res) => {
   return res
     .status(200)
     .json({
+      success:true,
       message: "Login successful",
       user: { ...loggedInUser._doc, password: undefined, accessToken },
     });
@@ -239,7 +295,7 @@ const forgotPassword = async (req, res) => {
 //reset password
 const resetPassword = async (req, res) => {
   const { token } = req.params;
-  const { oldPassword,newPassword } = req.body;
+  const { password } = req.body;
 
   try {
     const user = await User.findOne({
@@ -256,13 +312,13 @@ const resetPassword = async (req, res) => {
     }
 
     //update password  - hash the password
-    user.password = newPassword;
+    user.password = password;
     user.resetPasswordToken = undefined;
     user.resetPasswordExpiresAt = undefined;
 
     await user.save();
 
-    await sendResetSuccesfulEmail(user.email);
+    await sendResetSuccesfullEmail(user.email);
 
     res
       .status(200)
@@ -301,7 +357,7 @@ const deleteUser = async (req, res) => {
 //Update user details
 const updateUserDetails = async (req, res) => {
   const { id } = req.params;
-  const { first_name, last_name, DOB, mobile, password } = req.body;
+  const { first_name, last_name, DOB, mobile, status } = req.body;
 
   try {
     const user = await User.findById(id);
@@ -313,6 +369,7 @@ const updateUserDetails = async (req, res) => {
     // Update user fields
     user.first_name = first_name;
     user.last_name = last_name;
+    user.status = status;
 
     // Parse the DOB field into a Date object
     if (DOB) {
@@ -324,7 +381,7 @@ const updateUserDetails = async (req, res) => {
     }
 
     user.mobile = mobile;
-    user.password = password;
+    //user.password = password;
 
     // Save the updated user
     await user.save();
@@ -332,14 +389,62 @@ const updateUserDetails = async (req, res) => {
     return res
       .status(200)
       .json({
+        success: true,
         message: "User details updated successfully",
-        user: { ...user._doc, password: undefined },
+        data: { ...user._doc},
       });
   } catch (error) {
     console.error("Error updating user details:", error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+//Set new password
+const setNewPassword = async (req, res) => {
+  const { oldPassword, newPassword } = req.body;
+  const userFromToken = req.user;
+
+  if (!oldPassword || !newPassword) {
+    return res
+      .status(400)
+      .json({ success: false, message: "Both old and new passwords are required." });
+  }
+
+  try {
+    // Fetch the user from the database
+    const user = await User.findById(userFromToken._id);
+
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found or invalid token." });
+    }
+
+    // Check if the old password is correct
+    const isPasswordCorrect = await user.isPasswordCorrect(oldPassword);
+    if (!isPasswordCorrect) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Old password is incorrect." });
+    }
+
+    // Update the password
+    user.password = newPassword;
+    await user.save();
+
+    // Send email notification (optional)
+    //await sendResetSuccesfulEmail(user.email);
+
+    // Respond with success
+    res.status(200).json({ success: true, message: "Password updated successfully." });
+  } catch (error) {
+    console.error("Error in setNewPassword:", error);
+    res
+      .status(500)
+      .json({ success: false, message: "Internal server error. Please try again later." });
+  }
+};
+
 
 export {
   registerUser,
@@ -351,4 +456,6 @@ export {
   deleteUser,
   updateUserDetails,
   generateRefreshToken,
+  setNewPassword,
+  loginAdmin,
 };
