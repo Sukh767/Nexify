@@ -89,11 +89,12 @@ const UpdateUser = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <h1 className="text-4xl font-bold text-gray-50 mb-8">Update User</h1>
+      
       <form
-        className="w-full max-w-3xl bg-gray-800 p-10 shadow-2xl"
+        className="w-full max-w-3xl p-10"
         onSubmit={handleSubmit}
       >
+        <h1 className="text-2xl font-bold text-gray-50 mb-8 font-mono">UPDATE USER DETAILS</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="relative">
             <label
@@ -103,9 +104,9 @@ const UpdateUser = () => {
               First Name
             </label>
             <div className="flex items-center">
-              <User className="absolute left-3 text-gray-400" size={18} />
+              <User className="absolute left-3 text-teal-500" size={18} />
               <input
-                className="shadow appearance-none border  w-full py-2 px-3 pl-10 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="shadow bg-gray-600 appearance-none border w-full py-2 px-3 pl-10 text-gray-50 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500"
                 id="first_name"
                 type="text"
                 name="first_name"
@@ -123,9 +124,9 @@ const UpdateUser = () => {
               Last Name
             </label>
             <div className="flex items-center">
-              <User className="absolute left-3 text-gray-400" size={18} />
+              <User className="absolute left-3 text-teal-500" size={18} />
               <input
-                className="shadow appearance-none border  w-full py-2 px-3 pl-10 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="shadow bg-gray-600 appearance-none border  w-full py-2 px-3 pl-10 text-gray-50 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500"
                 id="last_name"
                 type="text"
                 name="last_name"
@@ -143,9 +144,9 @@ const UpdateUser = () => {
               Mobile
             </label>
             <div className="flex items-center">
-              <Phone className="absolute left-3 text-gray-400" size={18} />
+              <Phone className="absolute left-3 text-teal-500" size={18} />
               <input
-                className="shadow appearance-none border  w-full py-2 px-3 pl-10 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="shadow bg-gray-600 appearance-none border  w-full py-2 px-3 pl-10 text-gray-50 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500"
                 id="mobile"
                 type="tel"
                 name="mobile"
@@ -163,9 +164,9 @@ const UpdateUser = () => {
               Email
             </label>
             <div className="flex items-center">
-              <Mail className="absolute left-3 text-gray-400" size={18} />
+              <Mail className="absolute left-3 text-teal-500" size={18} />
               <input
-                className="shadow cursor-not-allowed appearance-none border w-full py-2 px-3 pl-10 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-200"
+                className="shadow cursor-not-allowed appearance-none border w-full py-2 px-3 pl-10 text-gray-950 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-200"
                 id="email"
                 type="email"
                 name="email"
@@ -182,9 +183,9 @@ const UpdateUser = () => {
               Role
             </label>
             <div className="flex items-center">
-              <Shield className="absolute left-3 text-gray-400" size={18} />
+              <Shield className="absolute left-3 text-teal-500" size={18} />
               <select
-                className="shadow appearance-none border  w-full py-2 px-3 pl-10 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="shadow bg-gray-600 appearance-none border  w-full py-2 px-3 pl-10 text-gray-50 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500"
                 id="role"
                 name="role"
                 value={userData.role}
@@ -204,9 +205,9 @@ const UpdateUser = () => {
               Status
             </label>
             <div className="flex items-center">
-              <ToggleLeft className="absolute left-3 text-gray-400" size={18} />
+              <ToggleLeft className="absolute left-3 text-teal-500" size={18} />
               <select
-                className="shadow appearance-none border  w-full py-2 px-3 pl-10 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="shadow bg-gray-600 appearance-none border  w-full py-2 px-3 pl-10 text-gray-50 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500"
                 id="status"
                 name="status"
                 value={userData.status}
@@ -227,11 +228,11 @@ const UpdateUser = () => {
             </label>
             <div className="flex items-center">
               <CalendarRange
-                className="absolute left-3 text-gray-400"
+                className="absolute left-3 text-teal-500"
                 size={18}
               />
               <input
-                className="shadow appearance-none border w-full py-2 px-3 pl-10 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="shadow bg-gray-600 appearance-none border w-full py-2 px-3 pl-10 text-gray-50 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500"
                 id="DOB"
                 type="date"
                 name="DOB"

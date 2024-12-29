@@ -23,7 +23,7 @@ const ForgotPassword = () => {
       </div>
 
       {/* Forgot Password Form */}
-      <div className="w-full max-w-md z-10 p-8 bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-2xl shadow-xl">
+      <div className="w-full max-w-md z-10 p-8 bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg shadow-xl">
         {/* Back Button */}
         <Link
           to="/auth/login"
@@ -53,13 +53,13 @@ const ForgotPassword = () => {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="mail@example.com"
               required
-              className="w-full px-3 py-2 text-white bg-white bg-opacity-20 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent placeholder-gray-400"
+              className="w-full px-3 py-2 text-white bg-white bg-opacity-20 border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-transparent placeholder-gray-400"
             />
           </div>
 
           <button
             type="submit"
-            className="w-full py-2 px-4 bg-indigo-600 text-white text-sm font-semibold rounded-lg hover:bg-indigo-700 transition-colors"
+            className="w-full py-2 px-4 bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-700 transition-colors"
           >
             Send Reset Link
           </button>

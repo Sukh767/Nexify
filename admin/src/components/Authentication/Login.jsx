@@ -45,17 +45,17 @@ const Login = () => {
   return (
     <div className="min-h-screen w-full flex items-center justify-center relative overflow-hidden p-4">
       {/* Background Image */}
-      <div className="absolute inset-0 z-0">
-        <img
-          src="https://img2.wallspic.com/crops/2/3/9/7/7/177932/177932-apple_m3-apples-apple_macbook_pro-all_in_one-solid_state_drive-2560x1440.jpg"
+      <div className="absolute inset-0 z-0 bg-gradient-to-br from-teal-900 via-teal-700 to-emerald-600">
+        {/* <img
+          src="https://images.pexels.com/photos/1103970/pexels-photo-1103970.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
           alt="Background"
           className="w-full h-full object-cover"
-        />
+        /> */}
         <div className="absolute inset-0 bg-black opacity-50"></div>
       </div>
 
       {/* Logo in top corner */}
-      <div className="absolute top-4 left-4 z-20">
+      {/* <div className="absolute top-4 left-4 z-20">
         <Link to="/">
         <img
           src="https://res.cloudinary.com/dbotqrsil/image/upload/v1735308868/fashion_store_4_gb43dg.png"
@@ -63,7 +63,7 @@ const Login = () => {
           className="w-24 h-auto cursor-pointer"
         />
         </Link>
-      </div>
+      </div> */}
 
       {/* Content Container */}
       <div className="flex flex-col md:flex-row w-full max-w-6xl items-stretch justify-center z-10 shadow-2xl">
@@ -101,7 +101,7 @@ const Login = () => {
                   onChange={handleInputChange}
                   placeholder="mail@example.com"
                   required
-                  className="w-full px-3 py-2 pl-10 text-white bg-white bg-opacity-20 border-none rounded-none placeholder-gray-400"
+                  className="w-full px-3 py-2 pl-10 text-white bg-white bg-opacity-20 border-none rounded-none placeholder-gray-400 outline-none"
                 />
                 <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-300 w-5 h-5" />
               </div>
@@ -123,7 +123,7 @@ const Login = () => {
                   onChange={handleInputChange}
                   placeholder="Min. 8 characters"
                   required
-                  className="w-full px-3 py-2 pl-10 text-white bg-white bg-opacity-20 border-none rounded-none placeholder-gray-400"
+                  className="w-full px-3 py-2 pl-10 text-white bg-white bg-opacity-20 border-none rounded-none placeholder-gray-400 outline-none"
                 />
                 <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-300 w-5 h-5" />
                 <button
@@ -142,7 +142,7 @@ const Login = () => {
 
             <button
               type="submit"
-              className="text-red hover:before:bg-redborder-red-500 relative h-[45px] w-full overflow-hidden border border-indigo-500 bg-white px-3 text-indigo-500 shadow-2xl transition-all before:absolute before:bottom-0 before:left-0 before:top-0 before:z-0 before:h-full before:w-0 before:bg-indigo-500 before:transition-all before:duration-500 hover:text-white hover:shadow-indigo-500 hover:before:left-0 hover:before:w-full"
+              className="text-red hover:before:bg-redborder-red-500 relative h-[45px] w-full overflow-hidden border border-emerald-500 bg-white px-3 text-emerald-500 shadow-2xl transition-all before:absolute before:bottom-0 before:left-0 before:top-0 before:z-0 before:h-full before:w-0 before:bg-emerald-500 before:transition-all before:duration-500 hover:text-white hover:shadow-teal-700 hover:before:left-0 hover:before:w-full"
             >
               <span className="relative z-10">Let's Go</span>
             </button>

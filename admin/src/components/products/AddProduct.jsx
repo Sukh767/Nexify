@@ -193,8 +193,8 @@ const AddProduct = () => {
     </div>
     ): 
     
-    <div className="max-w-4xl mx-auto p-6 bg-gray-900 rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold mb-6">Add New Product</h2>
+    <div className="max-w-4xl mx-auto p-6 bg-gray-900 shadow-md">
+      <h2 className="text-2xl font-bold font-mono mb-6">ADD NEW PRODUCT</h2>
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
@@ -204,7 +204,8 @@ const AddProduct = () => {
               name="productName"
               value={product.productName}
               onChange={handleChange}
-              className="w-full bg-gray-800 p-2 border rounded"
+              placeholder="Enter Product Name"
+              className="w-full bg-gray-700 p-2 "
             />
             {errors.productName && (
               <p className="text-red-500 text-sm mt-1">{errors.productName}</p>
@@ -217,7 +218,8 @@ const AddProduct = () => {
               name="productUrl"
               value={product.productUrl}
               onChange={handleChange}
-              className="w-full bg-gray-800 p-2 border rounded"
+              placeholder=" Enter productUrl"
+              className="w-full bg-gray-700 p-2 "
             />
             {errors.productUrl && (
               <p className="text-red-500 text-sm mt-1">{errors.productUrl}</p>
@@ -230,7 +232,8 @@ const AddProduct = () => {
               name="brand"
               value={product.brand}
               onChange={handleChange}
-              className="w-full bg-gray-800 p-2 border rounded"
+              placeholder="Enter Product Brand"
+              className="w-full bg-gray-700 p-2 "
             />
           </div>
           <div>
@@ -240,7 +243,8 @@ const AddProduct = () => {
               name="parentCategory"
               value={product.parentCategory}
               onChange={handleChange}
-              className="w-full bg-gray-800 p-2 border rounded"
+              placeholder="Select Parent Category"
+              className="w-full bg-gray-700 p-2 "
             />
             {errors.parentCategory && (
               <p className="text-red-500 text-sm mt-1">
@@ -255,7 +259,8 @@ const AddProduct = () => {
               name="child_category"
               value={product.child_category}
               onChange={handleChange}
-              className="w-full bg-gray-800 p-2 border rounded"
+              placeholder="Select Child Category"
+              className="w-full bg-gray-700 p-2 "
             />
           </div>
           <div>
@@ -264,7 +269,8 @@ const AddProduct = () => {
               name="short_description"
               value={product.short_description}
               onChange={handleChange}
-              className="w-full bg-gray-800 p-2 border rounded"
+              placeholder="Write Short Description"
+              className="w-full bg-gray-700 p-2 "
               rows="3"
             ></textarea>
             {errors.short_description && (
@@ -279,7 +285,8 @@ const AddProduct = () => {
               name="description"
               value={product.description}
               onChange={handleChange}
-              className="w-full bg-gray-800 p-2 border rounded"
+              placeholder="Write Description"
+              className="w-full bg-gray-700 p-2 "
               rows="5"
             ></textarea>
             {errors.description && (
@@ -293,7 +300,8 @@ const AddProduct = () => {
               name="meta_title"
               value={product.meta_title}
               onChange={handleChange}
-              className="w-full bg-gray-800 p-2 border rounded"
+              placeholder="Write Meta Title"
+              className="w-full bg-gray-700 p-2 "
             />
             {errors.meta_title && (
               <p className="text-red-500 text-sm mt-1">{errors.meta_title}</p>
@@ -305,7 +313,8 @@ const AddProduct = () => {
               name="meta_description"
               value={product.meta_description}
               onChange={handleChange}
-              className="w-full bg-gray-800 p-2 border rounded"
+              placeholder="Write Meta Description"
+              className="w-full bg-gray-700 p-2 "
               rows="3"
             ></textarea>
             {errors.meta_description && (
@@ -321,7 +330,8 @@ const AddProduct = () => {
               name="meta_keywords"
               value={product.meta_keywords}
               onChange={handleChange}
-              className="w-full bg-gray-800 p-2 border rounded"
+              placeholder="Write Meta Keywords(separated by comma)"
+              className="w-full bg-gray-700 p-2 "
             />
             {errors.meta_keywords && (
               <p className="text-red-500 text-sm mt-1">
@@ -336,7 +346,8 @@ const AddProduct = () => {
               name="tags"
               value={product.tags}
               onChange={handleChange}
-              className="w-full bg-gray-800 p-2 border rounded"
+              placeholder="Write Tags(separated by comma)"
+              className="w-full bg-gray-700 p-2 "
             />
           </div>
           <div>
@@ -346,7 +357,8 @@ const AddProduct = () => {
               name="mrp_price"
               value={product.mrp_price}
               onChange={handleChange}
-              className="w-full bg-gray-800 p-2 border rounded"
+              placeholder="Enter MRP Price"
+              className="w-full bg-gray-700 p-2 "
             />
             {errors.mrp_price && (
               <p className="text-red-500 text-sm mt-1">{errors.mrp_price}</p>
@@ -359,7 +371,8 @@ const AddProduct = () => {
               name="selling_price"
               value={product.selling_price}
               onChange={handleChange}
-              className="w-full bg-gray-800 p-2 border rounded"
+              placeholder="Enter Selling Price"
+              className="w-full bg-gray-700 p-2 "
             />
             {errors.selling_price && (
               <p className="text-red-500 text-sm mt-1">
@@ -374,7 +387,8 @@ const AddProduct = () => {
               name="discount"
               value={product.discount}
               onChange={handleChange}
-              className="w-full bg-gray-800 p-2 border rounded"
+              placeholder="Enter Discount Percentage(Don't use '%' sign)"
+              className="w-full bg-gray-700 p-2 "
             />
           </div>
           <div>
@@ -384,7 +398,8 @@ const AddProduct = () => {
               name="stock"
               value={product.stock}
               onChange={handleChange}
-              className="w-full bg-gray-800 p-2 border rounded"
+              placeholder="Enter Stock"
+              className="w-full bg-gray-700 p-2 "
             />
           </div>
         </div>
@@ -400,7 +415,7 @@ const AddProduct = () => {
                   handleSizeChange(index, "size", e.target.value)
                 }
                 placeholder="Size"
-                className="p-2 border rounded bg-gray-800"
+                className="p-2  bg-gray-700"
               />
               <input
                 type="number"
@@ -409,7 +424,7 @@ const AddProduct = () => {
                   handleSizeChange(index, "stock", e.target.value)
                 }
                 placeholder="Stock"
-                className="p-2 border rounded bg-gray-800"
+                className="p-2  bg-gray-700"
               />
               <button
                 type="button"
@@ -440,7 +455,7 @@ const AddProduct = () => {
                   handleColorChange(index, "colorName", e.target.value)
                 }
                 placeholder="Color Name"
-                className="p-2 border rounded bg-gray-800"
+                className="p-2  bg-gray-700"
               />
               <input
                 type="color"
@@ -448,7 +463,7 @@ const AddProduct = () => {
                 onChange={(e) =>
                   handleColorChange(index, "colorCode", e.target.value)
                 }
-                className="p-2 border rounded h-10 w-10"
+                className="p-2  h-10 w-10"
               />
               <button
                 type="button"
@@ -476,19 +491,19 @@ const AddProduct = () => {
                 <img
                   src={URL.createObjectURL(image)}
                   alt={`Product ${index + 1}`}
-                  className="w-24 h-24 object-cover rounded"
+                  className="w-24 h-24 object-cover"
                 />
                 <button
                   type="button"
                   onClick={() => removeImage(index)}
-                  className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1"
+                  className="absolute top-0 right-0 bg-red-500 text-white-full p-1"
                 >
                   <X size={16} />
                 </button>
               </div>
             ))}
           </div>
-          <label className="cursor-pointer bg-blue-500 text-white py-2 px-4 rounded inline-flex items-center">
+          <label className="cursor-pointer bg-purple-500 text-white py-2 px-4 inline-flex items-center">
             <Upload size={20} className="mr-2" />
             Upload Images
             <input
@@ -543,7 +558,8 @@ const AddProduct = () => {
             name="status"
             value={product.status}
             onChange={handleChange}
-            className="w-full bg-gray-800 p-2 border rounded"
+            placeholder="Select Status"
+            className="w-full bg-gray-700 p-2 "
           >
             <option value="Active">Active</option>
             <option value="Inactive">Inactive</option>
@@ -559,7 +575,7 @@ const AddProduct = () => {
 
         <button
           type="submit"
-          className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition duration-300"
+          className=" w-full bg-blue-700 text-white py-2 px-4 hover:bg-indigo-800 transition duration-300"
           disabled={isLoading}
         >
           {isLoading ? "Creating..." : "Create Product"}

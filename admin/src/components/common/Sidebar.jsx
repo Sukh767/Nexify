@@ -11,6 +11,7 @@ import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   LogoutOutlined,
+  CodeSandboxOutlined,
 } from "@ant-design/icons";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,71 +19,129 @@ import { toast } from "react-hot-toast";
 import { useLogoutMutation } from "../../features/user/userApiSlice";
 import { clearCredentials } from "../../features/auth/authSlice";
 import { persistor } from "../../app/store";
+import { Dock, GlobeIcon, Layers, Package } from "lucide-react";
 
 const { Sider } = Layout;
+
+const iconStyle = { color: "#6366f1", fontSize: "1.5rem" }; // Adjust fontSize as needed
+
 
 const SIDEBAR_ITEMS = [
   {
     key: "dashboard",
-    icon: <BarChartOutlined style={{ color: "#6366f1" }} />,
+    icon: <BarChartOutlined style={{ ...iconStyle, color: "#F26B0F" }} />,
     label: "Dashboard",
     children: [{ key: "overview", label: "Overview", path: "/" }],
   },
   {
     key: "products",
-    icon: <ShoppingOutlined style={{ color: "#8B5CF6" }} />,
+    icon: <ShoppingOutlined style={{ ...iconStyle, color: "#8B5CF6" }} />,
     label: "Products",
     children: [
       { key: "all-products", label: "All Products", path: "/products" },
       { key: "add-product", label: "Add Product", path: "/products/add" },
-      { key: "categories", label: "Categories", path: "/products/categories" },
-      { key: "brands", label: "Brands", path: "/products/brands" },
     ],
   },
   {
+    key: "categories",
+    icon: <Layers style={{ ...iconStyle, color: "#638C6D" }} />,
+    label: "Categories",
+    children: [
+      { key: "all-categories", label: "All Categories", path: "/categories" },
+      { key: "add-category", label: "Add Category", path: "/categories/add" },
+    ],
+  },
+  {
+    key: "Carts",
+    icon: <ShoppingCartOutlined style={{ ...iconStyle, color: "#E2BBE9" }} />,
+    label: "Carts",
+    children: [
+      { key: "all-carts", label: "All Carts", path: "/carts" },
+    ]
+  },
+  {
     key: "users",
-    icon: <UserOutlined style={{ color: "#EC4899" }} />,
+    icon: <UserOutlined style={{ ...iconStyle, color: "#EC4899" }} />,
     label: "Users",
     children: [
       { key: "all-users", label: "All Users", path: "/users" },
-      { key: "add-user", label: "Add User", path: "/users/add" },
-      { key: "roles", label: "Roles", path: "/users/roles" },
-      { key: "profile", label: "Profile", path: "/users/account" },
     ],
   },
   {
     key: "orders",
-    icon: <ShoppingCartOutlined style={{ color: "#F59E0B" }} />,
+    icon: <Package style={{ ...iconStyle, color: "#F59E0B" }} />,
     label: "Orders",
     children: [
       { key: "all-orders", label: "All Orders", path: "/orders" },
-      { key: "pending-orders", label: "Pending Orders", path: "/orders/pending" },
-      { key: "completed-orders", label: "Completed Orders", path: "/orders/completed" },
+      {
+        key: "pending-orders",
+        label: "Pending Orders",
+        path: "/orders/pending",
+      },
+      {
+        key: "completed-orders",
+        label: "Completed Orders",
+        path: "/orders/completed",
+      },
     ],
   },
   {
     key: "authentication",
-    icon: <SafetyCertificateOutlined style={{ color: "#EF4444" }} />,
+    icon: <SafetyCertificateOutlined style={{ ...iconStyle, color: "#EF4444" }} />,
     label: "Authentication",
     children: [
-      { key: "login", label: "Login", path: "/auth/login" },
-      { key: "forgot-password", label: "Forgot Password", path: "/auth/forgot-password" },
-      { key: "reset-password", label: "Reset Password", path: "/auth/reset-password" },
+      {
+        key: "forgot-password",
+        label: "Forgot Password",
+        path: "/auth/forgot-password",
+      },
+      {
+        key: "reset-password",
+        label: "Reset Password",
+        path: "/auth/reset-password",
+      },
     ],
   },
   {
     key: "sales",
-    icon: <DollarOutlined style={{ color: "#10B981" }} />,
+    icon: <DollarOutlined style={{ ...iconStyle, color: "#E88D67" }} />,
     label: "Sales",
     children: [{ key: "sales-view", label: "Sales view", path: "/sales" }],
   },
   {
     key: "settings",
-    icon: <SettingOutlined style={{ color: "#6EE7B8" }} />,
+    icon: <SettingOutlined style={{ ...iconStyle, color: "#F6FFA6" }} />,
     label: "Settings",
     children: [{ key: "settings-view", label: "Settings", path: "/settings" }],
   },
+  {
+    key: "Webinfo",
+    icon: <GlobeIcon style={{ ...iconStyle, color: "#7EA1FF" }} />,
+    label: "Webinfo",
+    children: [
+      { key: "Webinfo-view", label: "Webinfo", path: "/webinfo" },
+      { key: "Webinfo-contact", label: "Contact us", path: "/webinfo/contact" },
+    ],
+  },
+  {
+    key: "brand",
+    icon: <CodeSandboxOutlined style={{ ...iconStyle, color: "#FA7070" }} />,
+    label: "Brand",
+    children: [
+      { key: "brands-view", label: "Brands", path: "/brands" },
+      { key: "brands-add", label: "Add Brands", path: "/brands/add" },
+    ],
+  },
+  {
+    key: "banner",
+    icon: <Dock style={{ ...iconStyle, color: "#0D7C66" }} />,
+    label: "Banner",
+    children: [
+      { key: "banners-view", label: "Edit Banner", path: "/banners/edit" },
+    ],
+  },
 ];
+
 
 const Sidebar = ({ onToggle }) => {
   const [collapsed, setCollapsed] = useState(false);
@@ -118,7 +177,7 @@ const Sidebar = ({ onToggle }) => {
       onCollapse={toggleCollapsed}
       width={256}
       collapsedWidth={80}
-      className="min-h-screen bg-gray-800 bg-opacity-50 backdrop-blur-md border-r border-gray-700 transition-all duration-300 ease-in-out"
+      className="min-h-screen bg-gray-00 bg-opacity-50 backdrop-blur-md border-r border-gray-700 transition-all duration-300 ease-in-out"
       theme="dark"
       breakpoint="lg"
       onBreakpoint={(broken) => {
@@ -128,10 +187,13 @@ const Sidebar = ({ onToggle }) => {
       }}
     >
       <div className="p-4 flex justify-end">
-        {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
-          className: "text-white text-xl cursor-pointer",
-          onClick: toggleCollapsed,
-        })}
+        {React.createElement(
+          collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
+          {
+            className: "text-white text-xl cursor-pointer",
+            onClick: toggleCollapsed,
+          }
+        )}
       </div>
       <Menu
         mode="inline"
@@ -150,7 +212,7 @@ const Sidebar = ({ onToggle }) => {
       />
       {/* User Profile and Logout */}
       {isAuthenticated && (
-        <div className="absolute bottom-10 w-full p-4 flex flex-col items-center mb-4">
+        <div className="absolute bottom-5 w-full p-4 flex flex-col items-center mb-4">
           <img
             src="https://st3.depositphotos.com/15648834/17930/v/450/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"
             alt="User Profile"

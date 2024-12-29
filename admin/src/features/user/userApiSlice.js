@@ -67,6 +67,24 @@ export const userApiSlice = authApi.injectEndpoints({
       }),
       invalidatesTags: ["User"],
     }),
+    updateUserStatus: builder.mutation({
+      query: ({ id, status }) => ({
+        url: `${USER_URL}/update-user-status`,
+        method: "POST",
+        body: { id, status },
+        credentials: "include",
+      }),
+      invalidatesTags: ["User"],
+    }),
+    updateUserRole: builder.mutation({
+      query: ({ id, isAdmin }) => ({
+        url: `${USER_URL}/update-user-role`,
+        method: "POST",
+        body: { id, isAdmin },
+        credentials: "include",
+      }),
+      invalidatesTags: ["User"],
+    }),
   }),
 });
 
@@ -80,5 +98,7 @@ export const {
   useGetAllUserListQuery,
   useUpdateUserMutation,
   useDeleteUserMutation,
+  useUpdateUserStatusMutation,
+  useUpdateUserRoleMutation,
 } = userApiSlice;
 

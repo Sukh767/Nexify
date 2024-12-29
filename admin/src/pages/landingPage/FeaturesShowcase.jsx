@@ -6,17 +6,17 @@ const features = [
   {
     title: 'Inventory Management',
     description: 'Seamless stock updates and tracking',
-    image: 'https://res.cloudinary.com/dbotqrsil/image/upload/v1732515840/samples/ecommerce/accessories-bag.jpg'
+    image: 'https://images.unsplash.com/photo-1553413077-190dd305871c'
   },
   {
     title: 'Order Tracking',
     description: 'Real-time analytics dashboard',
-    image: 'https://res.cloudinary.com/dbotqrsil/image/upload/v1732515838/samples/ecommerce/analog-classic.jpg'
+    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f'
   },
   {
     title: 'User Management',
     description: 'Secure user roles and permissions setup',
-    image: 'https://res.cloudinary.com/dbotqrsil/image/upload/v1732515847/samples/cup-on-a-table.jpg'
+    image: 'https://images.unsplash.com/photo-1552664730-d307ca884978'
   },
   {
     title: 'Sales Insights',
