@@ -15,7 +15,7 @@ const OverviewCards = () => {
 				<motion.div
 					key={item.name}
 					className='bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-lg shadow-lg
-            rounded-xl p-6 border border-gray-700
+             p-6 border border-gray-700
           '
 					initial={{ opacity: 0, y: 20 }}
 					animate={{ opacity: 1, y: 0 }}

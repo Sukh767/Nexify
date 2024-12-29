@@ -19,6 +19,10 @@ import UpdateProduct from "./components/products/UpdateProduct";
 import LandingPage from "./pages/LandingPage";
 import { useSelector } from "react-redux";
 import UpdateUser from "./components/users/UpdateUser";
+import ViewOrder from "./components/orders/ViewOrder";
+import AddCategory from "./components/category/AddCategory";
+import CategoryPage from './pages/CategoryPage';
+import EditCategory from "./components/category/EditCategory";
 
 function App() {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
@@ -33,8 +37,8 @@ function App() {
     <div className="flex flex-col min-h-screen bg-gray-900 text-gray-100">
       {/* Header */}
       {isAuthenticated && (
-        <div className="fixed top-0 left-0 w-full z-20 bg-gray-800">
-          <Header title={"Dashboard"} />
+        <div className="fixed top-0 left-0 w-full z-20 bg-gray-800 ">
+          <Header title={"ADMIN PANEL"} />
         </div>
       )}
 
@@ -42,7 +46,7 @@ function App() {
         {/* Sidebar */}
         {isAuthenticated && (
           <div
-            className={`fixed top-16 left-0 h-[calc(100vh-4rem)] bg-gray-800 ${
+            className={`fixed top-0 left-0 h-[calc(100vh-4rem)] bg-gray-800 ${
               isSidebarCollapsed ? "w-20" : "w-64"
             } transition-all duration-300`}
           >
@@ -82,13 +86,17 @@ function App() {
                 <Route path="/products" element={<PrivateRoute element={ProductPage} />} />
                 <Route path="/products/add" element={<PrivateRoute element={AddProduct} />} />
                 <Route path="/products/:id" element={<PrivateRoute element={UpdateProduct} />} />
+                <Route path="/categories" element={<PrivateRoute element={CategoryPage} />} />
+                <Route path="/categories/add" element={<PrivateRoute element={AddCategory} />} />
+                <Route path="/categories/edit/:id" element={<PrivateRoute element={EditCategory} />} />
                 <Route path="/users" element={<PrivateRoute element={UsersPage} />} />
                 <Route path="/users/edit/:id" element={<PrivateRoute element={UpdateUser} />} />
-                <Route path="/users/account" element={<PrivateRoute element={Profile} />} />
                 <Route path="/sales" element={<PrivateRoute element={SalesPage} />} />
                 <Route path="/orders" element={<PrivateRoute element={OrdersPage} />} />
+                <Route path="/orders/view-order/:id" element={<PrivateRoute element={ViewOrder} />} />
                 <Route path="/analytics" element={<PrivateRoute element={AnalyticsPage} />} />
                 <Route path="/settings" element={<PrivateRoute element={SettingsPage} />} />
+                <Route path="/settings/users/account" element={<PrivateRoute element={Profile} />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
               </>
             )}

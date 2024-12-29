@@ -22,7 +22,7 @@ const Hero = () => {
         className="absolute inset-0 z-0 bg-black bg-opacity-40"
         style={{
           backgroundImage:
-            "url('https://img1.wallspic.com/crops/9/6/6/8/4/148669/148669-lake-highland-nature-sky-mountain-3840x2160.jpg')",
+            "url('https://res.cloudinary.com/dbotqrsil/image/upload/v1735397817/wavy-black-white-background_2_oaupwx.jpg')",
           backgroundSize: "cover",
           backgroundPosition: "center",
           y: parallaxY,
@@ -30,7 +30,7 @@ const Hero = () => {
       />
       <div className="relative z-10 text-center text-gray-50">
         <motion.img
-          src="https://res.cloudinary.com/dbotqrsil/image/upload/v1735312794/output-onlinepngtools_wyph8a.png"
+          src="https://res.cloudinary.com/dbotqrsil/image/upload/v1735309936/output-onlinepngtools_wfosdm.png"
           alt="Nexify Logo"
           className="w-208 mx-auto mb-8"
           variants={childVariants}
@@ -75,7 +75,7 @@ const Hero = () => {
             className="bg-white text-center w-48 h-14 relative text-black text-xl font-semibold group"
             type="button"
           >
-            <div className="bg-emerald-700 h-12 w-1/4 flex items-center justify-center absolute left-1 top-[4px] group-hover:w-[184px] z-10 duration-500">
+            <div className="bg-gray-500 h-12 w-1/4 flex items-center justify-center absolute left-1 top-[4px] group-hover:w-[184px] z-10 duration-500">
               <svg
                 width="24"
                 height="24"

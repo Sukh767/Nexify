@@ -20,8 +20,8 @@ router.post('/reset-password/:token',resetPassword)
 router.post('/set-password',verifyjwt, setNewPassword)
 router.delete('/me/:id',verifyjwt, deleteUser)
 router.put('/update-profile/:id', verifyjwt ,updateUserDetails)
-router.post('/update-user-status',verifyjwt, updateUserStatus)
-router.post('/update-user-role',verifyjwt, authRole ,updateUserRole)
+router.post('/update-user-status',verifyjwt ,authRole, updateUserStatus) //admin user can access
+router.post('/update-user-role',verifyjwt, authRole ,updateUserRole) //admin user can access
 
 
 export default router;

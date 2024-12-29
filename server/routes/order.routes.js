@@ -7,7 +7,8 @@ const router = express.Router();
 router.post('/',verifyjwt, placeOrder)
 router.get('/',verifyjwt, getOrders)
 router.get('/:id',verifyjwt, getOrderById)
-router.patch('/status/:id',verifyjwt, authRole, updateOrderStatus)
+router.post('/status/:id',verifyjwt, authRole, updateOrderStatus)
 router.get('/myorders',verifyjwt, OrderListByUser)
+//router.get('/admin/order-details/:id',verifyjwt, authRole, getOrderAllDetailsById)
 
 export default router;

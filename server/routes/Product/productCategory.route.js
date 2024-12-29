@@ -12,7 +12,7 @@ router.get('/single', getEmptyParentCategoryList) //get empty parent category li
 router.get('/list', getAllFrontendCategoryList)  //! Frontend parent( main ) category list 
 router.get('/:id', getCategoryById) //get category by id
 router.delete('/:id', deleteCategoryById) //delete category by id
-router.patch('/:id', upload.fields([{name: "banner", maxCount:1}]), updateCategoryById) //update category by id  //TODO: Need o modify the update category by id
+router.put('/:id', upload.fields([{name: "banner", maxCount:1}]), updateCategoryById) //update category by id  //TODO: Need o modify the update category by id
 
 
 export default router;

@@ -3,3 +3,5 @@
 export const BASE_URL = 'http://localhost:5000'
 export const USER_URL = '/api/account/user'
 export const PRODUCT_URL = '/api/products'
+export const CATEGORY_URL = '/api/products/category'
+export const ORDER_URL = '/api/orders'
