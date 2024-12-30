@@ -73,7 +73,7 @@ const Login = () => {
             to="/"
             className="text-sm font-medium flex items-center space-x-2 text-white mb-8 hover:text-gray-200 transition-colors"
           >
-            <div className="flex items-center hover:text-orange-400">
+            <div className="flex items-center hover:text-teal-400">
               <ArrowLeft className="w-5 h-5" />
               <span>Back</span>
             </div>

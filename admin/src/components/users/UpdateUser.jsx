@@ -84,7 +84,7 @@ const UpdateUser = () => {
 
   return (
     <motion.div
-      className="flex flex-col items-center justify-center min-h-screen bg-gray-900 p-8"
+      className="flex flex-col items-center justify-center min-h-screen bg-gray-900 "
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}

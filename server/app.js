@@ -25,6 +25,7 @@ import productVariantRouter from './routes/Product/productVariant.routes.js';
 import wishlistRouter from './routes/wishlist.routes.js';
 import cartRouter from './routes/cart.routes.js';
 import orderRouter from './routes/order.routes.js';
+import bannerRouter from './routes/banner.routes.js';
 
 // Setup routes
 app.use('/api/account/user', userRouter);
@@ -34,5 +35,6 @@ app.use('/api/products/variant', productVariantRouter);
 app.use('/api/wishlist', wishlistRouter);
 app.use('/api/cart', cartRouter);
 app.use('/api/orders', orderRouter);
+app.use('/api/banner', bannerRouter);
 
 export { app };

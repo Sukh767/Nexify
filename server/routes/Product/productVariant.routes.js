@@ -27,7 +27,7 @@ router.post(
 router.get("/:id", getVariantProductById);
 
 // Update a variant product by ID
-router.patch(
+router.put(
   "/:id",
   upload.fields([{ name: "banner", maxCount: 5 }]),
   verifyjwt,

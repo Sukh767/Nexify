@@ -4,7 +4,6 @@ import {
   BarChartOutlined,
   ShoppingOutlined,
   UserOutlined,
-  ShoppingCartOutlined,
   SafetyCertificateOutlined,
   DollarOutlined,
   SettingOutlined,
@@ -19,7 +18,7 @@ import { toast } from "react-hot-toast";
 import { useLogoutMutation } from "../../features/user/userApiSlice";
 import { clearCredentials } from "../../features/auth/authSlice";
 import { persistor } from "../../app/store";
-import { Dock, GlobeIcon, Layers, Package } from "lucide-react";
+import { Dock, GlobeIcon, Layers, ListTreeIcon, Package } from "lucide-react";
 
 const { Sider } = Layout;
 
@@ -52,11 +51,11 @@ const SIDEBAR_ITEMS = [
     ],
   },
   {
-    key: "Carts",
-    icon: <ShoppingCartOutlined style={{ ...iconStyle, color: "#E2BBE9" }} />,
-    label: "Carts",
+    key: "Variants",
+    icon: <ListTreeIcon style={{ ...iconStyle, color: "#E2BBE9" }} />,
+    label: "Variants",
     children: [
-      { key: "all-carts", label: "All Carts", path: "/carts" },
+      { key: "all-Variants", label: "Variants", path: "/Variants" },
     ]
   },
   {
@@ -137,7 +136,7 @@ const SIDEBAR_ITEMS = [
     icon: <Dock style={{ ...iconStyle, color: "#0D7C66" }} />,
     label: "Banner",
     children: [
-      { key: "banners-view", label: "Edit Banner", path: "/banners/edit" },
+      { key: "banners-view", label: "All Banner", path: "/banner" },
     ],
   },
 ];

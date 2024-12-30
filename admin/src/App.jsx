@@ -23,6 +23,12 @@ import ViewOrder from "./components/orders/ViewOrder";
 import AddCategory from "./components/category/AddCategory";
 import CategoryPage from './pages/CategoryPage';
 import EditCategory from "./components/category/EditCategory";
+import VariantsPage from "./pages/VariantsPage";
+import CreateVariant from "./components/variants/CreateVariant";
+import EditVariant from "./components/variants/EditVariant";
+import BannerPage from './pages/BannerPage';
+import CreateBanner from './components/banner/CreateBanner';
+import UpdateBanner from './components/banner/UpdateBanner';
 
 function App() {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
@@ -89,6 +95,9 @@ function App() {
                 <Route path="/categories" element={<PrivateRoute element={CategoryPage} />} />
                 <Route path="/categories/add" element={<PrivateRoute element={AddCategory} />} />
                 <Route path="/categories/edit/:id" element={<PrivateRoute element={EditCategory} />} />
+                <Route path="/variants" element={<PrivateRoute element={VariantsPage} />} />
+                <Route path="/variants/add/:id" element={<PrivateRoute element={CreateVariant} />} />
+                <Route path="/variants/:id" element={<PrivateRoute element={EditVariant} />} />
                 <Route path="/users" element={<PrivateRoute element={UsersPage} />} />
                 <Route path="/users/edit/:id" element={<PrivateRoute element={UpdateUser} />} />
                 <Route path="/sales" element={<PrivateRoute element={SalesPage} />} />
@@ -97,6 +106,9 @@ function App() {
                 <Route path="/analytics" element={<PrivateRoute element={AnalyticsPage} />} />
                 <Route path="/settings" element={<PrivateRoute element={SettingsPage} />} />
                 <Route path="/settings/users/account" element={<PrivateRoute element={Profile} />} />
+                <Route path="/banner" element={<PrivateRoute element={BannerPage} />} />
+                <Route path="/banner/create-banner" element={<PrivateRoute element={CreateBanner} />} />
+                <Route path="/banner/:id" element={<PrivateRoute element={UpdateBanner} />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
               </>
             )}

@@ -51,6 +51,7 @@ const createVariantProduct = async (req, res) => {
         public_id: uploadResponse.public_id,
         url: uploadResponse.secure_url || uploadResponse.url,
       };
+      console.log("uploadResponse : product Variant", uploadResponse);
     } catch (uploadError) {
       return res.status(500).json({
         status: "failed",
@@ -128,7 +129,6 @@ const getAllVariantProduct = async (req, res) => {
   }
 };
 
-//TODO: Need to modify and testing, this is just a sample code
 const updateVariantProductById = async (req, res) => {
   const { id } = req.params;
   const {
@@ -158,6 +158,7 @@ const updateVariantProductById = async (req, res) => {
   } = req.body;
 
   try {
+    // Find the existing product variant
     const variant = await ProductVariant.findById(id);
 
     if (!variant) {
@@ -169,81 +170,78 @@ const updateVariantProductById = async (req, res) => {
       });
     }
 
-    // Handle file upload
-    const product_image = req.files?.banner?.[0]?.path;
-    if (!product_image) {
-      return res.status(400).json({
-        status: "failed",
-        error: {
-          banner: { message: "Product image is required", path: "banner" },
-        },
-      });
+    //console.log("Existing Variant:", variant);
+
+    // Initialize banner with existing images
+    let banner = [...variant.product_image]; // Keep existing images
+
+    // Handle new images upload
+    if (req.files?.banner) {
+      for (const file of req.files.banner) {
+        try {
+          const uploadResponse = await uploadOnCloudinary(file.path, {
+            folder: "product_variants",
+          });
+
+          banner.push({
+            public_id: uploadResponse.public_id,
+            url: uploadResponse.secure_url || uploadResponse.url,
+          });
+        } catch (uploadError) {
+          console.error("Error uploading image to Cloudinary:", uploadError);
+          return res.status(500).json({
+            status: "failed",
+            error: {
+              message: "Failed to upload one or more images to Cloudinary",
+              details: uploadError.message,
+            },
+          });
+        }
+      }
     }
 
-    // Upload image to Cloudinary
-    let banner;
-    try {
-      const uploadResponse = await uploadOnCloudinary(product_image);
-      banner = {
-        public_id: uploadResponse.public_id,
-        url: uploadResponse.secure_url || uploadResponse.url,
-      };
-    } catch (uploadError) {
-      return res.status(500).json({
-        status: "failed",
-        error: {
-          message: "Failed to upload banner to Cloudinary",
-          details: uploadError.message,
-        },
-      });
-    }
+    // Update fields
+    variant.product_name = product_name || variant.product_name;
+    variant.product_url = product_url || variant.product_url;
+    variant.product_image = banner; // Update with combined images
+    variant.product_id = product_id || variant.product_id;
+    variant.brand = brand || variant.brand;
+    variant.size = size || variant.size;
+    variant.color = color || variant.color;
+    variant.parentCategory = parentCategory || variant.parentCategory;
+    variant.child_category = child_category || variant.child_category;
+    variant.sort_description = sort_description || variant.sort_description;
+    variant.description = description || variant.description;
+    variant.meta_title = meta_title || variant.meta_title;
+    variant.meta_description = meta_description || variant.meta_description;
+    variant.meta_keywords = meta_keywords || variant.meta_keywords;
+    variant.skucode = skucode || variant.skucode;
+    variant.status = status || variant.status;
 
-    // Update product variant
-    variant.product_name = product_name;
-    variant.product_url = product_url;
-    variant.product_image = banner; // Save the uploaded banner details
-    variant.product_id = product_id;
-    variant.brand = brand;
-    variant.size = size;
-    variant.color = color;
-    variant.parentCategory = parentCategory;
-    variant.child_category = child_category;
-    variant.sort_description = sort_description;
-    variant.description = description;
-    variant.meta_title = meta_title;
-    variant.meta_description = meta_description;
-    variant.meta_keywords = meta_keywords;
-    variant.skucode = skucode;
-    variant.status = status;
-    variant.newarrivedproduct = newarrivedproduct;
-    variant.trendingproduct = trendingproduct;
-    variant.featuredproduct = featuredproduct;
-    variant.weight = weight;
-    variant.weight_type = weight_type;
-    variant.mrp_price = mrp_price;
-    variant.selling_price = selling_price;
-    variant.stock = stock;
+    // Convert boolean fields from strings
+    variant.newarrivedproduct =
+      newarrivedproduct === "true" ? true : newarrivedproduct === "false" ? false : variant.newarrivedproduct;
+    variant.trendingproduct =
+      trendingproduct === "true" ? true : trendingproduct === "false" ? false : variant.trendingproduct;
+    variant.featuredproduct =
+      featuredproduct === "true" ? true : featuredproduct === "false" ? false : variant.featuredproduct;
 
-    // Save the updated product variant
+    variant.weight = weight || variant.weight;
+    variant.weight_type = weight_type || variant.weight_type;
+    variant.mrp_price = mrp_price || variant.mrp_price;
+    variant.selling_price = selling_price || variant.selling_price;
+    variant.stock = stock || variant.stock;
+
+    // Save updated product variant
     const updatedProduct = await variant.save();
 
-    if (!updatedProduct) {
-      return res.status(500).json({
-        status: "failed",
-        error: {
-          message: "Failed to update product variant",
-        },
-      });
-    }
-
-    // Success response
     res.status(200).json({
       status: "successful",
       message: "Product variant updated successfully",
       data: updatedProduct,
     });
   } catch (error) {
-    console.log("Error in updateVariantProductById:", error);
+    console.error("Error in updateVariantProductById:", error);
     res.status(500).json({
       status: "failed",
       error: {

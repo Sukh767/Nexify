@@ -6,9 +6,10 @@ import StatCard from "../components/common/StatCard";
 import { AlertTriangle, DollarSign, Package, TrendingUp } from "lucide-react";
 import CategoryDistributionChart from "../components/overview/CategoryDistributionChart";
 import SalesTrendChart from "../components/products/SalesTrendChart";
-import Category from "../components/category/Category";
+import VariantsTable from "../components/variants/VariantsTable";
 
-const CategoryPage = () => {
+
+const ProductsPage = () => {
 	return (
 		<div className='flex-1 overflow-auto relative z-10'>
 			{/* <Header title='Products' /> */}
@@ -16,7 +17,7 @@ const CategoryPage = () => {
 			<main className='max-w-7xl mx-auto py-6 px-4 lg:px-8 mt-2'>
 				{/* STATS */}
 				<motion.div
-					className='grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8'
+					className='grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8 '
 					initial={{ opacity: 0, y: 20 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 1 }}
@@ -27,7 +28,7 @@ const CategoryPage = () => {
 					<StatCard name='Total Revenue' icon={DollarSign} value={"$543,210"} color='#EF4444' />
 				</motion.div>
 
-				<Category/>
+				<VariantsTable/>
 
 				{/* CHARTS */}
 				<div className='grid grid-col-1 lg:grid-cols-2 gap-8'>
@@ -38,4 +39,4 @@ const CategoryPage = () => {
 		</div>
 	);
 };
-export default CategoryPage;
+export default ProductsPage;
