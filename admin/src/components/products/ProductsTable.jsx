@@ -13,6 +13,7 @@ const ProductsTable = () => {
   const [filteredProducts, setFilteredProducts] = useState([]);
 
   const { data: productsResponse, isLoading, error, refetch } = useGetAllProductsQuery();
+  console.log(productsResponse);
   const [deleteProduct, { isLoading: isDeleting }] = useDeleteProductMutation();
 
   useEffect(() => {
@@ -36,6 +37,7 @@ const ProductsTable = () => {
       );
       if(response.success)
       toast.success("Product deleted successfully!");
+      refetch();
     } catch (error) {
       console.error("Error deleting product:", error);
       toast.error("Failed to delete product.");

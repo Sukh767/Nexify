@@ -4,7 +4,6 @@ import Product from "../../models/Product/product.model.js";
 import slugify from "slugify";
 import Category from "../../models/Product/productCategory.model.js";
 // Create a new product
-//TODO: if something gone wrong delete the uploaded images from Cloudinary
 const createProduct = async (req, res) => {
   const {
     productName,

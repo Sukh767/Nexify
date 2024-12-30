@@ -157,7 +157,7 @@ const Category = () => {
                   </span>
                 </td>
                 <td className="px-5 py-5 border-b border-gray-700 text-sm">
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-2 ">
                     <button
                       onClick={() => handleView(category._id)}
                       className="text-blue-400 hover:text-blue-600"
