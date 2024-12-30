@@ -29,6 +29,9 @@ import EditVariant from "./components/variants/EditVariant";
 import BannerPage from './pages/BannerPage';
 import CreateBanner from './components/banner/CreateBanner';
 import UpdateBanner from './components/banner/UpdateBanner';
+import UpdateBrand from './components/brand/UpdateBrand';
+import BrandPage from './pages/BrandPage';
+import CreateBrand from './components/brand/CreateBrand';
 
 function App() {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
@@ -44,7 +47,7 @@ function App() {
       {/* Header */}
       {isAuthenticated && (
         <div className="fixed top-0 left-0 w-full z-20 bg-gray-800 ">
-          <Header title={"ADMIN PANEL"} />
+          <Header isSidebarCollapsed={isSidebarCollapsed} />
         </div>
       )}
 
@@ -109,6 +112,9 @@ function App() {
                 <Route path="/banner" element={<PrivateRoute element={BannerPage} />} />
                 <Route path="/banner/create-banner" element={<PrivateRoute element={CreateBanner} />} />
                 <Route path="/banner/:id" element={<PrivateRoute element={UpdateBanner} />} />
+                <Route path="/brand" element={<PrivateRoute element={BrandPage} />} />
+                <Route path="/brand/create-brand" element={<PrivateRoute element={CreateBrand} />} />
+                <Route path="/brand/:id" element={<PrivateRoute element={UpdateBrand} />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
               </>
             )}

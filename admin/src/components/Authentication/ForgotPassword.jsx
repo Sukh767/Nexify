@@ -11,7 +11,7 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center relative overflow-hidden bg-gradient-to-bl from-gray-800 via-teal-800 to-teal-600">
+    <div className="min-h-screen w-full flex items-center justify-center relative overflow-hidden bg-gradient-to-r from-slate-900 to-slate-700">
       {/* Background Image */}
       {/* <div className="absolute inset-0 z-0">
         <img

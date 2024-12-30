@@ -127,8 +127,7 @@ const SIDEBAR_ITEMS = [
     icon: <CodeSandboxOutlined style={{ ...iconStyle, color: "#FA7070" }} />,
     label: "Brand",
     children: [
-      { key: "brands-view", label: "Brands", path: "/brands" },
-      { key: "brands-add", label: "Add Brands", path: "/brands/add" },
+      { key: "brands-view", label: "Brands", path: "/brand" }
     ],
   },
   {
