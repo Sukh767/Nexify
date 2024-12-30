@@ -24,7 +24,7 @@ const Profile = () => {
 
 			<button className='bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 transition duration-200 w-full sm:w-auto'>
 				<Link to='/settings/users/account'>
-				Edit Profile
+				View Profile
 				</Link>
 			</button>
 		</SettingSection>

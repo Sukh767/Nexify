@@ -4,7 +4,7 @@ import { useGetUserDetailsQuery } from "../../features/user/userApiSlice";
 
 const Profile = () => {
   const [glassEffect, setGlassEffect] = useState(false);
-  const [profileColor, setProfileColor] = useState("#6366f1");
+  const [profileColor, setProfileColor] = useState("#D9EAFD");
   const { data: userDetails, isLoading, error } = useGetUserDetailsQuery();
 
   useEffect(() => {
@@ -30,7 +30,7 @@ const Profile = () => {
   }
 
   return (
-    <div className="min-h-screen w-full flex flex-col items-center justify-center relative overflow-hidden bg-gray-900 p-4">
+    <div className="min-h-screen w-full flex flex-col items-center justify-center relative overflow-hidden p-4">
       <div className="w-full max-w-4xl mb-4 flex justify-end space-x-4">
         <div className="flex items-center">
           <label htmlFor="glassToggle" className="mr-2 text-white">
@@ -59,19 +59,20 @@ const Profile = () => {
             id="colorPicker"
             value={profileColor}
             onChange={(e) => setProfileColor(e.target.value)}
-            className="w-8 h-8 rounded-full"
+            className="w-8 h-8"
           />
         </div>
       </div>
 
       <div
-        className={`w-full max-w-4xl p-8 bg-gray-800 rounded-xl shadow-lg ${
+        className={`w-full max-w-4xl p-8 bg-gray-800  shadow-lg ${
           glassEffect ? "bg-opacity-20 backdrop-filter backdrop-blur-lg" : ""
         }`}
       >
         <div className="flex flex-col md:flex-row items-center md:items-start space-y-4 md:space-y-0 md:space-x-6">
           <div
-            className="flex justify-center items-center z-1 h-40 w-40 rounded-full bg-gray-700 overflow-hidden border-4"
+            className="flex justify-center rounded-full
+             items-center z-1 h-40 w-40 bg-gray-700 overflow-hidden border-4"
             style={{ borderColor: profileColor }}
           >
             <img
@@ -122,7 +123,7 @@ const Profile = () => {
 
         <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
           <div
-            className={`p-4 rounded-lg ${
+            className={`p-4  ${
               glassEffect ? "bg-gray-700 bg-opacity-50" : "bg-gray-700"
             }`}
           >
@@ -174,7 +175,7 @@ const Profile = () => {
           </div>
 
           <div
-            className={`p-4 rounded-lg ${
+            className={`p-4  ${
               glassEffect ? "bg-gray-700 bg-opacity-50" : "bg-gray-700"
             }`}
           >

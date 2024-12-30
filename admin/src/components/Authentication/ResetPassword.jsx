@@ -48,16 +48,16 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center relative overflow-hidden">
+    <div className="min-h-screen w-full flex items-center justify-center relative overflow-hidden bg-gradient-to-r from-slate-900 to-slate-700">
       {/* Background Image */}
-      <div className="absolute inset-0 z-0">
+      {/* <div className="absolute inset-0 z-0">
         <img
           src="https://images.pexels.com/photos/29833480/pexels-photo-29833480/free-photo-of-vivid-green-and-blue-abstract-glass-formation.jpeg"
           alt="Background"
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-black opacity-50"></div>
-      </div>
+      </div> */}
 
       {/* Reset Password Form */}
       <div className="w-full max-w-md z-10 p-8 bg-white bg-opacity-10 backdrop-filter backdrop-blur-md shadow-xl">
