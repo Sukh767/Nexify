@@ -47,11 +47,11 @@ function App() {
       {/* Header */}
       {isAuthenticated && (
         <div className="fixed top-0 left-0 w-full z-20 bg-gray-800 ">
-          <Header isSidebarCollapsed={isSidebarCollapsed} />
+          {/* <Header isSidebarCollapsed={isSidebarCollapsed} /> */}
         </div>
       )}
 
-      <div className={`flex ${isAuthenticated ? "pt-16" : "h-screen"}`}>
+      <div className={`flex ${isAuthenticated ? "pt-10" : "h-screen"}`}>
         {/* Sidebar */}
         {isAuthenticated && (
           <div
