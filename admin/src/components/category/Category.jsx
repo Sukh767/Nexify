@@ -4,6 +4,7 @@ import { Eye, Edit, Trash2, Search, ChevronLeft, ChevronRight } from 'lucide-rea
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from 'framer-motion';
 import toast from "react-hot-toast";
+import ErrorMessage from "../common/ErrorMessage";
 
 const Category = () => {
   const { data: categories, isLoading, error, refetch:refetchCategories } = useGetAllCategoriesQuery();
@@ -71,13 +72,18 @@ const Category = () => {
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  if (isLoading) return <div className="text-center py-4 text-white">Loading...</div>;
-  if (error)
+  if (isLoading)
     return (
-      <div className="text-center py-4 text-red-500">
-        Error: {error.message}
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-[#A0E9FF]"></div>
       </div>
     );
+    
+  if (error) return (
+    <>
+    <ErrorMessage message={error.error} />
+    </>
+  )
 
   return (
     <motion.div

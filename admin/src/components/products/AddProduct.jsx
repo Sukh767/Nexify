@@ -188,11 +188,10 @@ const AddProduct = () => {
     {isLoading ? (
       <div className="flex justify-center items-center h-screen">
       <div className="flex justify-center items-center h-screen">
-        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-[#ff6347]"></div>
+        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-4 border-[#A0E9FF]"></div>
       </div>
     </div>
     ): 
-    
     <div className="max-w-4xl mx-auto p-6 bg-gray-900 shadow-md">
       <h2 className="text-2xl font-bold font-mono mb-6 mt-6">ADD NEW PRODUCT</h2>
       <form onSubmit={handleSubmit} className="space-y-6">

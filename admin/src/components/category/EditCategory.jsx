@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useGetCategoryByIdQuery, useUpdateCategoryMutation } from '../../features/category/categoryApiSlice';
 import { X, XCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
+import ErrorMessage from '../common/ErrorMessage';
 
 const EditCategory = () => {
   const { id } = useParams();
@@ -107,9 +108,17 @@ const EditCategory = () => {
     }
   };
 
-  if (isFetching) return <div className="text-center text-white text-2xl">Loading...</div>;
-  if (fetchError) return <div className="text-center text-red-500 text-2xl">Error: {fetchError.message}</div>;
-
+  if (isFetching)
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-[#A0E9FF]"></div>
+      </div>
+    );
+    if (fetchError) return (
+      <>
+      <ErrorMessage message={fetchError.message || fetchError.status} />
+      </>
+    )
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}

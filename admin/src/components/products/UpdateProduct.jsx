@@ -1,678 +1,304 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import {
-  useGetProductQuery,
-  useUpdateProductMutation,
-} from "../../features/products/productsApiSlice";
-import toast from "react-hot-toast";
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
+import { XCircle, Plus, Loader } from 'lucide-react';
+import {useUpdateProductMutation, useGetProductQuery} from '../../features/products/productsApiSlice';
 
 const UpdateProduct = () => {
   const { id } = useParams();
-  console.log("Product ID:", id);
-  const { data: existingProduct, isLoading: isLoadingProduct } =
-    useGetProductQuery(id);
-  console.log("Existing product:", existingProduct);
+  const navigate = useNavigate();
+  const { data: productData, isLoading, error } = useGetProductQuery(id);
   const [updateProduct, { isLoading: isUpdating }] = useUpdateProductMutation();
 
-  const [product, setProduct] = useState({
-    productName: "",
-    productUrl: "",
-    brand: "",
+  const [formData, setFormData] = useState({
+    productName: '',
+    productUrl: '',
+    brand: '',
     sizes: [],
     colors: [],
-    parentCategory: "",
-    short_description: "",
-    description: "",
-    meta_title: "",
-    meta_description: "",
-    meta_keywords: "",
-    mrp_price: "",
-    selling_price: "",
-    stock: "",
-    weight: "",
-    weight_unit: "",
-    dimensions: "",
+    parentCategory: '',
+    short_description: '',
+    description: '',
+    meta_title: '',
+    meta_description: '',
+    meta_keywords: '',
+    mrp_price: '',
+    selling_price: '',
+    stock: '',
+    weight: '',
+    weight_unit: '',
+    dimensions: '',
     featuredProduct: false,
     isTrending: false,
     isNewArrival: false,
-    tags: "",
-    status: "",
-    discount: "",
+    tags: '',
+    status: '',
+    discount: '',
   });
 
   const [images, setImages] = useState([]);
   const [newImages, setNewImages] = useState([]);
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(false);
 
   useEffect(() => {
-    if (existingProduct) {
-      setProduct({
-        productName: existingProduct.data.productName,
-        productUrl: existingProduct.data.productUrl,
-        brand: existingProduct.data.brand,
-        sizes: existingProduct.data.sizes,
-        colors: existingProduct.data.colors,
-        parentCategory: existingProduct.data.parentCategory,
-        short_description: existingProduct.data.short_description,
-        description: existingProduct.data.description,
-        meta_title: existingProduct.data.meta_title,
-        meta_description: existingProduct.data.meta_description,
-        meta_keywords: existingProduct.data.meta_keywords,
-        mrp_price: existingProduct.data.mrp_price,
-        selling_price: existingProduct.data.selling_price,
-        stock: existingProduct.data.stock,
-        weight: existingProduct.data.weight,
-        weight_unit: existingProduct.data.weight_unit,
-        dimensions: existingProduct.data.dimensions,
-        featuredProduct: existingProduct.data.featuredProduct,
-        isTrending: existingProduct.data.isTrending,
-        isNewArrival: existingProduct.data.isNewArrival,
-        tags: existingProduct.data.tags,
-        status: existingProduct.data.status,
-        discount: existingProduct.data.discount,
-      });
-      setImages(existingProduct.data.images.map((image) => image.url));
+    if (productData) {
+      const { data } = productData;
+      setFormData(data);
+      setImages(data.images || []);
     }
-  }, [existingProduct]);
-
-  console.log("set", product);
+  }, [productData]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setProduct((prev) => ({
+    setFormData(prev => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: type === 'checkbox' ? checked : value
     }));
   };
 
-  const handleSizeChange = (index, field, value) => {
-    const newSizes = [...product.sizes];
-    newSizes[index] = {
-      ...newSizes[index],
-      [field]: field === "stock" ? parseInt(value) : value,
-    };
-    setProduct((prev) => ({ ...prev, sizes: newSizes }));
+  const handleArrayChange = (e, index, field) => {
+    const { value } = e.target;
+    setFormData(prev => {
+      const newArray = [...prev[field]];
+      newArray[index] = { ...newArray[index], [e.target.name]: value };
+      return { ...prev, [field]: newArray };
+    });
   };
 
-  const handleColorChange = (index, field, value) => {
-    const newColors = [...product.colors];
-    newColors[index] = { ...newColors[index], [field]: value };
-    setProduct((prev) => ({ ...prev, colors: newColors }));
-  };
-
-  const addSize = () => {
-    setProduct((prev) => ({
+  const addArrayItem = (field) => {
+    setFormData(prev => ({
       ...prev,
-      sizes: [...prev.sizes, { size: "", stock: 0 }],
+      [field]: [...prev[field], field === 'sizes' ? { size: '', stock: '' } : { colorName: '', colorCode: '' }]
     }));
   };
 
-  const removeSize = (index) => {
-    setProduct((prev) => ({
+  const removeArrayItem = (index, field) => {
+    setFormData(prev => ({
       ...prev,
-      sizes: prev.sizes.filter((_, i) => i !== index),
-    }));
-  };
-
-  const addColor = () => {
-    setProduct((prev) => ({
-      ...prev,
-      colors: [...prev.colors, { colorName: "", colorCode: "" }],
-    }));
-  };
-
-  const removeColor = (index) => {
-    setProduct((prev) => ({
-      ...prev,
-      colors: prev.colors.filter((_, i) => i !== index),
+      [field]: prev[field].filter((_, i) => i !== index)
     }));
   };
 
   const handleImageChange = (e) => {
-    if (e.target.files) {
-      const files = Array.from(e.target.files);
-      setNewImages((prev) => [...prev, ...files]);
-    }
+    const files = Array.from(e.target.files);
+    setNewImages(prev => [...prev, ...files]);
   };
 
-  const removeImage = (index, isNewImage = false) => {
-    if (isNewImage) {
-      setNewImages((prev) => prev.filter((_, i) => i !== index));
+  const removeImage = (index, isNew = false) => {
+    if (isNew) {
+      setNewImages(prev => prev.filter((_, i) => i !== index));
     } else {
-      setImages((prev) => prev.filter((_, i) => i !== index));
+      setImages(prev => prev.filter((_, i) => i !== index));
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null);
-    setSuccess(false);
+    const submitData = new FormData();
 
-    const formData = new FormData();
-    Object.entries(product).forEach(([key, value]) => {
-      if (key === "sizes" || key === "colors") {
-        formData.append(key, JSON.stringify(value));
-      } else if (typeof value !== "undefined" && value !== null) {
-        formData.append(key, value.toString());
+    Object.keys(formData).forEach(key => {
+      if (key === 'sizes' || key === 'colors') {
+        submitData.append(key, JSON.stringify(formData[key]));
+      } else if (formData[key] !== null && formData[key] !== undefined) {
+        submitData.append(key, formData[key]);
       }
     });
 
-    newImages.forEach((image) => {
-      formData.append("images", image);
+    images.forEach(img => {
+      submitData.append('existingImages', JSON.stringify(img));
+    });
+
+    newImages.forEach(img => {
+      submitData.append('images', img);
     });
 
     try {
-      const response = await updateProduct({ id, formData });
-      console.log("Product updated:", response);
-      if (response.success) {
-        toast.success(response.message || "Product updated successfully");
-      }
-      setSuccess(true);
+      await updateProduct({ id, data: submitData }).unwrap();
+      toast.success('Product updated successfully');
+      navigate('/products');
     } catch (err) {
-      setError("An error occurred while updating the product.");
+      toast.error(err.data?.message || 'Failed to update product');
     }
   };
 
-  if (isLoadingProduct) {
-    return <div>Loading product data...</div>;
-  }
+  if (isLoading) return <div className="flex justify-center items-center h-screen bg-gray-800"><Loader className="animate-spin text-white" size={48} /></div>;
+  if (error) return <div className="text-red-500 text-center">Error: {error.message}</div>;
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-transparent -lg shadow-md">
-      <h2 className="text-2xl font-bold mt-6 mb-6 font-mono">UPDATE PRODUCT DETAILS</h2>
-      <form onSubmit={handleSubmit} className="space-y-6">
+    <div className="min-h-screen p-8">
+      <form onSubmit={handleSubmit} className="max-w-4xl mx-auto p-8 ">
+        <h2 className="text-3xl font-bold mb-6 text-white font-mono">UPDATE PRODUCT</h2>
+        
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label
-              htmlFor="productName"
-              className="block text-sm font-medium text-gray-50"
-            >
-              Product Name
-            </label>
-            <input
-              type="text"
-              id="productName"
-              name="productName"
-              value={product.productName}
-              onChange={handleChange}
-              required
-              className="mt-1 block w-full border-gray-300 bg-gray-700 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            />
+            <label className="block text-sm font-medium text-gray-300">Product Name</label>
+            <input type="text" name="productName" value={formData.productName} onChange={handleChange} className="mt-1 block w-full bg-gray-700 border border-gray-600 shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
           </div>
+          
           <div>
-            <label
-              htmlFor="productUrl"
-              className="block text-sm font-medium text-gray-50"
-            >
-              Product URL
-            </label>
-            <input
-              type="text"
-              id="productUrl"
-              name="productUrl"
-              value={product.productUrl}
-              onChange={handleChange}
-              required
-              className="mt-1 block w-full border-gray-300 bg-gray-700 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            />
+            <label className="block text-sm font-medium text-gray-300">Product URL</label>
+            <input type="text" name="productUrl" value={formData.productUrl} onChange={handleChange} className="mt-1 block w-full bg-gray-700 border border-gray-600 shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
           </div>
+          
           <div>
-            <label
-              htmlFor="brand"
-              className="block text-sm font-medium text-gray-50"
-            >
-              Brand
-            </label>
-            <input
-              type="text"
-              id="brand"
-              name="brand"
-              value={product.brand}
-              onChange={handleChange}
-              className="mt-1 block w-full border-gray-300 bg-gray-700 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            />
+            <label className="block text-sm font-medium text-gray-300">Brand</label>
+            <input type="text" name="brand" value={formData.brand} onChange={handleChange} className="mt-1 block w-full bg-gray-700 border border-gray-600 shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
           </div>
+          
           <div>
-            <label
-              htmlFor="parentCategory"
-              className="block text-sm font-medium text-gray-50"
-            >
-              Parent Category
-            </label>
-            <input
-              type="text"
-              id="parentCategory"
-              name="parentCategory"
-              value={product.parentCategory}
-              onChange={handleChange}
-              required
-              className="mt-1 block w-full border-gray-300 bg-gray-700 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            />
+            <label className="block text-sm font-medium text-gray-300">Parent Category</label>
+            <input type="text" name="parentCategory" value={formData.parentCategory} onChange={handleChange} className="mt-1 block w-full bg-gray-700 border border-gray-600 shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
           </div>
+          
           <div>
-            <label
-              htmlFor="short_description"
-              className="block text-sm font-medium text-gray-50"
-            >
-              Short Description
-            </label>
-            <textarea
-              id="short_description"
-              name="short_description"
-              value={product.short_description}
-              onChange={handleChange}
-              required
-              className="mt-1 block w-full border-gray-300 bg-gray-700 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            />
+            <label className="block text-sm font-medium text-gray-300">Short Description</label>
+            <textarea name="short_description" value={formData.short_description} onChange={handleChange} className="mt-1 block w-full bg-gray-700 border border-gray-600 shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"></textarea>
           </div>
+          
           <div>
-            <label
-              htmlFor="description"
-              className="block text-sm font-medium text-gray-50"
-            >
-              Description
-            </label>
-            <textarea
-              id="description"
-              name="description"
-              value={product.description}
-              onChange={handleChange}
-              required
-              className="mt-1 block w-full border-gray-300 bg-gray-700 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            />
+            <label className="block text-sm font-medium text-gray-300">Description</label>
+            <textarea name="description" value={formData.description} onChange={handleChange} className="mt-1 block w-full bg-gray-700 border border-gray-600 shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"></textarea>
           </div>
+          
           <div>
-            <label
-              htmlFor="meta_title"
-              className="block text-sm font-medium text-gray-50"
-            >
-              Meta Title
-            </label>
-            <input
-              type="text"
-              id="meta_title"
-              name="meta_title"
-              value={product.meta_title}
-              onChange={handleChange}
-              required
-              className="mt-1 block w-full border-gray-300 bg-gray-700 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            />
+            <label className="block text-sm font-medium text-gray-300">Meta Title</label>
+            <input type="text" name="meta_title" value={formData.meta_title} onChange={handleChange} className="mt-1 block w-full bg-gray-700 border border-gray-600 shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
           </div>
+          
           <div>
-            <label
-              htmlFor="meta_description"
-              className="block text-sm font-medium text-gray-50"
-            >
-              Meta Description
-            </label>
-            <textarea
-              id="meta_description"
-              name="meta_description"
-              value={product.meta_description}
-              onChange={handleChange}
-              required
-              className="mt-1 block w-full border-gray-300 bg-gray-700 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            />
+            <label className="block text-sm font-medium text-gray-300">Meta Description</label>
+            <textarea name="meta_description" value={formData.meta_description} onChange={handleChange} className="mt-1 block w-full bg-gray-700 border border-gray-600 shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"></textarea>
           </div>
+          
           <div>
-            <label
-              htmlFor="meta_keywords"
-              className="block text-sm font-medium text-gray-50"
-            >
-              Meta Keywords
-            </label>
-            <input
-              type="text"
-              id="meta_keywords"
-              name="meta_keywords"
-              value={product.meta_keywords}
-              onChange={handleChange}
-              required
-              className="mt-1 block w-full border-gray-300 bg-gray-700 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            />
+            <label className="block text-sm font-medium text-gray-300">Meta Keywords</label>
+            <input type="text" name="meta_keywords" value={formData.meta_keywords} onChange={handleChange} className="mt-1 block w-full bg-gray-700 border border-gray-600 shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
           </div>
+          
           <div>
-            <label
-              htmlFor="mrp_price"
-              className="block text-sm font-medium text-gray-50"
-            >
-              MRP Price
-            </label>
-            <input
-              type="number"
-              id="mrp_price"
-              name="mrp_price"
-              value={product.mrp_price}
-              onChange={handleChange}
-              required
-              className="mt-1 block w-full border-gray-300 bg-gray-700 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            />
+            <label className="block text-sm font-medium text-gray-300">MRP Price</label>
+            <input type="number" name="mrp_price" value={formData.mrp_price} onChange={handleChange} className="mt-1 block w-full bg-gray-700 border border-gray-600 shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
           </div>
+          
           <div>
-            <label
-              htmlFor="selling_price"
-              className="block text-sm font-medium text-gray-50"
-            >
-              Selling Price
-            </label>
-            <input
-              type="number"
-              id="selling_price"
-              name="selling_price"
-              value={product.selling_price}
-              onChange={handleChange}
-              required
-              className="mt-1 block w-full border-gray-300 bg-gray-700 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            />
+            <label className="block text-sm font-medium text-gray-300">Selling Price</label>
+            <input type="number" name="selling_price" value={formData.selling_price} onChange={handleChange} className="mt-1 block w-full bg-gray-700 border border-gray-600 shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
           </div>
+          
           <div>
-            <label
-              htmlFor="stock"
-              className="block text-sm font-medium text-gray-50"
-            >
-              Stock
-            </label>
-            <input
-              type="number"
-              id="stock"
-              name="stock"
-              value={product.stock}
-              onChange={handleChange}
-              required
-              className="mt-1 block w-full border-gray-300 bg-gray-700 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            />
+            <label className="block text-sm font-medium text-gray-300">Stock</label>
+            <input type="number" name="stock" value={formData.stock} onChange={handleChange} className="mt-1 block w-full bg-gray-700 border border-gray-600 shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
           </div>
+          
           <div>
-            <label
-              htmlFor="weight"
-              className="block text-sm font-medium text-gray-50"
-            >
-              Weight
-            </label>
-            <input
-              type="text"
-              id="weight"
-              name="weight"
-              value={product.weight}
-              onChange={handleChange}
-              className="mt-1 block w-full border-gray-300 bg-gray-700 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            />
+            <label className="block text-sm font-medium text-gray-300">Weight</label>
+            <input type="text" name="weight" value={formData.weight} onChange={handleChange} className="mt-1 block w-full bg-gray-700 border border-gray-600 shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
           </div>
+          
           <div>
-            <label
-              htmlFor="weight_unit"
-              className="block text-sm font-medium text-gray-50"
-            >
-              Weight Unit
-            </label>
-            <input
-              type="text"
-              id="weight_unit"
-              name="weight_unit"
-              value={product.weight_unit}
-              onChange={handleChange}
-              className="mt-1 block w-full border-gray-300 bg-gray-700 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            />
+            <label className="block text-sm font-medium text-gray-300">Weight Unit</label>
+            <input type="text" name="weight_unit" value={formData.weight_unit} onChange={handleChange} className="mt-1 block w-full bg-gray-700 border border-gray-600 shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
           </div>
+          
           <div>
-            <label
-              htmlFor="dimensions"
-              className="block text-sm font-medium text-gray-50"
-            >
-              Dimensions
-            </label>
-            <input
-              type="text"
-              id="dimensions"
-              name="dimensions"
-              value={product.dimensions}
-              onChange={handleChange}
-              className="mt-1 block w-full border-gray-300 bg-gray-700 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            />
+            <label className="block text-sm font-medium text-gray-300">Dimensions</label>
+            <input type="text" name="dimensions" value={formData.dimensions} onChange={handleChange} className="mt-1 block w-full bg-gray-700 border border-gray-600 shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
           </div>
+          
           <div>
-            <label
-              htmlFor="tags"
-              className="block text-sm font-medium text-gray-50"
-            >
-              Tags
-            </label>
-            <input
-              type="text"
-              id="tags"
-              name="tags"
-              value={product.tags}
-              onChange={handleChange}
-              className="mt-1 block w-full border-gray-300 bg-gray-700 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            />
+            <label className="block text-sm font-medium text-gray-300">Tags</label>
+            <input type="text" name="tags" value={formData.tags} onChange={handleChange} className="mt-1 block w-full bg-gray-700 border border-gray-600 shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
           </div>
+          
           <div>
-            <label
-              htmlFor="discount"
-              className="block text-sm font-medium text-gray-50"
-            >
-              Discount
-            </label>
-            <input
-              type="number"
-              id="discount"
-              name="discount"
-              value={product.discount}
-              onChange={handleChange}
-              className="mt-1 block w-full border-gray-300 bg-gray-700 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            />
-          </div>
-          <div>
-            <label
-              htmlFor="status"
-              className="block text-sm font-medium text-gray-50"
-            >
-              Status
-            </label>
-            <select
-              id="status"
-              name="status"
-              value={product.status}
-              onChange={handleChange}
-              className="mt-1 block w-full border-gray-300 bg-gray-700 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            >
-              <option value="Active">Active</option>
-              <option value="Inactive">Inactive</option>
+            <label className="block text-sm font-medium text-gray-300">Status</label>
+            <select name="status" value={formData.status} onChange={handleChange} className="mt-1 block w-full bg-gray-700 border border-gray-600 shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
               <option value="draft">Draft</option>
             </select>
           </div>
-        </div>
-
-        <div className="space-y-2">
+          
           <div>
-            <input
-              type="checkbox"
-              id="featuredProduct"
-              name="featuredProduct"
-              checked={product.featuredProduct}
-              onChange={handleChange}
-              className=" border-gray-300 bg-gray-700 p-2 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50"
-            />
-            <label
-              htmlFor="featuredProduct"
-              className="ml-2 text-sm text-gray-50"
-            >
-              Featured Product
-            </label>
-          </div>
-          <div>
-            <input
-              type="checkbox"
-              id="isTrending"
-              name="isTrending"
-              checked={product.isTrending}
-              onChange={handleChange}
-              className=" border-gray-300 bg-gray-700 p-2 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50"
-            />
-            <label htmlFor="isTrending" className="ml-2 text-sm text-gray-50">
-              Trending
-            </label>
-          </div>
-          <div>
-            <input
-              type="checkbox"
-              id="isNewArrival"
-              name="isNewArrival"
-              checked={product.isNewArrival}
-              onChange={handleChange}
-              className=" border-gray-300 bg-gray-700 p-2 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50"
-            />
-            <label htmlFor="isNewArrival" className="ml-2 text-sm text-gray-50">
-              New Arrival
-            </label>
+            <label className="block text-sm font-medium text-gray-300">Discount</label>
+            <input type="number" name="discount" value={formData.discount} onChange={handleChange} className="mt-1 block w-full bg-gray-700 border border-gray-600 shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
           </div>
         </div>
-
-        <div>
-          <h3 className="font-semibold mb-2">Sizes</h3>
-          {product.sizes?.map((size, index) => (
-            <div key={index} className="flex items-center space-x-2 mb-2">
-              <input
-                type="text"
-                placeholder="Size"
-                value={size.size || ""}
-                onChange={(e) =>
-                  handleSizeChange(index, "size", e.target.value)
-                }
-                className="mt-1 block w-full border-gray-300 bg-gray-700 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-              />
-              <input
-                type="number"
-                placeholder="Stock"
-                value={size.stock || ""}
-                onChange={(e) =>
-                  handleSizeChange(index, "stock", e.target.value)
-                }
-                className="mt-1 block w-full border-gray-300 bg-gray-700 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-              />
-              <button
-                type="button"
-                onClick={() => removeSize(index)}
-                className="px-2 py-1 bg-red-500 text-white "
-              >
-                Remove
-              </button>
+        
+        <div className="mt-6">
+          <label className="block text-sm font-medium text-gray-300 mb-2">Sizes</label>
+          {formData.sizes.map((size, index) => (
+            <div key={index} className="flex items-center mb-2">
+              <input type="text" name="size" value={size.size} onChange={(e) => handleArrayChange(e, index, 'sizes')} placeholder="Size" className="mr-2 bg-gray-700 border border-gray-600 shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+              <input type="number" name="stock" value={size.stock} onChange={(e) => handleArrayChange(e, index, 'sizes')} placeholder="Stock" className="mr-2 bg-gray-700 border border-gray-600 shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+              <button type="button" onClick={() => removeArrayItem(index, 'sizes')} className="text-red-500"><XCircle size={20} /></button>
             </div>
           ))}
-          <button
-            type="button"
-            onClick={addSize}
-            className="mt-2 px-4 py-2 bg-blue-500 text-white "
-          >
+          <button type="button" onClick={() => addArrayItem('sizes')} className="mt-2 px-4 py-2 border border-transparent shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
             Add Size
           </button>
         </div>
-
-        <div>
-          <h3 className="font-semibold mb-2">Colors</h3>
-          {product.colors?.map((color, index) => (
-            <div key={index} className="flex items-center space-x-2 mb-2">
-              <input
-                type="text"
-                placeholder="Color Name"
-                value={color.colorName || ""}
-                onChange={(e) =>
-                  handleColorChange(index, "colorName", e.target.value)
-                }
-                className="mt-1 block w-full border-gray-300 bg-gray-700 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-              />
-              <input
-                type="color"
-                value={color.colorCode || "#000000"}
-                onChange={(e) =>
-                  handleColorChange(index, "colorCode", e.target.value)
-                }
-                className="w-12 h-10"
-              />
-              <button
-                type="button"
-                onClick={() => removeColor(index)}
-                className="px-2 py-1 bg-red-500 text-white "
-              >
-                Remove
-              </button>
+        
+        <div className="mt-6">
+          <label className="block text-sm font-medium text-gray-300 mb-2">Colors</label>
+          {formData.colors.map((color, index) => (
+            <div key={index} className="flex items-center mb-2">
+              <input type="text" name="colorName" value={color.colorName} onChange={(e) => handleArrayChange(e, index, 'colors')} placeholder="Color Name" className="mr-2 bg-gray-700 border border-gray-600 shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+              <input type="color" name="colorCode" value={color.colorCode} onChange={(e) => handleArrayChange(e, index, 'colors')} className="mr-2 h-10 w-10 bg-gray-700 border border-gray-600 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+              <button type="button" onClick={() => removeArrayItem(index, 'colors')} className="text-red-500"><XCircle size={20} /></button>
             </div>
           ))}
-          <button
-            type="button"
-            onClick={addColor}
-            className="mt-2 px-4 py-2 bg-blue-500 text-white "
-          >
+          <button type="button" onClick={() => addArrayItem('colors')} className="mt-2 px-4 py-2 border border-transparent shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
             Add Color
           </button>
         </div>
-
-        <div>
-          <h3 className="font-semibold mb-2">Images</h3>
-          <div className="flex flex-wrap gap-4 mb-2">
-            {images.map((image, index) => (
+        
+        <div className="mt-6">
+          <label className="block text-sm font-medium text-gray-300 mb-2">Images</label>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {images.map((img, index) => (
               <div key={index} className="relative">
-                <img
-                  src={image}
-                  alt={`Product ${index + 1}`}
-                  className="w-24 h-24 object-cover "
-                />
-                <button
-                  type="button"
-                  onClick={() => removeImage(index)}
-                  className="absolute top-0 right-0 bg-red-500 text-white -full w-6 h-6 flex items-center justify-center"
-                >
-                  X
+                <img src={img.url} alt={`Product ${index + 1}`} className="w-full h-32 object-cover" />
+                <button type="button" onClick={() => removeImage(index)} className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1">
+                  <XCircle size={20} />
                 </button>
               </div>
             ))}
-            {newImages.map((image, index) => (
+            {newImages.map((img, index) => (
               <div key={`new-${index}`} className="relative">
-                <img
-                  src={URL.createObjectURL(image)}
-                  alt={`New Product ${index + 1}`}
-                  className="w-24 h-24 object-cover "
-                />
-                <button
-                  type="button"
-                  onClick={() => removeImage(index, true)}
-                  className="absolute top-0 right-0 bg-red-500 text-white -full w-6 h-6 flex items-center justify-center"
-                >
-                  X
+                <img src={URL.createObjectURL(img)} alt={`New Product ${index + 1}`} className="w-full h-32 object-cover" />
+                <button type="button" onClick={() => removeImage(index, true)} className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1">
+                  <XCircle size={20} />
                 </button>
               </div>
             ))}
           </div>
-          <input
-            type="file"
-            onChange={handleImageChange}
-            multiple
-            accept="image/*"
-            className="mt-1 block w-full text-sm text-gray-500
-              file:mr-4 file:py-2 file:px-4
-              file:-full file:border-0
-              file:text-sm file:font-semibold
-              file:bg-blue-50 filefile:bg-blue-50 file:text-blue-700
-              hover:file:bg-blue-100"
-          />
+          <input type="file" onChange={handleImageChange} multiple accept="image/*" className="mt-2 block w-full text-sm text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-700" />
         </div>
-
-        {error && <div className="text-red-500">{error}</div>}
-        {success && (
-          <div className="text-green-500">Product updated successfully!</div>
-        )}
-
-        <button
-          type="submit"
-          disabled={isUpdating}
-          className="px-4 py-2 bg-green-500 text-white  hover:bg-green-600 disabled:opacity-50"
-        >
-          {isUpdating ? "Updating..." : "Update Product"}
-        </button>
+        
+        <div className="mt-6 space-y-2">
+          <div className="flex items-center">
+            <input type="checkbox" name="featuredProduct" checked={formData.featuredProduct} onChange={handleChange} className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" />
+            <label htmlFor="featuredProduct" className="ml-2 block text-sm text-gray-300">Featured Product</label>
+          </div>
+          <div className="flex items-center">
+            <input type="checkbox" name="isTrending" checked={formData.isTrending} onChange={handleChange} className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" />
+            <label htmlFor="isTrending" className="ml-2 block text-sm text-gray-300">Trending</label>
+          </div>
+          <div className="flex items-center">
+            <input type="checkbox" name="isNewArrival" checked={formData.isNewArrival} onChange={handleChange} className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" />
+            <label htmlFor="isNewArrival" className="ml-2 block text-sm text-gray-300">New Arrival</label>
+          </div>
+        </div>
+        
+        <div className="mt-8">
+          <button type="submit" disabled={isUpdating} className="w-full px-4 py-2 border border-transparent shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed">
+            {isUpdating ? <Loader className="animate-spin mx-auto" size={24} /> : 'Update Product'}
+          </button>
+        </div>
       </form>
     </div>
   );
 };
 
 export default UpdateProduct;
+
