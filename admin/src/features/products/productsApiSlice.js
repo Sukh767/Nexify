@@ -21,10 +21,10 @@ export const productApiSlice = authApi.injectEndpoints({
             }),
         }),
         updateProduct: builder.mutation({
-            query: ({ id, product }) => ({
+            query: ({ id, data }) => ({
                 url: `${PRODUCT_URL}/${id}`,
                 method: "PUT",
-                body: product,
+                body: data,
             }),
         }),
         deleteProduct: builder.mutation({

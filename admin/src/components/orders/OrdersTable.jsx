@@ -7,6 +7,7 @@ import {
 } from "../../features/orders/orderApiSlice";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
+import ErrorMessage from '../common/ErrorMessage';
 
 const OrdersTable = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -87,13 +88,16 @@ const OrdersTable = () => {
   };
 
   if (isLoading)
-    return <div className="text-center text-white text-2xl">Loading...</div>;
-  if (error)
     return (
-      <div className="text-center text-red-500 text-2xl">
-        Error: {error.message}
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-[#A0E9FF]"></div>
       </div>
-    );
+  );
+  if (error) return (
+    <>
+    <ErrorMessage message={error.error} />
+    </>
+  )
 
   return (
     <motion.div

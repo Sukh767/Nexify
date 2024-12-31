@@ -336,6 +336,8 @@ const updateProduct = async (req, res) => {
     discount,
   } = req.body;
 
+  console.log("Request Body:", req.body);
+
   try {
     const product = await Product.findById(id);
     if (!product) {
@@ -397,12 +399,43 @@ const updateProduct = async (req, res) => {
       // Retain existing images if no new images are uploaded
       data.images = product.images;
     }
+// Ensure the product is in stock if status is Active
+//data.stock = data.stock > 0 ? data.stock : 0;
+    // Update the product status
+    if (status === "Active") {
+      product.status = true
+    } else if(status === "Inactive") {
+      product.status = false
+    }
 
     const updatedProduct = await Product.findByIdAndUpdate(
-      id,
-      { $set: data },
-      { new: true }
+     product.productName = productName,
+      product.productUrl = productUrl,
+      product.brand = brand,
+      product.sizes = sizes,
+      product.colors = colors,
+      product.parentCategory = parentCategory,
+      product.short_description = short_description,
+      product.description = description,
+      product.meta_title = meta_title,
+      product.meta_description = meta_description,
+      product.meta_keywords = meta_keywords,
+      product.price_history = price_history,
+      product.mrp_price = mrp_price,
+      product.selling_price = selling_price,
+      product.stock = stock,
+      product.weight = weight,
+      product.weight_unit = weight_unit,
+      product.dimensions = dimensions,
+      product.featuredProduct = featuredProduct,
+      product.isTrending = isTrending,
+      product.isNewArrival = isNewArrival,
+      product.tags = tags,
+      product.status = status,
+      product.discount = discount,
     );
+
+    await updatedProduct.save();
 
     if (!updatedProduct) {
       return res
@@ -420,7 +453,6 @@ const updateProduct = async (req, res) => {
     res.status(500).json({ success: false, message: "Internal server error." });
   }
 };
-
 
 //Get the searched products
 const getSearchedProducts = async (req, res) => {

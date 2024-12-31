@@ -48,13 +48,16 @@ const UsersTable = () => {
       }
     } catch (error) {
       console.error("Update user status error:", error);
-      toast.error("Failed to update user status");
+      toast.error(error.message || "Failed to update user status");
     }
   };
 
   const handleRoleChange = async (id, role) => {
     try {
-      const response = await updateUserRole({ id, role }).unwrap();
+      console.log("role", role);
+      const isAdmin = role === "Admin" ? true : false;
+      console.log("isAdmin", isAdmin);
+      const response = await updateUserRole({ id, isAdmin }).unwrap();
       if (response.success) {
         toast.success(response.message || "User role updated successfully");
         setEditingUser(null);
@@ -219,9 +222,15 @@ const UsersTable = () => {
                       ))}
                     </select>
                   ) : (
+                    <>
                     <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-800 text-blue-100">
-                      {user.isAdmin ? "Admin" : "User"}
+                      {user.isAdmin ? "Admin " : "User"}
+                    </span>&nbsp;
+                    <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-600 text-gray-50">
+                      {user.isSupreme ? "Supreme" : ""}
                     </span>
+                    </>
+                    
                   )}
                 </td>
 

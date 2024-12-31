@@ -72,16 +72,6 @@ const SIDEBAR_ITEMS = [
     label: "Orders",
     children: [
       { key: "all-orders", label: "All Orders", path: "/orders" },
-      {
-        key: "pending-orders",
-        label: "Pending Orders",
-        path: "/orders/pending",
-      },
-      {
-        key: "completed-orders",
-        label: "Completed Orders",
-        path: "/orders/completed",
-      },
     ],
   },
   {

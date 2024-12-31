@@ -7,6 +7,7 @@ import {
 } from "../../features/products/productsApiSlice";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
+import ErrorMessage from '../common/ErrorMessage';
 
 const ProductsTable = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -64,10 +65,14 @@ const ProductsTable = () => {
   if (isLoading)
     return (
       <div className="flex justify-center items-center h-screen">
-        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-[#ff6347]"></div>
+        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-[#A0E9FF]"></div>
       </div>
     );
-  if (error) return <div className="text-red-500">Error: {error.message}</div>;
+  if (error) return (
+    <>
+    <ErrorMessage message={error.message} />
+    </>
+  )
 
   return (
     <motion.div
