@@ -2,18 +2,22 @@ import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 // Create express app
 const app = express();
 
 // Define allowed origins
-const allowedOrigins = ["http://localhost:5173", "http://localhost:5174"];
+const allowedOrigins = [process.env.ADMIN_SIDE_URL, process.env.CLIENT_SIDE_URL];
 
 // Configure CORS
 app.use(
   cors({
     origin: function (origin, callback) {
       if (!origin || allowedOrigins.includes(origin)) {
+        //console.log("Allowed Origins:", allowedOrigins);
         callback(null, true); // Allow the request
       } else {
         callback(new Error("Not allowed by CORS")); // Block the request

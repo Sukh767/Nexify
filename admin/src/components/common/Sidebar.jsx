@@ -43,7 +43,7 @@ const SIDEBAR_ITEMS = [
   },
   {
     key: "categories",
-    icon: <Layers style={{ ...iconStyle, color: "#638C6D" }} />,
+    icon: <Layers style={{ ...iconStyle, color: "#5FBDFF" }} />,
     label: "Categories",
     children: [
       { key: "all-categories", label: "All Categories", path: "/categories" },
@@ -132,7 +132,7 @@ const SIDEBAR_ITEMS = [
   },
   {
     key: "banner",
-    icon: <Dock style={{ ...iconStyle, color: "#0D7C66" }} />,
+    icon: <Dock style={{ ...iconStyle, color: "#118B50" }} />,
     label: "Banner",
     children: [
       { key: "banners-view", label: "All Banner", path: "/banner" },

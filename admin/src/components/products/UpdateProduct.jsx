@@ -179,7 +179,7 @@ const UpdateProduct = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-transparent rounded-lg shadow-md">
+    <div className="max-w-4xl mx-auto p-6 bg-transparent -lg shadow-md">
       <h2 className="text-2xl font-bold mt-6 mb-6 font-mono">UPDATE PRODUCT DETAILS</h2>
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -197,7 +197,7 @@ const UpdateProduct = () => {
               value={product.productName}
               onChange={handleChange}
               required
-              className="mt-1 block w-full rounded-md border-gray-300 bg-gray-800 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+              className="mt-1 block w-full border-gray-300 bg-gray-700 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
             />
           </div>
           <div>
@@ -214,7 +214,7 @@ const UpdateProduct = () => {
               value={product.productUrl}
               onChange={handleChange}
               required
-              className="mt-1 block w-full rounded-md border-gray-300 bg-gray-800 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+              className="mt-1 block w-full border-gray-300 bg-gray-700 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
             />
           </div>
           <div>
@@ -230,7 +230,7 @@ const UpdateProduct = () => {
               name="brand"
               value={product.brand}
               onChange={handleChange}
-              className="mt-1 block w-full rounded-md border-gray-300 bg-gray-800 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+              className="mt-1 block w-full border-gray-300 bg-gray-700 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
             />
           </div>
           <div>
@@ -247,7 +247,7 @@ const UpdateProduct = () => {
               value={product.parentCategory}
               onChange={handleChange}
               required
-              className="mt-1 block w-full rounded-md border-gray-300 bg-gray-800 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+              className="mt-1 block w-full border-gray-300 bg-gray-700 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
             />
           </div>
           <div>
@@ -263,7 +263,7 @@ const UpdateProduct = () => {
               value={product.short_description}
               onChange={handleChange}
               required
-              className="mt-1 block w-full rounded-md border-gray-300 bg-gray-800 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+              className="mt-1 block w-full border-gray-300 bg-gray-700 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
             />
           </div>
           <div>
@@ -279,7 +279,7 @@ const UpdateProduct = () => {
               value={product.description}
               onChange={handleChange}
               required
-              className="mt-1 block w-full rounded-md border-gray-300 bg-gray-800 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+              className="mt-1 block w-full border-gray-300 bg-gray-700 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
             />
           </div>
           <div>
@@ -296,7 +296,7 @@ const UpdateProduct = () => {
               value={product.meta_title}
               onChange={handleChange}
               required
-              className="mt-1 block w-full rounded-md border-gray-300 bg-gray-800 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+              className="mt-1 block w-full border-gray-300 bg-gray-700 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
             />
           </div>
           <div>
@@ -312,7 +312,7 @@ const UpdateProduct = () => {
               value={product.meta_description}
               onChange={handleChange}
               required
-              className="mt-1 block w-full rounded-md border-gray-300 bg-gray-800 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+              className="mt-1 block w-full border-gray-300 bg-gray-700 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
             />
           </div>
           <div>
@@ -329,7 +329,7 @@ const UpdateProduct = () => {
               value={product.meta_keywords}
               onChange={handleChange}
               required
-              className="mt-1 block w-full rounded-md border-gray-300 bg-gray-800 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+              className="mt-1 block w-full border-gray-300 bg-gray-700 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
             />
           </div>
           <div>
@@ -346,7 +346,7 @@ const UpdateProduct = () => {
               value={product.mrp_price}
               onChange={handleChange}
               required
-              className="mt-1 block w-full rounded-md border-gray-300 bg-gray-800 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+              className="mt-1 block w-full border-gray-300 bg-gray-700 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
             />
           </div>
           <div>
@@ -363,7 +363,7 @@ const UpdateProduct = () => {
               value={product.selling_price}
               onChange={handleChange}
               required
-              className="mt-1 block w-full rounded-md border-gray-300 bg-gray-800 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+              className="mt-1 block w-full border-gray-300 bg-gray-700 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
             />
           </div>
           <div>
@@ -380,7 +380,7 @@ const UpdateProduct = () => {
               value={product.stock}
               onChange={handleChange}
               required
-              className="mt-1 block w-full rounded-md border-gray-300 bg-gray-800 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+              className="mt-1 block w-full border-gray-300 bg-gray-700 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
             />
           </div>
           <div>
@@ -396,7 +396,7 @@ const UpdateProduct = () => {
               name="weight"
               value={product.weight}
               onChange={handleChange}
-              className="mt-1 block w-full rounded-md border-gray-300 bg-gray-800 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+              className="mt-1 block w-full border-gray-300 bg-gray-700 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
             />
           </div>
           <div>
@@ -412,7 +412,7 @@ const UpdateProduct = () => {
               name="weight_unit"
               value={product.weight_unit}
               onChange={handleChange}
-              className="mt-1 block w-full rounded-md border-gray-300 bg-gray-800 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+              className="mt-1 block w-full border-gray-300 bg-gray-700 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
             />
           </div>
           <div>
@@ -428,7 +428,7 @@ const UpdateProduct = () => {
               name="dimensions"
               value={product.dimensions}
               onChange={handleChange}
-              className="mt-1 block w-full rounded-md border-gray-300 bg-gray-800 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+              className="mt-1 block w-full border-gray-300 bg-gray-700 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
             />
           </div>
           <div>
@@ -444,7 +444,7 @@ const UpdateProduct = () => {
               name="tags"
               value={product.tags}
               onChange={handleChange}
-              className="mt-1 block w-full rounded-md border-gray-300 bg-gray-800 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+              className="mt-1 block w-full border-gray-300 bg-gray-700 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
             />
           </div>
           <div>
@@ -460,7 +460,7 @@ const UpdateProduct = () => {
               name="discount"
               value={product.discount}
               onChange={handleChange}
-              className="mt-1 block w-full rounded-md border-gray-300 bg-gray-800 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+              className="mt-1 block w-full border-gray-300 bg-gray-700 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
             />
           </div>
           <div>
@@ -475,7 +475,7 @@ const UpdateProduct = () => {
               name="status"
               value={product.status}
               onChange={handleChange}
-              className="mt-1 block w-full rounded-md border-gray-300 bg-gray-800 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+              className="mt-1 block w-full border-gray-300 bg-gray-700 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
             >
               <option value="Active">Active</option>
               <option value="Inactive">Inactive</option>
@@ -492,7 +492,7 @@ const UpdateProduct = () => {
               name="featuredProduct"
               checked={product.featuredProduct}
               onChange={handleChange}
-              className="rounded border-gray-300 bg-gray-800 p-2 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50"
+              className=" border-gray-300 bg-gray-700 p-2 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50"
             />
             <label
               htmlFor="featuredProduct"
@@ -508,7 +508,7 @@ const UpdateProduct = () => {
               name="isTrending"
               checked={product.isTrending}
               onChange={handleChange}
-              className="rounded border-gray-300 bg-gray-800 p-2 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50"
+              className=" border-gray-300 bg-gray-700 p-2 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50"
             />
             <label htmlFor="isTrending" className="ml-2 text-sm text-gray-50">
               Trending
@@ -521,7 +521,7 @@ const UpdateProduct = () => {
               name="isNewArrival"
               checked={product.isNewArrival}
               onChange={handleChange}
-              className="rounded border-gray-300 bg-gray-800 p-2 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50"
+              className=" border-gray-300 bg-gray-700 p-2 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50"
             />
             <label htmlFor="isNewArrival" className="ml-2 text-sm text-gray-50">
               New Arrival
@@ -540,7 +540,7 @@ const UpdateProduct = () => {
                 onChange={(e) =>
                   handleSizeChange(index, "size", e.target.value)
                 }
-                className="mt-1 block w-full rounded-md border-gray-300 bg-gray-800 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                className="mt-1 block w-full border-gray-300 bg-gray-700 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
               />
               <input
                 type="number"
@@ -549,12 +549,12 @@ const UpdateProduct = () => {
                 onChange={(e) =>
                   handleSizeChange(index, "stock", e.target.value)
                 }
-                className="mt-1 block w-full rounded-md border-gray-300 bg-gray-800 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                className="mt-1 block w-full border-gray-300 bg-gray-700 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
               />
               <button
                 type="button"
                 onClick={() => removeSize(index)}
-                className="px-2 py-1 bg-red-500 text-white rounded"
+                className="px-2 py-1 bg-red-500 text-white "
               >
                 Remove
               </button>
@@ -563,7 +563,7 @@ const UpdateProduct = () => {
           <button
             type="button"
             onClick={addSize}
-            className="mt-2 px-4 py-2 bg-blue-500 text-white rounded"
+            className="mt-2 px-4 py-2 bg-blue-500 text-white "
           >
             Add Size
           </button>
@@ -580,7 +580,7 @@ const UpdateProduct = () => {
                 onChange={(e) =>
                   handleColorChange(index, "colorName", e.target.value)
                 }
-                className="mt-1 block w-full rounded-md border-gray-300 bg-gray-800 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                className="mt-1 block w-full border-gray-300 bg-gray-700 p-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
               />
               <input
                 type="color"
@@ -593,7 +593,7 @@ const UpdateProduct = () => {
               <button
                 type="button"
                 onClick={() => removeColor(index)}
-                className="px-2 py-1 bg-red-500 text-white rounded"
+                className="px-2 py-1 bg-red-500 text-white "
               >
                 Remove
               </button>
@@ -602,7 +602,7 @@ const UpdateProduct = () => {
           <button
             type="button"
             onClick={addColor}
-            className="mt-2 px-4 py-2 bg-blue-500 text-white rounded"
+            className="mt-2 px-4 py-2 bg-blue-500 text-white "
           >
             Add Color
           </button>
@@ -616,12 +616,12 @@ const UpdateProduct = () => {
                 <img
                   src={image}
                   alt={`Product ${index + 1}`}
-                  className="w-24 h-24 object-cover rounded"
+                  className="w-24 h-24 object-cover "
                 />
                 <button
                   type="button"
                   onClick={() => removeImage(index)}
-                  className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
+                  className="absolute top-0 right-0 bg-red-500 text-white -full w-6 h-6 flex items-center justify-center"
                 >
                   X
                 </button>
@@ -632,12 +632,12 @@ const UpdateProduct = () => {
                 <img
                   src={URL.createObjectURL(image)}
                   alt={`New Product ${index + 1}`}
-                  className="w-24 h-24 object-cover rounded"
+                  className="w-24 h-24 object-cover "
                 />
                 <button
                   type="button"
                   onClick={() => removeImage(index, true)}
-                  className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
+                  className="absolute top-0 right-0 bg-red-500 text-white -full w-6 h-6 flex items-center justify-center"
                 >
                   X
                 </button>
@@ -651,7 +651,7 @@ const UpdateProduct = () => {
             accept="image/*"
             className="mt-1 block w-full text-sm text-gray-500
               file:mr-4 file:py-2 file:px-4
-              file:rounded-full file:border-0
+              file:-full file:border-0
               file:text-sm file:font-semibold
               file:bg-blue-50 filefile:bg-blue-50 file:text-blue-700
               hover:file:bg-blue-100"
@@ -666,7 +666,7 @@ const UpdateProduct = () => {
         <button
           type="submit"
           disabled={isUpdating}
-          className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 disabled:opacity-50"
+          className="px-4 py-2 bg-green-500 text-white  hover:bg-green-600 disabled:opacity-50"
         >
           {isUpdating ? "Updating..." : "Update Product"}
         </button>
