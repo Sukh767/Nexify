@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Edit, Search, Trash2 } from "lucide-react";
+import { Edit, Search, SquarePen, Trash2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import {
   useDeleteProductMutation,
@@ -120,6 +120,9 @@ const ProductsTable = () => {
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                 Actions
               </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                Create Variant
+              </th>
             </tr>
           </thead>
 
@@ -190,6 +193,13 @@ const ProductsTable = () => {
                   >
                     <Trash2 size={18} />
                   </button>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                  <Link to={`/variants/add/${product._id}`}>
+                    <button className="text-indigo-400 hover:text-indigo-300 flex items-center gap-1">
+                    <SquarePen size={18} /> Create
+                    </button>
+                  </Link>
                 </td>
               </motion.tr>
             ))}

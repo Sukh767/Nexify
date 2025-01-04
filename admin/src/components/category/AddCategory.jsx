@@ -1,12 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { useCreateCategoryMutation } from '../../features/category/categoryApiSlice';
+import { useCreateCategoryMutation, useGetEmptyParentCategoryListQuery, } from '../../features/category/categoryApiSlice';
 import toast from 'react-hot-toast';
 
 const AddCategory = () => {
   const navigate = useNavigate();
+
   const [createCategory, { isLoading }] = useCreateCategoryMutation();
+  const { data: parentCategories } = useGetEmptyParentCategoryListQuery();
+
+  const [parentCategoryList, setParentCategoryList] = useState([]);
+
+  console.log(parentCategories);
   const [formData, setFormData] = useState({
     category_name: '',
     category_url: '',
@@ -19,6 +25,12 @@ const AddCategory = () => {
     banner: null
   });
   const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    if (parentCategories) {
+      setParentCategoryList(parentCategories.data);
+    }
+  },[parentCategories]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -203,7 +215,7 @@ const AddCategory = () => {
               <label className="block text-sm font-medium mb-2" htmlFor="parentCategory">
                 Parent Category
               </label>
-              <input
+              {/* <input
                 type="text"
                 id="parentCategory"
                 name="parentCategory"
@@ -211,7 +223,24 @@ const AddCategory = () => {
                 onChange={handleChange}
                 className="w-full px-3 py-2 bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter parent category (optional)"
-              />
+              /> */}
+              {/* select field */}
+              <select
+                id="parentCategory"
+                name="parentCategory"
+                value={formData.parentCategory}
+                onChange={handleChange}
+                className="w-full px-3 py-2 bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="">Select parent category</option>
+                {parentCategoryList.map((category) => {
+                  return (
+                    <option key={category._id} value={category._id}>
+                      {category.name}
+                    </option>
+                  );
+                })}
+              </select>
             </motion.div>
             <motion.div
               whileHover={{ scale: 1.02 }}

@@ -36,9 +36,9 @@ const productVariantSchema = mongoose.Schema(
       // required: true,
       default: null,
     },
-    color: {
+    colors: {
       type: String,
-      // required: true,
+      required: false,
       default: null,
     },
     parentCategory: {

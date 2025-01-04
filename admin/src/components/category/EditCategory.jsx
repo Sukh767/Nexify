@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useGetCategoryByIdQuery, useUpdateCategoryMutation } from '../../features/category/categoryApiSlice';
+import { useGetCategoryByIdQuery, useGetEmptyParentCategoryListQuery, useUpdateCategoryMutation } from '../../features/category/categoryApiSlice';
 import { X, XCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
 import ErrorMessage from '../common/ErrorMessage';
@@ -11,6 +11,9 @@ const EditCategory = () => {
   const navigate = useNavigate();
   const [updateCategory, { isLoading }] = useUpdateCategoryMutation();
   const { data: categoryData, isLoading: isFetching, error: fetchError, refetch:refetchCategory } = useGetCategoryByIdQuery(id);
+  const { data: parentCategories } = useGetEmptyParentCategoryListQuery();
+  
+    const [parentCategoryList, setParentCategoryList] = useState([]);
 
   const [formData, setFormData] = useState({
     category_name: '',
@@ -45,6 +48,12 @@ const EditCategory = () => {
       }
     }
   }, [categoryData]);
+
+    useEffect(() => {
+      if (parentCategories) {
+        setParentCategoryList(parentCategories.data);
+      }
+    },[parentCategories]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -96,11 +105,11 @@ const EditCategory = () => {
     try {
       const response = await updateCategory({ id, data: form }).unwrap();
       console.log('Category updated:', response);
+      refetchCategory();
       navigate('/categories');
       if(response.success) {
         toast.success('Category updated successfully');
       }
-        refetchCategory();
     } catch (err) {
         toast.error('Failed to update category');
       console.error('Failed to update the category:', err);
@@ -226,7 +235,7 @@ const EditCategory = () => {
               <label className="block text-sm font-medium mb-2" htmlFor="parentCategory">
                 Parent Category
               </label>
-              <input
+              {/* <input
                 type="text"
                 id="parentCategory"
                 name="parentCategory"
@@ -234,7 +243,24 @@ const EditCategory = () => {
                 onChange={handleChange}
                 className="w-full px-3 py-2 bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter parent category (optional)"
-              />
+              /> */}
+
+              <select
+                id="parentCategory"
+                name="parentCategory"
+                value={formData.parentCategory}
+                onChange={handleChange}
+                className="w-full px-3 py-2 bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="">Select parent category</option>
+                {parentCategoryList.map((category) => {
+                  return (
+                    <option key={category._id} value={category._id}>
+                      {category.name}
+                    </option>
+                  );
+                })}
+              </select>
             </div>
             <div>
               <label className="block text-sm font-medium mb-2" htmlFor="status">

@@ -112,7 +112,9 @@ const UpdateProduct = () => {
     });
 
     try {
-      await updateProduct({ id, data: submitData }).unwrap();
+     const res = await updateProduct({ id, data: submitData }).unwrap();
+     console.log(res);
+     
       toast.success('Product updated successfully');
       navigate('/products');
     } catch (err) {
@@ -212,9 +214,8 @@ const UpdateProduct = () => {
           <div>
             <label className="block text-sm font-medium text-gray-300">Status</label>
             <select name="status" value={formData.status} onChange={handleChange} className="mt-1 block w-full bg-gray-700 border border-gray-600 shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
-              <option value="active">Active</option>
-              <option value="inactive">Inactive</option>
-              <option value="draft">Draft</option>
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
             </select>
           </div>
           

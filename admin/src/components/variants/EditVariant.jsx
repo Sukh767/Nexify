@@ -23,7 +23,7 @@ const EditVariant = () => {
     product_id: "",
     brand: "",
     size: "",
-    color: "",
+    colors: "#000000", // Default colors set to black as hex string
     parentCategory: "",
     child_category: "",
     sort_description: "",
@@ -53,7 +53,7 @@ const EditVariant = () => {
         product_url: variantData.data.product_url,
         brand: variantData.data.brand,
         size: variantData.data.size,
-        color: variantData.data.color,
+        colors: variantData.data.colors || "#000000", // Use hex or fallback to black
         parentCategory: variantData.data.parentCategory,
         child_category: variantData.data.child_category,
         sort_description: variantData.data.sort_description,
@@ -100,36 +100,37 @@ const EditVariant = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
     const formDataToSend = new FormData();
-  
     // Combine existing and new images
     const allImages = [...banner, ...newImages];
-  
     allImages.forEach((image) => {
       if (typeof image === "string") {
-        // Append existing image URLs with the correct key expected by the backend
+        // Append existing image URLs
         formDataToSend.append("existingImages", image);
       } else {
         // Append new image files
         formDataToSend.append("banner", image);
       }
     });
-  
-    // Append other form fields
+
+    // Append other form fields, ensuring colors is sent as a hex string
     Object.keys(formData).forEach((key) => {
-      formDataToSend.append(key, formData[key]);
+      if (key === "colors") {
+        formDataToSend.append(key, formData[key]); // Send colors as a hex string
+      } else {
+        formDataToSend.append(key, formData[key]);
+      }
     });
-  
+
     try {
       const response = await updateVariant({
         variant: formDataToSend,
         id,
       }).unwrap();
-  
+
       console.log("Variant updated:", response);
-      if(response.status === "successful"){
-        toast.success( response.message ||"Variant updated successfully!");
+      if (response.status === "successful") {
+        toast.success(response.message || "Variant updated successfully!");
       }
       navigate("/variants");
       refetch();
@@ -138,7 +139,6 @@ const EditVariant = () => {
       toast.error(err.data?.message || "Failed to update variant.");
     }
   };
-  
 
   if (isLoadingVariant) {
     return (
@@ -253,17 +253,17 @@ const EditVariant = () => {
           <motion.div whileHover={{ scale: 1.02 }}>
             <label
               className="block text-sm font-medium text-gray-400 mb-2"
-              htmlFor="color"
+              htmlFor="colors"
             >
               Color
             </label>
             <input
-              type="text"
-              id="color"
-              name="color"
-              value={formData.color}
+              type="color"
+              id="colors"
+              name="colors"
+              value={formData.colors}
               onChange={handleChange}
-              className="w-full px-3 py-2 bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
             />
           </motion.div>
 

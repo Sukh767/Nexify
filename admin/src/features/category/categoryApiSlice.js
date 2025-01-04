@@ -34,6 +34,20 @@ export const categoryApiSlice = authApi.injectEndpoints({
             credentials: "include",
         }),
         }),
+        getEmptyParentCategoryList: builder.query({
+        query: () => ({
+            url: `${CATEGORY_URL}/single`,
+            method: "GET",
+            credentials: "include",
+        }),
+        }),
+        getChildCategoryList: builder.query({
+        query: () => ({
+            url: `${CATEGORY_URL}/child-category`,
+            method: "GET",
+            credentials: "include",
+        }),
+        }),
         deleteCategory: builder.mutation({
         query: (id) => ({
             url: `${CATEGORY_URL}/${id}`,
@@ -49,4 +63,6 @@ export const {
     useUpdateCategoryMutation,
     useDeleteCategoryMutation,
     useGetCategoryByIdQuery,
+    useGetEmptyParentCategoryListQuery,
+    useGetChildCategoryListQuery,
 } = categoryApiSlice;

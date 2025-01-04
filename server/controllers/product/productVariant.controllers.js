@@ -9,7 +9,7 @@ const createVariantProduct = async (req, res) => {
     product_id,
     brand,
     size,
-    color,
+    colors,
     parentCategory,
     child_category,
     sort_description,
@@ -70,7 +70,7 @@ const createVariantProduct = async (req, res) => {
       product_id,
       brand,
       size,
-      color,
+      colors,
       parentCategory,
       child_category,
       sort_description,
@@ -137,7 +137,7 @@ const updateVariantProductById = async (req, res) => {
     product_id,
     brand,
     size,
-    color,
+    colors,
     parentCategory,
     child_category,
     sort_description,
@@ -207,7 +207,7 @@ const updateVariantProductById = async (req, res) => {
     variant.product_id = product_id || variant.product_id;
     variant.brand = brand || variant.brand;
     variant.size = size || variant.size;
-    variant.color = color || variant.color;
+    variant.colors = colors || variant.colors;
     variant.parentCategory = parentCategory || variant.parentCategory;
     variant.child_category = child_category || variant.child_category;
     variant.sort_description = sort_description || variant.sort_description;

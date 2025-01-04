@@ -57,7 +57,7 @@ const ResetPassword = () => {
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-black opacity-50"></div>
-      </div> */}
+        </div> */}
 
       {/* Reset Password Form */}
       <div className="w-full max-w-md z-10 p-8 bg-white bg-opacity-10 backdrop-filter backdrop-blur-md shadow-xl">
