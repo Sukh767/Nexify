@@ -305,6 +305,7 @@ const deleteProduct = async (req, res) => {
   }
 };
 
+//TODO: Fix the stock update issue in updateProduct function (with sizes and stock)
 // Update a product by ID
 const updateProduct = async (req, res) => {
   const { id } = req.params;
@@ -336,9 +337,8 @@ const updateProduct = async (req, res) => {
     discount,
   } = req.body;
 
-  console.log("Request Body:", req.body);
-
   try {
+    // Find the existing product
     const product = await Product.findById(id);
     if (!product) {
       return res
@@ -346,12 +346,16 @@ const updateProduct = async (req, res) => {
         .json({ success: false, message: "Product not found." });
     }
 
-    const data = {
+    // Parse sizes and colors if they are strings
+    const parsedSizes = Array.isArray(sizes) ? sizes : JSON.parse(sizes || "[]");
+    const parsedColors = Array.isArray(colors) ? colors : JSON.parse(colors || "[]");
+
+    const updatedFields = {
       productName,
       productUrl,
       brand,
-      sizes: Array.isArray(sizes) ? sizes : JSON.parse(sizes || "[]"),
-      colors: Array.isArray(colors) ? colors : JSON.parse(colors || "[]"),
+      sizes: parsedSizes,
+      colors: parsedColors,
       parentCategory,
       short_description,
       description,
@@ -374,13 +378,13 @@ const updateProduct = async (req, res) => {
     };
 
     // Remove undefined or invalid fields from the data
-    Object.keys(data).forEach((key) => {
-      if (data[key] === undefined || data[key] === null) {
-        delete data[key];
+    Object.keys(updatedFields).forEach((key) => {
+      if (updatedFields[key] === undefined || updatedFields[key] === null) {
+        delete updatedFields[key];
       }
     });
 
-    // Handle images
+    // Handle images if provided
     if (req.files?.images?.length) {
       const uploadedImages = [];
       for (const file of req.files.images) {
@@ -393,49 +397,16 @@ const updateProduct = async (req, res) => {
         }
       }
       if (uploadedImages.length) {
-        data.images = uploadedImages; // Replace with new images
+        updatedFields.images = uploadedImages; // Replace images if new ones are uploaded
       }
-    } else {
-      // Retain existing images if no new images are uploaded
-      data.images = product.images;
-    }
-// Ensure the product is in stock if status is Active
-//data.stock = data.stock > 0 ? data.stock : 0;
-    // Update the product status
-    if (status === "Active") {
-      product.status = true
-    } else if(status === "Inactive") {
-      product.status = false
     }
 
+    // Update the product in the database
     const updatedProduct = await Product.findByIdAndUpdate(
-     product.productName = productName,
-      product.productUrl = productUrl,
-      product.brand = brand,
-      product.sizes = sizes,
-      product.colors = colors,
-      product.parentCategory = parentCategory,
-      product.short_description = short_description,
-      product.description = description,
-      product.meta_title = meta_title,
-      product.meta_description = meta_description,
-      product.meta_keywords = meta_keywords,
-      product.price_history = price_history,
-      product.mrp_price = mrp_price,
-      product.selling_price = selling_price,
-      product.stock = stock,
-      product.weight = weight,
-      product.weight_unit = weight_unit,
-      product.dimensions = dimensions,
-      product.featuredProduct = featuredProduct,
-      product.isTrending = isTrending,
-      product.isNewArrival = isNewArrival,
-      product.tags = tags,
-      product.status = status,
-      product.discount = discount,
+      id,
+      { $set: updatedFields },
+      { new: true, runValidators: true }
     );
-
-    await updatedProduct.save();
 
     if (!updatedProduct) {
       return res
@@ -453,6 +424,7 @@ const updateProduct = async (req, res) => {
     res.status(500).json({ success: false, message: "Internal server error." });
   }
 };
+
 
 //Get the searched products
 const getSearchedProducts = async (req, res) => {

@@ -400,6 +400,23 @@ const getAllFrontendCategoryList = async (req, res) => {
   }
 };
 
+const getChildCategoryList = async (req, res) => {
+  try {
+    const categories = await Category.find({ parentCategory: { $ne: [] } });  //get child category list
+
+    res
+      .status(200)
+      .json({ sucess: true, status: "successful", data: categories });
+  } catch (error) {
+    console.error("Error fetching categories:", error);
+    res.status(error.statusCode || 500).json({
+      sucess: false,
+      status: "failed",
+      error: error.message || "Internal Server Error",
+    });
+  }
+}
+
 export {
   createCategory,
   getCategoryList,
@@ -408,4 +425,5 @@ export {
   deleteCategoryById,
   updateCategoryById,
   getAllFrontendCategoryList,
+  getChildCategoryList,
 };

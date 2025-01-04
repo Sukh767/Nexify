@@ -23,8 +23,10 @@ const productSchema = mongoose.Schema(
       },
     ],
     brand: {
+      //type: mongoose.Schema.Types.ObjectId,
       type: String,
       default: null,
+      required: true
     },
     sizes: [
       {

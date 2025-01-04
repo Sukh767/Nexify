@@ -1,10 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Plus, Minus, Upload, X } from "lucide-react";
 import { useCreateProductMutation } from "../../features/products/productsApiSlice";
 import toast from "react-hot-toast";
+import { useGetChildCategoryListQuery, useGetEmptyParentCategoryListQuery } from "../../features/category/categoryApiSlice";
 
 const AddProduct = () => {
   const [createProduct, { isLoading }] = useCreateProductMutation();
+  const { data: parentCategories } = useGetEmptyParentCategoryListQuery();
+  const { data: childCategories } = useGetChildCategoryListQuery();
+  //console.log(childCategories)
+
+  const [parentCategoryList, setParentCategoryList] = useState([]);
+  const [childCategoryList, setChildCategoryList] = useState([]);
+
   const [product, setProduct] = useState({
     productName: "",
     productUrl: "",
@@ -34,6 +42,15 @@ const AddProduct = () => {
   const [images, setImages] = useState([]);
   const [errors, setErrors] = useState({});
   const [successMessage, setSuccessMessage] = useState("");
+
+    useEffect(() => {
+      if (parentCategories ) {
+        setParentCategoryList(parentCategories.data);
+      }
+      if (childCategories)
+      setChildCategoryList(childCategories.data);
+
+    },[parentCategories, childCategories]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -237,14 +254,30 @@ const AddProduct = () => {
           </div>
           <div>
             <label className="block mb-2 font-medium">Parent Category</label>
-            <input
+            {/* <input
               type="text"
               name="parentCategory"
               value={product.parentCategory}
               onChange={handleChange}
               placeholder="Select Parent Category"
               className="w-full bg-gray-700 p-2 "
-            />
+            /> */}
+            <select
+                id="parentCategory"
+                name="parentCategory"
+                value={product.parentCategory}
+                onChange={handleChange}
+                className="w-full px-3 py-2 bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="">Select parent category</option>
+                {parentCategoryList.map((category) => {
+                  return (
+                    <option key={category._id} value={category._id}>
+                      {category.name}
+                    </option>
+                  );
+                })}
+              </select>
             {errors.parentCategory && (
               <p className="text-red-500 text-sm mt-1">
                 {errors.parentCategory}
@@ -253,14 +286,30 @@ const AddProduct = () => {
           </div>
           <div>
             <label className="block mb-2 font-medium">Child Category</label>
-            <input
+            {/* <input
               type="text"
               name="child_category"
               value={product.child_category}
               onChange={handleChange}
               placeholder="Select Child Category"
               className="w-full bg-gray-700 p-2 "
-            />
+            /> */}
+            <select
+              id="child_category"
+              name="child_category"
+              value={product.child_category}
+              onChange={handleChange}
+              className="w-full px-3 py-2 bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="">Select child category</option>
+              {childCategoryList.map((category) => {
+                return (
+                  <option key={category._id} value={category._id}>
+                    {category.name}
+                  </option>
+                );
+              })}
+            </select>
           </div>
           <div>
             <label className="block mb-2 font-medium">Short Description</label>

@@ -144,7 +144,15 @@ const VariantsTable = () => {
                   {variant.brand}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
-                  {variant.color}
+                  <div className="flex items-center space-x-2">
+                    {/* Color box */}
+                    <span
+                      className="inline-block w-6 h-6 rounded-full border border-gray-400"
+                      style={{ backgroundColor: variant.colors }}
+                    ></span>
+                    {/* Color code */}
+                    {/* <span>{variant.colors}</span> */}
+                  </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
                   {variant.size}
@@ -197,12 +205,14 @@ const VariantsTable = () => {
                     <Edit size={18} />
                   </button>
                   </Link>
+                  {deleteloading && 
                   <button
                     className="text-red-400 hover:text-red-300"
                     onClick={() => deleteVariantHandler(variant._id)}
                   >
                     <Trash2 size={18} />
                   </button>
+                  }
                 </td>
               </motion.tr>
             ))}

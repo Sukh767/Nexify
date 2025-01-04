@@ -1,36 +1,40 @@
 import React, { useState } from "react";
-import { Loader2 } from "lucide-react";
+import { Loader2, Minus, Plus } from "lucide-react";
 import { useAddVariantMutation } from "../../features/variants/variantsApiSlice";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useGetProductQuery } from "../../features/products/productsApiSlice";
 
 const CreateVariant = () => {
+  const { id } = useParams();
   const [addVariant, { isLoading }] = useAddVariantMutation();
+  const { data: productDetails, isLoading:getProductLoading, error:getProductError } = useGetProductQuery(id);
+  console.log(productDetails);
   const naviagte = useNavigate();
   const [formData, setFormData] = useState({
-    product_name: "",
-    product_url: "",
-    product_id: "",
-    brand: "",
+    product_name: productDetails?.data?.productName || "",
+    product_url: productDetails?.data?.productUrl || "",
+    product_id: id,
+    brand: productDetails?.data?.brand || "",
     size: "",
-    color: "",
-    parentCategory: "",
+    colors: "",
+    parentCategory: productDetails?.data?.parentCategory || "",
     child_category: "",
-    sort_description: "",
-    description: "",
-    meta_title: "",
-    meta_description: "",
-    meta_keywords: "",
-    skucode: "",
+    sort_description: productDetails?.data?.short_description || "",
+    description: productDetails?.data?.description || "",
+    meta_title: productDetails?.data?.meta_title || "",
+    meta_description: productDetails?.data?.meta_description || "",
+    meta_keywords: productDetails?.data?.meta_keywords || "",
+    skucode: productDetails?.data?.skuCode || "",
     status: "Active",
     newarrivedproduct: false,
     trendingproduct: false,
     featuredproduct: false,
-    weight: "",
+    weight: productDetails?.data?.weight || "",
     weight_type: "kg",
-    mrp_price: "",
-    selling_price: "",
-    stock: "",
+    mrp_price: productDetails?.data?.mrp_price || "",
+    selling_price: productDetails?.data?.selling_price || "",
+    stock: productDetails?.data?.stock || "",
   });
   const [error, setError] = useState(null);
   const [banner, setBanner] = useState([]);
@@ -51,7 +55,6 @@ const CreateVariant = () => {
       [name]: type === "checkbox" ? checked : value, // Fix typo
     }));
   };
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -80,10 +83,10 @@ const CreateVariant = () => {
         setFormData({
           product_name: "",
           product_url: "",
-          product_id: "",
+          product_id: id,
           brand: "",
           size: "",
-          color: "",
+          colors: "",
           parentCategory: "",
           child_category: "",
           sort_description: "",
@@ -201,14 +204,14 @@ const CreateVariant = () => {
             />
           </div>
           <div>
-            <label htmlFor="color" className="block text-sm font-medium mb-1">
+            <label htmlFor="colors" className="block text-sm font-medium mb-1">
               Color
             </label>
             <input
-              type="text"
-              id="color"
-              name="color"
-              value={formData.color}
+              type="color"
+              id="colors"
+              name="colors"
+              value={formData.colors}
               onChange={handleChange}
               required
               className="w-full bg-gray-700 border border-gray-600 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
