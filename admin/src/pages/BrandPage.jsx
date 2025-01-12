@@ -40,6 +40,7 @@ const BrandPage = () => {
   const { data: brands, isLoading, error, refetch } = useGetAllBrandsQuery();
   const [deleteBrand] = useDeleteBrandMutation();
 
+
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this brand?')) {
       try {
@@ -57,6 +58,7 @@ const BrandPage = () => {
   if (isLoading) return <div className="text-center text-white text-2xl">Loading...</div>;
   if (error) return <div className="text-center text-red-500 text-2xl">Error: {error.message}</div>;
 
+
   return (
     <div className="max-w-7xl mx-auto py-6 px-4 lg:px-8 mt-2 text-white">
       <div className="max-w-7xl mx-auto">
@@ -70,6 +72,9 @@ const BrandPage = () => {
             Create Brand
           </Link>
         </div>
+        {brands && brands.data.length === 0 && (
+          <div className='text-2xl items-start text-center text-amber-400 font-bold font-mono'>NO DATA FOUND</div>
+        )}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {brands && brands.data && brands.data.map((brand) => (
             <BrandCard key={brand._id} brand={brand} onDelete={handleDelete} />

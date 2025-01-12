@@ -11,7 +11,8 @@ const Login = () => {
   const [user, setUser] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
 
-  const [login, { loading }] = useLoginMutation();
+  const [login, { isLoading }] = useLoginMutation();
+  console.log(isLoading)
   const dispatch = useDispatch();
 
   const handleInputChange = (e) => {
