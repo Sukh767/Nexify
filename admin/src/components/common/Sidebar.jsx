@@ -24,7 +24,6 @@ const { Sider } = Layout;
 
 const iconStyle = { color: "#6366f1", fontSize: "1.5rem" }; // Adjust fontSize as needed
 
-
 const SIDEBAR_ITEMS = [
   {
     key: "dashboard",
@@ -54,29 +53,25 @@ const SIDEBAR_ITEMS = [
     key: "Variants",
     icon: <ListTreeIcon style={{ ...iconStyle, color: "#E2BBE9" }} />,
     label: "Variants",
-    children: [
-      { key: "all-Variants", label: "Variants", path: "/Variants" },
-    ]
+    children: [{ key: "all-Variants", label: "Variants", path: "/Variants" }],
   },
   {
     key: "users",
     icon: <UserOutlined style={{ ...iconStyle, color: "#EC4899" }} />,
     label: "Users",
-    children: [
-      { key: "all-users", label: "All Users", path: "/users" },
-    ],
+    children: [{ key: "all-users", label: "All Users", path: "/users" }],
   },
   {
     key: "orders",
     icon: <Package style={{ ...iconStyle, color: "#F59E0B" }} />,
     label: "Orders",
-    children: [
-      { key: "all-orders", label: "All Orders", path: "/orders" },
-    ],
+    children: [{ key: "all-orders", label: "All Orders", path: "/orders" }],
   },
   {
     key: "authentication",
-    icon: <SafetyCertificateOutlined style={{ ...iconStyle, color: "#EF4444" }} />,
+    icon: (
+      <SafetyCertificateOutlined style={{ ...iconStyle, color: "#EF4444" }} />
+    ),
     label: "Authentication",
     children: [
       {
@@ -116,20 +111,15 @@ const SIDEBAR_ITEMS = [
     key: "brand",
     icon: <CodeSandboxOutlined style={{ ...iconStyle, color: "#FA7070" }} />,
     label: "Brand",
-    children: [
-      { key: "brands-view", label: "Brands", path: "/brand" }
-    ],
+    children: [{ key: "brands-view", label: "Brands", path: "/brand" }],
   },
   {
     key: "banner",
     icon: <Dock style={{ ...iconStyle, color: "#118B50" }} />,
     label: "Banner",
-    children: [
-      { key: "banners-view", label: "All Banner", path: "/banner" },
-    ],
+    children: [{ key: "banners-view", label: "All Banner", path: "/banner" }],
   },
 ];
-
 
 const Sidebar = ({ onToggle }) => {
   const [collapsed, setCollapsed] = useState(false);
@@ -188,16 +178,29 @@ const Sidebar = ({ onToggle }) => {
         theme="dark"
         inlineCollapsed={collapsed}
         className="bg-transparent"
-        items={SIDEBAR_ITEMS.map((item) => ({
-          key: item.key,
-          icon: item.icon,
-          label: item.label,
-          children: item.children.map((child) => ({
-            key: child.key,
-            label: <Link to={child.path}>{child.label}</Link>,
-          })),
-        }))}
+        items={SIDEBAR_ITEMS.map((item) => {
+          if (item.children.length === 1) {
+            // Single child: make parent directly navigable
+            return {
+              key: item.key,
+              icon: item.icon,
+              label: <Link to={item.children[0].path}>{item.label}</Link>,
+            };
+          }
+
+          // Multiple children: show dropdown
+          return {
+            key: item.key,
+            icon: item.icon,
+            label: item.label,
+            children: item.children.map((child) => ({
+              key: child.key,
+              label: <Link to={child.path}>{child.label}</Link>,
+            })),
+          };
+        })}
       />
+
       {/* User Profile and Logout */}
       {isAuthenticated && (
         <div className="absolute bottom-5 w-full p-4 flex flex-col items-center mb-4">

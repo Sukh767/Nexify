@@ -145,7 +145,8 @@ const updateBrand = async (req, res) => {
 const getAllBrands = async (req, res) => {
   try {
     const brands = await Brand.find().sort({ createdAt: -1 });
-    if (!brands.length) {
+
+    if (!brands || brands.length === 0) {
       return res.status(404).json({
         success: false,
         message: "No brands found.",

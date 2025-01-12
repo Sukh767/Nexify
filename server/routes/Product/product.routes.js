@@ -4,6 +4,7 @@ import {
   deleteProduct,
   frontendProductListByCategory,
   getAllProducts,
+  getAllProductsWithVariantProducts,
   getProductById,
   getSearchedProducts,
   updateProduct,
@@ -22,6 +23,7 @@ const router = express.Router();
 router.get("/search", searchItem); // Search by query: ?keyword=someValue
 router.get("/category-list/:id", frontendProductListByCategory); //TODO: Fix this route getting blank response
 router.get("/details/:id", verifyjwt, frontendSingleProduct);
+router.get("/all-products", verifyjwt, getAllProductsWithVariantProducts)
 
 // Authenticated Routes
 router.get("/", verifyjwt, getAllProducts);

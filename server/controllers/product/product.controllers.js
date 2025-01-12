@@ -3,6 +3,7 @@ import { deleteFromCloudinary, uploadOnCloudinary } from "../../lib/cloudinary.j
 import Product from "../../models/Product/product.model.js";
 import slugify from "slugify";
 import Category from "../../models/Product/productCategory.model.js";
+import ProductVariant from "../../models/Product/productVariant.model.js";
 // Create a new product
 const createProduct = async (req, res) => {
   const {
@@ -425,7 +426,6 @@ const updateProduct = async (req, res) => {
   }
 };
 
-
 //Get the searched products
 const getSearchedProducts = async (req, res) => {
   const {name} = req.query; // Access `name` from query params
@@ -550,6 +550,61 @@ if(weight){
   }
 }
 
+const getAllProductsWithVariantProducts = async (req, res) => {
+  try {
+    const products = await Product.find();
+
+    if (!products || products.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No products found.",
+      });
+    }
+
+    // const productsWithVariants = products.map((product) => {
+    //   const variants = [];
+    //   if (product.sizes && product.sizes.length) {
+    //     for (const size of product.sizes) {
+    //       const variant = {
+    //         ...product._doc,
+    //         size: size.size,
+    //         stock: size.stock,
+    //       };
+    //       variants.push(variant);
+    //     }
+    //   } else {
+    //     variants.push(product);
+    //   }
+
+    //   return variants;
+    // });
+
+    const productsWithVariants = await ProductVariant.find();
+
+    if(!productsWithVariants || productsWithVariants.length === 0){
+      return res.status(404).json({
+        success: false,
+        message: "No products with variants found.",
+      });
+    }
+
+    //console.log("Product Variants:", productsWithVariants);
+
+    res.status(200).json({
+      success: true,
+      message: "Products with variants fetched successfully.",
+      data: products,
+      productsWithVariants,
+    });
+  } catch (error) {
+    console.error("Error in getAllProducts:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error.",
+    });
+  }
+}
+
 
 export {
   getAllProducts,
@@ -558,5 +613,6 @@ export {
   deleteProduct,
   updateProduct,
   getSearchedProducts,
-  frontendProductListByCategory
+  frontendProductListByCategory,
+  getAllProductsWithVariantProducts
 };
