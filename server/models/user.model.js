@@ -17,6 +17,18 @@ const userSchema = mongoose.Schema(
       required: [true,"email is Required"],
       unique: [true,"already in database"],
     },
+    profilePic:[
+        {
+          public_id: {
+          type: String,
+          required: false,
+        },
+        url: {
+          type: String,
+          required: false,
+        },
+      }
+    ],
     mobile: {
       type: String,
       required: [true,"mobile is Required"],

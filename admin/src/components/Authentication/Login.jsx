@@ -48,7 +48,7 @@ const Login = () => {
       {/* Background Image */}
       <div className="absolute inset-0 z-0 bg-gradient-to-br from-teal-900 via-teal-700 to-emerald-600">
         {/* <img
-          src="https://images.pexels.com/photos/1103970/pexels-photo-1103970.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+          src="https://res.cloudinary.com/dbotqrsil/image/upload/v1745015614/img1.wallspic.com-among_us-online_game-tablet-astronomical_object-night-7680x4320_jvenz9.jpg"
           alt="Background"
           className="w-full h-full object-cover"
         /> */}
@@ -80,7 +80,7 @@ const Login = () => {
             </div>
           </Link>
 
-          <h1 className="text-3xl font-bold text-white mb-2 text-center">Log In</h1>
+          <h1 className="text-3xl font-bold text-white mb-2 text-center hover:text-emerald-400">Log In</h1>
           <p className="text-gray-200 mb-8 text-center">
             Access your Nexify Admin Panel
           </p>
@@ -164,6 +164,9 @@ const Login = () => {
           <div className="text-sm text-gray-500 text-center">
             <p>© 2024 Nexify. All rights reserved.</p>
             <p>Transforming e-commerce management</p>
+            <p className="text-emerald-600"> -- Login to checkout -- </p>
+            <p className="text-blue-600">testuser.tony18@gmail.com</p>
+            <span className="text-red-400">JohnDoe123@</span>
           </div>
         </div>
       </div>
