@@ -163,4 +163,4 @@ export const WELCOME_EMAIL_TEMPLATE = `<!DOCTYPE html>
         </table>
     </div>
 </body>
-</html>`
+</html>`;

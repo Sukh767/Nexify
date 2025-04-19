@@ -1,9 +1,10 @@
 import express from "express";
 import userList from "../controllers/user/userList.controllers.js";
-import { deleteUser, forgotPassword, generateRefreshToken, loginAdmin, loginUser, logoutUser, registerUser, resetPassword, setNewPassword, updateUserDetails, verifyEmail } from "../controllers/user/user.controllers.js";
+import { deleteUser, forgotPassword, generateRefreshToken, loginAdmin, loginUser, logoutUser, registerUser, resetPassword, setNewPassword, updateUserDetails, uploadProfilePhoto, verifyEmail } from "../controllers/user/user.controllers.js";
 import { updateUserRole, updateUserStatus } from "../controllers/user/updateUserStatus.controllers.js";
 import { getUserDetails } from "../controllers/user/getUserDetails.controllers.js";
 import { authRole, verifyjwt } from "../middlewares/auth.middlewares.js";
+import { upload } from "../middlewares/multer.middlewares.js";
 
 const router = express.Router();
 
@@ -13,6 +14,7 @@ router.post('/admin-login',loginAdmin)
 router.get('/refresh-token',generateRefreshToken)
 router.get('/list',verifyjwt,userList) //admin user and supreme user
 router.get('/userinfo',verifyjwt,getUserDetails) //user details
+router.post('/update-photo',upload.fields([{name: "profilePic", maxCount: 2}]),verifyjwt, uploadProfilePhoto)
 router.post('/verify-email',verifyEmail)
 router.post('/logout', logoutUser)
 router.post('/forgot-password', forgotPassword)

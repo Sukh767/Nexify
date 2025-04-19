@@ -6,7 +6,7 @@ dotenv.config();
 
 const DEFAULT_DB_NAME = "test"; // Fallback database name
 
-export const connectDB = async () => {
+const connectDB = async () => {
     try {
         const dbName = DB_NAME || DEFAULT_DB_NAME;
         const mongoURI = process.env.MONGO_URI;

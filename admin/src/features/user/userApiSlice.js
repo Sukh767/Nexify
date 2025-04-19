@@ -85,6 +85,13 @@ export const userApiSlice = authApi.injectEndpoints({
       }),
       invalidatesTags: ["User"],
     }),
+    uploadProfile: builder.mutation({
+      query: ()=>({
+        url: `${USER_URL/profile-upload}`,
+        method: "POST",
+        credentials: "include"
+      })
+    })
   }),
 });
 
@@ -100,5 +107,6 @@ export const {
   useDeleteUserMutation,
   useUpdateUserStatusMutation,
   useUpdateUserRoleMutation,
+  useUploadProfileMutation,
 } = userApiSlice;
 

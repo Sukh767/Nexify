@@ -1,3 +1,4 @@
+import { uploadOnCloudinary } from "../../lib/cloudinary.js";
 import {
   sendPasswordResetEmail,
   sendResetSuccesfullEmail,
@@ -445,6 +446,92 @@ const setNewPassword = async (req, res) => {
   }
 };
 
+//set update profile
+const uploadProfilePhoto = async (req, res) => {
+  try {
+    const { _id } = req.user;
+
+    if (!_id) {
+      return res.status(404).json({
+        success: false,
+        message: "Something went wrong. User not found.",
+      });
+    }
+
+    // Check if files exist
+    if (!req.files?.profilePic || req.files.profilePic.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Profile photo is required.",
+      });
+    }
+
+    const localImagePath = req.files.profilePic[0].path;
+
+    if (!localImagePath) {
+      return res.status(400).json({
+        success: false,
+        message: "Profile photo is required.",
+      });
+    }
+
+    // Upload the photo to Cloudinary
+    let profilePic;
+    try {
+      const profilePicUpload = await uploadOnCloudinary(localImagePath, "profilePic");
+      profilePic = {
+        public_id: profilePicUpload.public_id,
+        url: profilePicUpload.secure_url,
+      };
+    } catch (error) { 
+      console.error("Error uploading profile photo to Cloudinary:", error);
+      return res.status(500).json({
+        success: false,
+        message: "Failed to upload profile photo.",
+        error: error.message,
+      });
+    }
+
+    // Find the user and update their profile picture
+    const user = await User.findById(_id);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found.",
+      });
+    }
+
+    // Delete the old profile picture from Cloudinary if it exists
+    if (user.profilePic?.public_id) {
+      try {
+        await deleteFromCloudinary(user.profilePic.public_id);
+      } catch (error) {
+        console.error("Error deleting old profile photo:", error);
+      }
+    }
+
+    // Update the user's profile picture
+    user.profilePic = profilePic;
+
+    await user.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Profile photo uploaded successfully.",
+      data: {
+        profilePic: user.profilePic,
+      },
+    });
+  } catch (error) {
+    console.error("Error in uploadProfilePhoto:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error.",
+      error: error.message,
+    });
+  }
+};
+
 
 export {
   registerUser,
@@ -458,4 +545,5 @@ export {
   generateRefreshToken,
   setNewPassword,
   loginAdmin,
+  uploadProfilePhoto
 };
